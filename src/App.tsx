@@ -17,6 +17,18 @@ const App: React.FC = () => {
   } = useStore();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isOnline, setIsOnline] = useState(typeof window !== 'undefined' ? window.navigator.onLine : true);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // 1. Listen to live Venue State from Firestore
   useEffect(() => {
@@ -70,6 +82,14 @@ const App: React.FC = () => {
         accessibilitySettings.textScale === 'xl' ? 'text-scale-xl' : ''
       }`}
     >
+      {/* Offline Alert Banner */}
+      {!isOnline && (
+        <div className="bg-gradient-to-r from-gray-900 to-navy-900 text-cyan-400 text-xs font-semibold text-center py-2.5 px-4 flex items-center justify-center gap-2 border-b border-cyan-500/25 shadow-md z-50">
+          <ShieldAlert size={14} className="animate-pulse text-accent-cyan" />
+          <span>Offline Mode Active. Displaying cached maps and last synced wayfinding route instructions.</span>
+        </div>
+      )}
+
       {/* Top Banner Alert for Global Broadcast Announcement */}
       {venueState?.overrideAnnouncement && (
         <div className="bg-gradient-to-r from-amber-600 to-rose-600 text-white text-xs font-bold text-center py-2 px-4 flex items-center justify-center gap-2 animate-pulse shadow-md z-50">
