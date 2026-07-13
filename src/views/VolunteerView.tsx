@@ -52,8 +52,8 @@ export const VolunteerView: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="glass-panel p-8 rounded-2xl flex flex-col items-center justify-center text-gray-400 max-w-lg mx-auto my-8">
-        <RefreshCw className="animate-spin text-accent-purple mb-2" />
+      <div className="glass-panel p-8 rounded-2xl flex flex-col items-center justify-center text-silver-400 max-w-lg mx-auto my-8">
+        <RefreshCw className="animate-spin text-gold-500 mb-2" />
         <p>Connecting to operations center...</p>
       </div>
     );
@@ -113,21 +113,21 @@ export const VolunteerView: React.FC = () => {
       
       {/* VOLUNTEER IDENTITY PANEL */}
       <div className="md:col-span-1 space-y-6">
-        <div className="glass-panel p-5 rounded-2xl border border-purple-500/10 text-left space-y-4">
+        <div className="glass-panel p-5 rounded-2xl border border-gold-500/10 text-left space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <User className="text-accent-cyan" />
+            <User className="text-pitch-400" />
             <h3 className="font-display font-semibold text-white">Active Responder</h3>
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase font-bold text-gray-500 mb-1.5">Select Profile</label>
+            <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1.5">Select Profile</label>
             <select
               value={selectedVol?.id || ''}
               onChange={(e) => {
                 const vol = volunteers.find(v => v.id === e.target.value);
                 if (vol) setSelectedVol(vol);
               }}
-              className="w-full bg-navy-950/60 border border-navy-700/60 p-2 rounded-xl text-xs text-white"
+              className="w-full bg-stadium-950/60 border border-stadium-700/60 p-2 rounded-xl text-xs text-white"
             >
               {volunteers.map(v => (
                 <option key={v.id} value={v.id}>{v.name}</option>
@@ -137,22 +137,22 @@ export const VolunteerView: React.FC = () => {
 
           {selectedVol && (
             <div className="space-y-3.5 pt-2 text-xs">
-              <div className="bg-navy-950/40 border border-navy-800/80 p-2.5 rounded-xl">
-                <span className="block text-[10px] text-gray-500 font-semibold mb-1 uppercase">Languages Spoken</span>
+              <div className="bg-stadium-950/40 border border-stadium-800/80 p-2.5 rounded-xl">
+                <span className="block text-[10px] text-silver-500 font-semibold mb-1 uppercase">Languages Spoken</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {selectedVol.languages.map(lang => (
-                    <span key={lang} className="text-[10px] bg-cyan-950/40 text-cyan-400 border border-cyan-500/25 px-2 py-0.5 rounded-lg flex items-center gap-1 font-semibold">
+                    <span key={lang} className="text-[10px] bg-stadium-850/40 text-pitch-400 border border-pitch-500/25 px-2 py-0.5 rounded-lg flex items-center gap-1 font-semibold">
                       <Languages size={10} /> {lang}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-navy-950/40 border border-navy-800/80 p-2.5 rounded-xl">
-                <span className="block text-[10px] text-gray-500 font-semibold mb-1 uppercase">Skills & Roles</span>
+              <div className="bg-stadium-950/40 border border-stadium-800/80 p-2.5 rounded-xl">
+                <span className="block text-[10px] text-silver-500 font-semibold mb-1 uppercase">Skills & Roles</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {selectedVol.skills.map(skill => (
-                    <span key={skill} className="text-[10px] bg-purple-950/40 text-accent-light border border-purple-500/25 px-2 py-0.5 rounded-lg font-semibold">
+                    <span key={skill} className="text-[10px] bg-stadium-900/40 text-gold-300 border border-gold-500/25 px-2 py-0.5 rounded-lg font-semibold">
                       {skill}
                     </span>
                   ))}
@@ -160,9 +160,9 @@ export const VolunteerView: React.FC = () => {
               </div>
 
               <div className="flex justify-between items-center text-xs px-1">
-                <span className="text-gray-400">Current Station:</span>
+                <span className="text-silver-400">Current Station:</span>
                 <span className="font-semibold text-white flex items-center gap-1">
-                  <Navigation size={12} className="text-accent-pink" />
+                  <Navigation size={12} className="text-gold-500" />
                   {selectedVol.currentZone.replace('_', ' ')}
                 </span>
               </div>
@@ -175,20 +175,20 @@ export const VolunteerView: React.FC = () => {
       <div className="md:col-span-2 space-y-4 text-left">
         <div className="flex justify-between items-center px-1">
           <div className="flex items-center gap-2">
-            <ShieldAlert className="text-rose-500" size={20} />
+            <ShieldAlert className="text-status-danger" size={20} />
             <h3 className="font-display font-semibold text-white text-lg">Smart Dispatch Queue</h3>
           </div>
-          <span className="text-xs bg-navy-800 border border-navy-700/60 px-2.5 py-1 rounded-full text-gray-400 font-semibold">
+          <span className="text-xs bg-stadium-800 border border-stadium-700/60 px-2.5 py-1 rounded-full text-silver-400 font-semibold">
             {matchedTasks.length} Live Tasks
           </span>
         </div>
 
         {matchedTasks.length === 0 ? (
-          <div className="glass-panel p-10 rounded-2xl border border-navy-800 flex flex-col items-center justify-center text-center space-y-3">
-            <CheckCircle className="text-accent-emerald animate-pulse" size={32} />
+          <div className="glass-panel p-10 rounded-2xl border border-stadium-800 flex flex-col items-center justify-center text-center space-y-3">
+            <CheckCircle className="text-pitch-500 animate-pulse" size={32} />
             <div className="space-y-1">
               <p className="text-sm font-semibold text-white">Queue Clear</p>
-              <p className="text-xs text-gray-500">No active incidents require language matches or waypoint dispatch.</p>
+              <p className="text-xs text-silver-500">No active incidents require language matches or waypoint dispatch.</p>
             </div>
           </div>
         ) : (
@@ -200,20 +200,20 @@ export const VolunteerView: React.FC = () => {
                   key={task.id} 
                   className={`glass-panel p-5 rounded-2xl border transition-all duration-300 ${
                     isAccepted 
-                      ? 'border-cyan-500/30 shadow-lg shadow-cyan-500/5' 
-                      : 'border-rose-500/20 hover:border-rose-500/30'
+                      ? 'border-pitch-500/30 shadow-lg shadow-pitch-500/5' 
+                      : 'border-status-danger/20 hover:border-status-danger/30'
                   }`}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex flex-wrap gap-2">
-                      <span className="text-[10px] uppercase font-bold bg-rose-950 text-rose-400 border border-rose-800 px-2 py-0.5 rounded">
+                      <span className="text-[10px] uppercase font-bold bg-stadium-850 text-status-danger border border-stadium-700 px-2 py-0.5 rounded">
                         {task.requiredSkill}
                       </span>
-                      <span className="text-[10px] uppercase font-bold bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded">
+                      <span className="text-[10px] uppercase font-bold bg-stadium-850 text-pitch-400 border border-stadium-700 px-2 py-0.5 rounded">
                         Language: {task.requestedLanguage}
                       </span>
                     </div>
-                    <span className="text-[10px] text-gray-500 font-mono">
+                    <span className="text-[10px] text-silver-500 font-mono">
                       {new Date(task.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -222,9 +222,9 @@ export const VolunteerView: React.FC = () => {
                     {task.description}
                   </p>
 
-                  <div className="flex items-center justify-between border-t border-navy-800 pt-3.5">
-                    <div className="flex items-center gap-1 text-xs text-gray-400">
-                      <Navigation size={12} className="text-accent-pink animate-pulse" />
+                  <div className="flex items-center justify-between border-t border-stadium-800 pt-3.5">
+                    <div className="flex items-center gap-1 text-xs text-silver-400">
+                      <Navigation size={12} className="text-gold-500 animate-pulse" />
                       Dispatch target: <span className="font-semibold text-white">{task.location}</span>
                     </div>
 
@@ -232,14 +232,14 @@ export const VolunteerView: React.FC = () => {
                       {isAccepted ? (
                         <button
                           onClick={() => completeTask(task.id)}
-                          className="px-4 py-2 bg-gradient-to-r from-accent-emerald to-cyan-500 hover:from-accent-emerald hover:to-cyan-600 text-white text-xs font-bold rounded-xl transition cursor-pointer"
+                          className="px-4 py-2 bg-gradient-to-r from-pitch-500 to-pitch-400 hover:from-pitch-500 hover:to-cyan-600 text-white text-xs font-bold rounded-xl transition cursor-pointer"
                         >
                           Mark Completed
                         </button>
                       ) : (
                         <button
                           onClick={() => acceptTask(task.id)}
-                          className="px-4 py-2 bg-gradient-to-r from-accent-purple to-accent-pink hover:from-accent-violet hover:to-accent-pink text-white text-xs font-bold rounded-xl transition cursor-pointer"
+                          className="px-4 py-2 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-400 hover:to-gold-300 text-white text-xs font-bold rounded-xl transition cursor-pointer"
                         >
                           Accept Dispatch
                         </button>

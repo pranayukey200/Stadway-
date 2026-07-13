@@ -14,7 +14,6 @@ export const ThreeDBackground: React.FC = () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Handle resize
     const handleResize = () => {
       if (!canvas) return;
       width = canvas.width = window.innerWidth;
@@ -22,7 +21,7 @@ export const ThreeDBackground: React.FC = () => {
     };
     window.addEventListener('resize', handleResize);
 
-    // 3D Point class
+    // 3D Point structure
     interface Point3D {
       x: number;
       y: number;
@@ -32,12 +31,12 @@ export const ThreeDBackground: React.FC = () => {
     const points: Point3D[] = [];
     const lines: [number, number][] = [];
 
-    // 1. Generate 3D Stadium Rings (concentric ellipses in layers)
-    const ringCount = 3;
-    const pointsPerRing = 16;
-    const ringRadiiX = [180, 240, 300];
-    const ringRadiiZ = [100, 140, 180];
-    const ringHeights = [-40, 0, 40];
+    // Generate Stadium Bowl - more detailed with 4 tiers
+    const ringCount = 5;
+    const pointsPerRing = 24;
+    const ringRadiiX = [140, 190, 240, 290, 340];
+    const ringRadiiZ = [80, 110, 140, 170, 200];
+    const ringHeights = [-50, -25, 0, 25, 50];
 
     let indexOffset = 0;
     for (let r = 0; r < ringCount; r++) {
@@ -53,12 +52,10 @@ export const ThreeDBackground: React.FC = () => {
           z: Math.sin(theta) * rz
         });
 
-        // Connect ring points sequentially
         const curr = indexOffset + i;
         const next = indexOffset + ((i + 1) % pointsPerRing);
         lines.push([curr, next]);
 
-        // Connect vertically to previous ring
         if (r > 0) {
           const prevRingIndex = indexOffset - pointsPerRing + i;
           lines.push([curr, prevRingIndex]);
@@ -67,92 +64,151 @@ export const ThreeDBackground: React.FC = () => {
       indexOffset += pointsPerRing;
     }
 
-    // 2. Generate Pitch field lines (rectangular base in center)
-    const pitchPointsOffset = points.length;
-    points.push({ x: -100, y: -40, z: -50 });
-    points.push({ x: 100, y: -40, z: -50 });
-    points.push({ x: 100, y: -40, z: 50 });
-    points.push({ x: -100, y: -40, z: 50 });
+    // Pitch rectangle with center line and circle
+    const pitchOffset = points.length;
+    const pw = 90, ph = 55;
+    points.push({ x: -pw, y: -50, z: -ph });
+    points.push({ x: pw, y: -50, z: -ph });
+    points.push({ x: pw, y: -50, z: ph });
+    points.push({ x: -pw, y: -50, z: ph });
+    // Center line endpoints
+    points.push({ x: 0, y: -50, z: -ph });
+    points.push({ x: 0, y: -50, z: ph });
 
-    lines.push([pitchPointsOffset, pitchPointsOffset + 1]);
-    lines.push([pitchPointsOffset + 1, pitchPointsOffset + 2]);
-    lines.push([pitchPointsOffset + 2, pitchPointsOffset + 3]);
-    lines.push([pitchPointsOffset + 3, pitchPointsOffset]);
+    // Pitch outline
+    lines.push([pitchOffset, pitchOffset + 1]);
+    lines.push([pitchOffset + 1, pitchOffset + 2]);
+    lines.push([pitchOffset + 2, pitchOffset + 3]);
+    lines.push([pitchOffset + 3, pitchOffset]);
+    // Center line
+    lines.push([pitchOffset + 4, pitchOffset + 5]);
 
-    // 3. Generate Floating Particles
+    // Center circle points
+    const circleOffset = points.length;
+    const circleSegs = 16;
+    const circleR = 20;
+    for (let i = 0; i < circleSegs; i++) {
+      const theta = (i / circleSegs) * Math.PI * 2;
+      points.push({
+        x: Math.cos(theta) * circleR,
+        y: -50,
+        z: Math.sin(theta) * circleR
+      });
+      const curr = circleOffset + i;
+      const next = circleOffset + ((i + 1) % circleSegs);
+      lines.push([curr, next]);
+    }
+
+    // Floating particles
     interface Particle {
       x: number;
       y: number;
       z: number;
       speedY: number;
+      speedX: number;
       size: number;
+      brightness: number;
     }
     const particles: Particle[] = [];
-    const particleCount = 65;
+    const particleCount = 80;
     for (let p = 0; p < particleCount; p++) {
       particles.push({
-        x: (Math.random() - 0.5) * 800,
-        y: (Math.random() - 0.5) * 400,
-        z: (Math.random() - 0.5) * 800,
-        speedY: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2 + 1
+        x: (Math.random() - 0.5) * 1000,
+        y: (Math.random() - 0.5) * 500,
+        z: (Math.random() - 0.5) * 1000,
+        speedY: (Math.random() - 0.5) * 0.25,
+        speedX: (Math.random() - 0.5) * 0.1,
+        size: Math.random() * 2 + 0.5,
+        brightness: Math.random() * 0.5 + 0.3
       });
     }
 
-    // Rotation angles
-    let angleY = 0.001;
-    let angleX = 0.35; // Tilt the stadium slightly down so we see it in 3D perspective
+    // Background grid points for depth
+    interface GridLine {
+      x1: number; z1: number;
+      x2: number; z2: number;
+      y: number;
+    }
+    const gridLines: GridLine[] = [];
+    const gridSpacing = 80;
+    const gridExtent = 600;
+    for (let x = -gridExtent; x <= gridExtent; x += gridSpacing) {
+      gridLines.push({ x1: x, z1: -gridExtent, x2: x, z2: gridExtent, y: 120 });
+    }
+    for (let z = -gridExtent; z <= gridExtent; z += gridSpacing) {
+      gridLines.push({ x1: -gridExtent, z1: z, x2: gridExtent, z2: z, y: 120 });
+    }
+
+    let angleY = 0;
+    const angleX = 0.32;
+    const d = 550;
+
+    const project = (pt: Point3D, cosY: number, sinY: number, cosX: number, sinX: number) => {
+      const x1 = pt.x * cosY - pt.z * sinY;
+      const z1 = pt.x * sinY + pt.z * cosY;
+      const y2 = pt.y * cosX - z1 * sinX;
+      const z2 = pt.y * sinX + z1 * cosX;
+      const scale = d / (d + z2 + 350);
+      return {
+        x: width / 2 + x1 * scale,
+        y: height / 2 + y2 * scale,
+        scale,
+        visible: scale > 0
+      };
+    };
 
     const render = () => {
-      ctx.clearRect(0, 0, width, height);
+      // Gradient background
+      const grad = ctx.createRadialGradient(width / 2, height * 0.35, 0, width / 2, height * 0.35, Math.max(width, height) * 0.7);
+      grad.addColorStop(0, '#0e1a33');
+      grad.addColorStop(0.5, '#091222');
+      grad.addColorStop(1, '#060b18');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
 
-      // Rotate slightly over time
-      angleY += 0.0012;
-
+      angleY += 0.0008;
       const cosY = Math.cos(angleY);
       const sinY = Math.sin(angleY);
       const cosX = Math.cos(angleX);
       const sinX = Math.sin(angleX);
 
-      const d = 500; // Camera distance / perspective index
-      const centerX = width / 2;
-      const centerY = height / 2;
-
-      // Project 3D points to 2D screen coordinates
-      const projected: { x: number; y: number; visible: boolean }[] = [];
-
-      for (let i = 0; i < points.length; i++) {
-        const pt = points[i];
-
-        // Y-axis rotation
-        let x1 = pt.x * cosY - pt.z * sinY;
-        let z1 = pt.x * sinY + pt.z * cosY;
-
-        // X-axis rotation (tilt)
-        let y2 = pt.y * cosX - z1 * sinX;
-        let z2 = pt.y * sinX + z1 * cosX;
-
-        // Perspective division
-        const scale = d / (d + z2 + 320);
-        const sx = centerX + x1 * scale;
-        const sy = centerY + y2 * scale;
-
-        projected.push({
-          x: sx,
-          y: sy,
-          visible: scale > 0
-        });
+      // Draw background grid
+      ctx.strokeStyle = 'rgba(36, 59, 106, 0.12)';
+      ctx.lineWidth = 0.5;
+      for (const gl of gridLines) {
+        const p1 = project({ x: gl.x1, y: gl.y, z: gl.z1 }, cosY, sinY, cosX, sinX);
+        const p2 = project({ x: gl.x2, y: gl.y, z: gl.z2 }, cosY, sinY, cosX, sinX);
+        if (p1.visible && p2.visible) {
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
       }
 
-      // Draw Lines
-      ctx.strokeStyle = 'rgba(99, 102, 241, 0.45)'; // Bright indigo lines
-      ctx.lineWidth = 1;
+      // Project all stadium points
+      const projected = points.map(pt => project(pt, cosY, sinY, cosX, sinX));
+
+      // Draw stadium wireframe lines with gold gradient
+      ctx.lineWidth = 0.8;
       for (let i = 0; i < lines.length; i++) {
         const [pA, pB] = lines[i];
         const projA = projected[pA];
         const projB = projected[pB];
 
         if (projA.visible && projB.visible) {
+          // Pitch lines are green, stadium lines are gold
+          const isPitch = pA >= pitchOffset;
+          const alpha = isPitch ? 0.5 : 0.25 + projA.scale * 0.15;
+          
+          if (isPitch) {
+            ctx.strokeStyle = `rgba(34, 163, 82, ${alpha})`;
+            ctx.lineWidth = 1.2;
+          } else {
+            ctx.strokeStyle = `rgba(200, 168, 78, ${alpha})`;
+            ctx.lineWidth = 0.7;
+          }
+          
           ctx.beginPath();
           ctx.moveTo(projA.x, projA.y);
           ctx.lineTo(projB.x, projB.y);
@@ -160,44 +216,46 @@ export const ThreeDBackground: React.FC = () => {
         }
       }
 
-      // Draw Points (Location Sensors)
+      // Draw points as small dots
       for (let i = 0; i < projected.length; i++) {
         const proj = projected[i];
         if (proj.visible) {
-          ctx.fillStyle = i >= pitchPointsOffset ? 'rgba(56, 189, 248, 0.7)' : 'rgba(99, 102, 241, 0.55)';
+          const isPitch = i >= pitchOffset;
+          const alpha = isPitch ? 0.6 : 0.3;
+          ctx.fillStyle = isPitch ? `rgba(34, 163, 82, ${alpha})` : `rgba(200, 168, 78, ${alpha})`;
           ctx.beginPath();
-          ctx.arc(proj.x, proj.y, 3, 0, Math.PI * 2);
+          ctx.arc(proj.x, proj.y, isPitch ? 1.5 : 1.2, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
-      // Update and Draw Floating Particles in 3D
-      ctx.fillStyle = 'rgba(186, 230, 253, 0.35)'; // Bright sky blue particles
-      for (let p = 0; p < particles.length; p++) {
-        const particle = particles[p];
+      // Draw and update floating particles
+      for (const particle of particles) {
         particle.y += particle.speedY;
+        particle.x += particle.speedX;
 
-        // Wrap around bounds
-        if (particle.y > 200) particle.y = -200;
-        if (particle.y < -200) particle.y = 200;
+        if (particle.y > 250) particle.y = -250;
+        if (particle.y < -250) particle.y = 250;
+        if (particle.x > 500) particle.x = -500;
+        if (particle.x < -500) particle.x = 500;
 
-        // Rotate particle
-        let x1 = particle.x * cosY - particle.z * sinY;
-        let z1 = particle.x * sinY + particle.z * cosY;
-        let y2 = particle.y * cosX - z1 * sinX;
-        let z2 = particle.y * sinX + z1 * cosX;
-
-        const scale = d / (d + z2 + 320);
-        if (scale > 0) {
-          const sx = centerX + x1 * scale;
-          const sy = centerY + y2 * scale;
-          const size = particle.size * scale;
-
+        const proj = project(particle, cosY, sinY, cosX, sinX);
+        if (proj.visible) {
+          const size = particle.size * proj.scale;
+          const alpha = particle.brightness * proj.scale;
+          ctx.fillStyle = `rgba(219, 190, 90, ${alpha})`;
           ctx.beginPath();
-          ctx.arc(sx, sy, size, 0, Math.PI * 2);
+          ctx.arc(proj.x, proj.y, size, 0, Math.PI * 2);
           ctx.fill();
         }
       }
+
+      // Subtle vignette overlay
+      const vignette = ctx.createRadialGradient(width / 2, height / 2, height * 0.3, width / 2, height / 2, Math.max(width, height) * 0.7);
+      vignette.addColorStop(0, 'rgba(6, 11, 24, 0)');
+      vignette.addColorStop(1, 'rgba(6, 11, 24, 0.5)');
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, width, height);
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -210,5 +268,5 @@ export const ThreeDBackground: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-[#05070a]" />;
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none" />;
 };
