@@ -75,13 +75,15 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className={`min-h-screen bg-navy-950 text-gray-200 flex flex-col font-sans transition-all duration-300 ${
+      className={`min-h-screen bg-navy-950 text-gray-200 flex flex-col font-sans transition-all duration-300 relative ${
         accessibilitySettings.highContrast ? 'high-contrast' : ''
       } ${
         accessibilitySettings.textScale === 'lg' ? 'text-scale-lg' : 
         accessibilitySettings.textScale === 'xl' ? 'text-scale-xl' : ''
       }`}
     >
+      {/* 3D Parallax Stadium Blueprint Background */}
+      <div className="hud-bg-container"></div>
       {/* Offline Alert Banner */}
       {!isOnline && (
         <div className="bg-gradient-to-r from-gray-900 to-navy-900 text-cyan-400 text-xs font-semibold text-center py-2.5 px-4 flex items-center justify-center gap-2 border-b border-cyan-500/25 shadow-md z-50">

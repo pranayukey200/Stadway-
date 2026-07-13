@@ -132,3 +132,21 @@ body {
   pointer-events: none;
   animation: pulse-glow 8s ease-in-out infinite;
 }
+
+.hud-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: radial-gradient(circle at 50% 50%, rgba(13, 17, 23, 0.5), rgba(5, 7, 10, 0.98)), url('/futuristic_stadium.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: -10;
+  opacity: 0.35;
+  filter: saturate(1.1) contrast(1.15) blur(1px);
+  transform: scale(1.01);
+  pointer-events: none;
+}
+

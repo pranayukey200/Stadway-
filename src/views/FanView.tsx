@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStore, type FanProfile, type DecisionResult } from '../context/useStore';
 import { StadiumMap } from '../components/StadiumMap';
+import { SeatSelector } from '../components/SeatSelector';
 import { db, functions } from '../utils/firebase';
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
@@ -38,9 +39,9 @@ export const FanView: React.FC = () => {
   const fillDemoProfile = () => {
     setName('Carlos Martinez');
     setTicketZone('Zone_B');
-    setSeat('Row 14, Seat 24');
+    setSeat('Row C, Seat 8');
     setLanguage('Spanish');
-    setNeeds(['Wheelchair Access', 'Simplified Language']);
+    setNeeds(['Wheelchair / Step-Free', 'Simplified Language']);
   };
 
   const handleOnboardingSubmit = async (e: React.FormEvent) => {
@@ -188,122 +189,143 @@ export const FanView: React.FC = () => {
   // Onboarding View
   if (!fanProfile) {
     return (
-      <div className="max-w-md mx-auto my-8 p-6 glass-panel rounded-2xl border border-purple-500/20 shadow-2xl relative overflow-hidden animate-float">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/10 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-600/10 rounded-full blur-2xl"></div>
+      <div className="max-w-6xl mx-auto my-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start animate-fade-in">
         
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-display font-bold tracking-wide text-white">Initialize Companion</h2>
-          <p className="text-xs text-gray-400 mt-1">Set up your profile to activate the StadWay AI agents.</p>
-        </div>
-
-        {errorMsg && (
-          <div className="bg-rose-950/40 border border-rose-500/30 text-rose-400 p-3 rounded-lg text-xs flex items-center gap-2 mb-4">
-            <AlertCircle size={14} /> {errorMsg}
-          </div>
-        )}
-
-        <form onSubmit={handleOnboardingSubmit} className="space-y-4 text-left">
-          <div>
-            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Fan Name</label>
-            <input
-              type="text"
-              placeholder="e.g. John Doe"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full bg-navy-950/60 border border-navy-700/60 p-2.5 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-purple"
-            />
+        {/* Onboarding Form Column (5 cols) */}
+        <div className="lg:col-span-5 p-6 glass-panel rounded-2xl border border-purple-500/20 shadow-2xl relative overflow-hidden animate-float text-left">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/10 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-600/10 rounded-full blur-2xl"></div>
+          
+          <div className="text-center mb-6">
+            <h2 className="text-xl font-display font-bold tracking-wide text-white">Initialize Companion</h2>
+            <p className="text-xs text-gray-400 mt-1">Set up your profile to activate the StadWay AI agents.</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Ticket Zone</label>
-              <select
-                value={ticketZone}
-                onChange={(e) => setTicketZone(e.target.value)}
-                className="w-full bg-navy-950/60 border border-navy-700/60 p-2.5 rounded-xl text-sm text-white focus:outline-none focus:border-accent-purple"
-              >
-                <option value="Zone_A">Zone A (North)</option>
-                <option value="Zone_B">Zone B (East)</option>
-                <option value="Zone_C">Zone C (South)</option>
-                <option value="Zone_D">Zone D (West)</option>
-              </select>
+          {errorMsg && (
+            <div className="bg-rose-950/40 border border-rose-500/30 text-rose-400 p-3 rounded-lg text-xs flex items-center gap-2 mb-4">
+              <AlertCircle size={14} /> {errorMsg}
             </div>
+          )}
+
+          <form onSubmit={handleOnboardingSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Seat / Section</label>
+              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Fan Name</label>
               <input
                 type="text"
-                placeholder="Row 10, Seat 4"
-                value={seat}
-                onChange={(e) => setSeat(e.target.value)}
+                placeholder="e.g. John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full bg-navy-950/60 border border-navy-700/60 p-2.5 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-purple"
               />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Language</label>
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="w-full bg-navy-950/60 border border-navy-700/60 p-2.5 rounded-xl text-sm text-white focus:outline-none focus:border-accent-purple"
-            >
-              <option value="English">English</option>
-              <option value="Spanish">Spanish (Español)</option>
-              <option value="French">French (Français)</option>
-              <option value="Hindi">Hindi (हिन्दी)</option>
-              <option value="Marathi">Marathi (मराठी)</option>
-            </select>
-          </div>
-
-          {/* Accessibility Requirements */}
-          <div>
-            <label className="block text-xs font-semibold text-gray-400 mb-1.5 flex items-center gap-1">
-              <Accessibility size={14} className="text-accent-cyan" />
-              Accessibility Accommodations
-            </label>
-            <div className="grid grid-cols-2 gap-2 mt-1">
-              {[
-                { id: 'wheelchair', label: 'Wheelchair / Step-Free' },
-                { id: 'sensory', label: 'Sensory Friendly' },
-                { id: 'audio', label: 'Audio Descriptive' },
-                { id: 'simplified', label: 'Simplified Language' }
-              ].map(item => {
-                const isSelected = needs.includes(item.label);
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => toggleNeed(item.label)}
-                    className={`py-2 px-3 rounded-xl border text-xs font-semibold text-center transition-all ${
-                      isSelected
-                        ? 'border-accent-cyan bg-cyan-950/20 text-cyan-400 shadow-md'
-                        : 'border-navy-700/50 bg-navy-800/10 text-gray-400 hover:border-navy-600'
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                );
-              })}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-400 mb-1.5">Ticket Zone</label>
+                <input
+                  type="text"
+                  readOnly
+                  disabled
+                  value={ticketZone.replace('Zone_', 'Section ')}
+                  className="w-full bg-navy-950/40 border border-navy-800/80 p-2.5 rounded-xl text-sm text-gray-400 cursor-not-allowed font-semibold"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-400 mb-1.5">Selected Seat</label>
+                <input
+                  type="text"
+                  readOnly
+                  disabled
+                  placeholder="Select seat on right..."
+                  value={seat}
+                  className="w-full bg-navy-950/40 border border-navy-800/80 p-2.5 rounded-xl text-sm text-gray-400 cursor-not-allowed placeholder-gray-600 font-semibold"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={fillDemoProfile}
-              className="w-1/3 py-3 border border-purple-500/20 bg-purple-950/20 hover:bg-purple-950/40 text-accent-light rounded-xl text-xs font-semibold transition-all cursor-pointer text-center"
-            >
-              Fill Demo
-            </button>
-            <button
-              type="submit"
-              className="flex-1 py-3 bg-gradient-to-r from-accent-purple to-accent-pink hover:from-accent-violet hover:to-accent-pink text-white rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-purple-500/20 cursor-pointer"
-            >
-              Start Companion
-            </button>
-          </div>
-        </form>
+            <div>
+              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Language</label>
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="w-full bg-navy-950/60 border border-navy-700/60 p-2.5 rounded-xl text-sm text-white focus:outline-none focus:border-accent-purple"
+              >
+                <option value="English">English</option>
+                <option value="Spanish">Spanish (Español)</option>
+                <option value="French">French (Français)</option>
+                <option value="Hindi">Hindi (हिन्दी)</option>
+                <option value="Marathi">Marathi (मराठी)</option>
+              </select>
+            </div>
+
+            {/* Accessibility Requirements */}
+            <div>
+              <label className="block text-xs font-semibold text-gray-400 mb-1.5 flex items-center gap-1">
+                <Accessibility size={14} className="text-accent-cyan" />
+                Accessibility Accommodations
+              </label>
+              <div className="grid grid-cols-2 gap-2 mt-1">
+                {[
+                  { id: 'wheelchair', label: 'Wheelchair / Step-Free' },
+                  { id: 'sensory', label: 'Sensory Friendly' },
+                  { id: 'audio', label: 'Audio Descriptive' },
+                  { id: 'simplified', label: 'Simplified Language' }
+                ].map(item => {
+                  const isSelected = needs.includes(item.label);
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => toggleNeed(item.label)}
+                      className={`py-2 px-3 rounded-xl border text-xs font-semibold text-center transition-all ${
+                        isSelected
+                          ? 'border-accent-cyan bg-cyan-950/20 text-cyan-400 shadow-md'
+                          : 'border-navy-700/50 bg-navy-800/10 text-gray-400 hover:border-navy-600'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={fillDemoProfile}
+                className="w-1/3 py-3 border border-purple-500/20 bg-purple-950/20 hover:bg-purple-950/40 text-accent-light rounded-xl text-xs font-semibold transition-all cursor-pointer text-center font-display"
+              >
+                Fill Demo
+              </button>
+              <button
+                type="submit"
+                className="flex-1 py-3 bg-gradient-to-r from-accent-purple to-accent-pink hover:from-accent-violet hover:to-accent-pink text-white rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-purple-500/20 cursor-pointer font-display"
+              >
+                Start Companion
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Interactive Seating Grid Column (7 cols) */}
+        <div className="lg:col-span-7">
+          <SeatSelector 
+            selectedZone={ticketZone}
+            selectedSeat={seat}
+            onChangeSeat={(zone, seatStr, isAccessible) => {
+              setTicketZone(zone);
+              setSeat(seatStr);
+              if (isAccessible) {
+                if (!needs.includes('Wheelchair / Step-Free')) {
+                  setNeeds([...needs, 'Wheelchair / Step-Free']);
+                }
+              }
+            }}
+            isWheelchairUser={needs.includes('Wheelchair / Step-Free')}
+          />
+        </div>
+
       </div>
     );
   }
