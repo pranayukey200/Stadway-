@@ -76,7 +76,7 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className={`min-h-screen bg-navy-950 text-gray-200 flex flex-col font-sans transition-all duration-300 relative ${
+      className={`min-h-screen bg-transparent text-gray-200 flex flex-col font-sans transition-all duration-300 relative ${
         accessibilitySettings.highContrast ? 'high-contrast' : ''
       } ${
         accessibilitySettings.textScale === 'lg' ? 'text-scale-lg' : 

@@ -145,7 +145,7 @@ export const ThreeDBackground: React.FC = () => {
       }
 
       // Draw Lines
-      ctx.strokeStyle = 'rgba(100, 116, 139, 0.25)'; // Clean slate lines
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.45)'; // Bright indigo lines
       ctx.lineWidth = 1;
       for (let i = 0; i < lines.length; i++) {
         const [pA, pB] = lines[i];
@@ -164,15 +164,15 @@ export const ThreeDBackground: React.FC = () => {
       for (let i = 0; i < projected.length; i++) {
         const proj = projected[i];
         if (proj.visible) {
-          ctx.fillStyle = i >= pitchPointsOffset ? 'rgba(99, 102, 241, 0.35)' : 'rgba(74, 85, 104, 0.3)';
+          ctx.fillStyle = i >= pitchPointsOffset ? 'rgba(56, 189, 248, 0.7)' : 'rgba(99, 102, 241, 0.55)';
           ctx.beginPath();
-          ctx.arc(proj.x, proj.y, 2.5, 0, Math.PI * 2);
+          ctx.arc(proj.x, proj.y, 3, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
       // Update and Draw Floating Particles in 3D
-      ctx.fillStyle = 'rgba(148, 163, 184, 0.18)'; // Slate color particles
+      ctx.fillStyle = 'rgba(186, 230, 253, 0.35)'; // Bright sky blue particles
       for (let p = 0; p < particles.length; p++) {
         const particle = particles[p];
         particle.y += particle.speedY;

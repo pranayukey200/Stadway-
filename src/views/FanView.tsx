@@ -61,22 +61,20 @@ export const FanView: React.FC = () => {
       seat: finalSeat
     };
 
-    try {
-      // Save profile to firestore
-      await setDoc(doc(db, 'fanProfiles', profile.id), profile);
-      setFanProfile(profile);
-      setErrorMsg('');
+    // Save profile to firestore asynchronously in the background
+    setDoc(doc(db, 'fanProfiles', profile.id), profile).catch(err => {
+      console.error('Failed to write profile to Firestore:', err);
+    });
 
-      // Trigger automatic welcome question
-      addChatMessage({
-        sender: 'assistant',
-        text: `Welcome to the stadium, ${profile.name}! I am StadWay, your AI assistant. How can I help you navigate today?`
-      });
-    } catch (err) {
-      console.error(err);
-      // fallback local state
-      setFanProfile(profile);
-    }
+    // Transition UI immediately (0ms delay)
+    setFanProfile(profile);
+    setErrorMsg('');
+
+    // Trigger automatic welcome question
+    addChatMessage({
+      sender: 'assistant',
+      text: `Welcome to the stadium, ${profile.name}! I am StadWay, your AI assistant. How can I help you navigate today?`
+    });
   };
 
   const toggleNeed = (need: string) => {
