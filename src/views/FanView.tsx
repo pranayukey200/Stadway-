@@ -418,7 +418,12 @@ export const FanView: React.FC = () => {
           <div className="bg-stadium-950 px-4 py-2 border-b border-stadium-800 flex flex-wrap items-center justify-between text-[11px] gap-2">
             <div className="flex items-center gap-1.5 text-silver-400">
               <Sparkles className="text-gold-300 stroke-[2.5]" size={12} />
-              <span>Model: <strong className="text-white font-mono">llama-3.3-70b-versatile (Groq)</strong></span>
+              <span>
+                Model: <strong className="text-white font-mono">llama-3.3-70b-versatile (Groq)</strong>
+                {!localStorage.getItem('stadway_groq_key') && (
+                  <span className="text-status-warning ml-2 font-bold animate-pulse">(Key Required - Click Settings Gear)</span>
+                )}
+              </span>
             </div>
             <span className="text-[9px] text-gold-300 bg-stadium-850 px-2 py-0.5 border border-stadium-700/60 uppercase font-bold tracking-wider">
               6 Specialized Agents Connected
@@ -427,28 +432,45 @@ export const FanView: React.FC = () => {
 
           {/* Settings Sub-Panel */}
           {showSettings && (
-            <div className="bg-stadium-900 border-b border-stadium-700/60 p-4 grid grid-cols-2 gap-3 text-left">
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Contrast Mode</label>
-                <button
-                  onClick={() => setAccessibilitySettings({ highContrast: !accessibilitySettings.highContrast })}
-                  className={`w-full py-1.5 px-3 rounded-lg border text-xs font-semibold ${
-                    accessibilitySettings.highContrast ? 'border-pitch-400 bg-stadium-850/20 text-pitch-400' : 'border-stadium-700 text-silver-400'
-                  }`}
-                >
-                  High Contrast
-                </button>
+            <div className="bg-stadium-900 border-b border-stadium-700/60 p-4 space-y-3 text-left">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Contrast Mode</label>
+                  <button
+                    onClick={() => setAccessibilitySettings({ highContrast: !accessibilitySettings.highContrast })}
+                    className={`w-full py-1.5 px-3 rounded-lg border text-xs font-semibold ${
+                      accessibilitySettings.highContrast ? 'border-pitch-400 bg-stadium-850/20 text-pitch-400' : 'border-stadium-700 text-silver-400'
+                    }`}
+                  >
+                    High Contrast
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Response Detail</label>
+                  <button
+                    onClick={() => setAccessibilitySettings({ simplifiedLanguage: !accessibilitySettings.simplifiedLanguage })}
+                    className={`w-full py-1.5 px-3 rounded-lg border text-xs font-semibold ${
+                      accessibilitySettings.simplifiedLanguage ? 'border-pitch-400 bg-stadium-850/20 text-pitch-400' : 'border-stadium-700 text-silver-400'
+                    }`}
+                  >
+                    Simplified Mode
+                  </button>
+                </div>
               </div>
-              <div>
-                <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Response Detail</label>
-                <button
-                  onClick={() => setAccessibilitySettings({ simplifiedLanguage: !accessibilitySettings.simplifiedLanguage })}
-                  className={`w-full py-1.5 px-3 rounded-lg border text-xs font-semibold ${
-                    accessibilitySettings.simplifiedLanguage ? 'border-pitch-400 bg-stadium-850/20 text-pitch-400' : 'border-stadium-700 text-silver-400'
-                  }`}
-                >
-                  Simplified Mode
-                </button>
+              <div className="border-t border-stadium-800 pt-2.5">
+                <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Groq API Key (Stored Locally)</label>
+                <input
+                  type="password"
+                  placeholder="Paste gsk_... key here"
+                  value={localStorage.getItem('stadway_groq_key') || ''}
+                  onChange={(e) => {
+                    localStorage.setItem('stadway_groq_key', e.target.value.trim());
+                    // Force state update to re-render component
+                    setErrorMsg(''); 
+                  }}
+                  className="w-full bg-stadium-950 border border-stadium-700/60 px-3 py-1.5 rounded-lg text-xs text-white placeholder-silver-500 focus:outline-none focus:border-gold-500"
+                />
+                <span className="block text-[9px] text-silver-400 mt-1">Allows direct browser calls to llama-3.3-70b-versatile. Kept secure in your browser.</span>
               </div>
             </div>
           )}

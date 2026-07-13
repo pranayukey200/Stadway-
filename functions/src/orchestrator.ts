@@ -45,12 +45,37 @@ export interface OrchestratorOutput {
   }>;
 }
 
+const getViteEnv = (): any => {
+  try {
+    const fn = new Function('return import.meta.env');
+    return fn();
+  } catch (e) {
+    return null;
+  }
+};
+
 // Initialize OpenAI client pointing to Groq's API
 const getGroqClient = () => {
-  const apiKey = process.env.GROQ_API_KEY || "";
+  let apiKey = "";
+  if (typeof process !== 'undefined' && process.env && process.env.GROQ_API_KEY) {
+    apiKey = process.env.GROQ_API_KEY;
+  }
+  
+  // Client-side Vite environment variable support
+  const viteEnv = getViteEnv();
+  if (!apiKey && viteEnv && viteEnv.VITE_GROQ_API_KEY) {
+    apiKey = viteEnv.VITE_GROQ_API_KEY;
+  }
+  
+  // Client-side LocalStorage key support for sandbox security
+  if (!apiKey && typeof window !== 'undefined' && window.localStorage) {
+    apiKey = window.localStorage.getItem('stadway_groq_key') || "";
+  }
+  
   return new OpenAI({
     apiKey: apiKey,
-    baseURL: "https://api.groq.com/openapi/v1"
+    baseURL: "https://api.groq.com/openapi/v1",
+    dangerouslyAllowBrowser: true // Enable direct client-side execution in browser
   });
 };
 
@@ -124,7 +149,11 @@ export async function runOrchestration(input: OrchestratorInput): Promise<Orches
     output: { language: languageResult.language, isTranslated: languageResult.isTranslated }
   });
 
-  const groqKey = process.env.GROQ_API_KEY;
+  const viteEnv = getViteEnv();
+  const groqKey = (typeof process !== 'undefined' && process.env && process.env.GROQ_API_KEY) || 
+                  (viteEnv && viteEnv.VITE_GROQ_API_KEY) || 
+                  (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('stadway_groq_key')) ||
+                  "";
   
   // If no Groq API Key, fallback to high-quality local generation
   if (!groqKey || groqKey.trim() === '' || groqKey.includes('PLACEHOLDER')) {
