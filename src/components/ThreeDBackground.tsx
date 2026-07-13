@@ -140,15 +140,22 @@ export const ThreeDBackground: React.FC = () => {
     }
 
     let angleY = 0;
-    const angleX = 0.32;
-    const d = 550;
+    let scrollPct = 0;
 
-    const project = (pt: Point3D, cosY: number, sinY: number, cosX: number, sinX: number) => {
+    const handleScroll = () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        scrollPct = window.scrollY / docHeight;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    const project = (pt: Point3D, cosY: number, sinY: number, cosX: number, sinX: number, currentD: number) => {
       const x1 = pt.x * cosY - pt.z * sinY;
       const z1 = pt.x * sinY + pt.z * cosY;
       const y2 = pt.y * cosX - z1 * sinX;
       const z2 = pt.y * sinX + z1 * cosX;
-      const scale = d / (d + z2 + 350);
+      const scale = currentD / (currentD + z2 + 350);
       return {
         x: width / 2 + x1 * scale,
         y: height / 2 + y2 * scale,
@@ -167,17 +174,23 @@ export const ThreeDBackground: React.FC = () => {
       ctx.fillRect(0, 0, width, height);
 
       angleY += 0.0008;
-      const cosY = Math.cos(angleY);
-      const sinY = Math.sin(angleY);
-      const cosX = Math.cos(angleX);
-      const sinX = Math.sin(angleX);
+
+      // Interpolate camera angle and dolly distance based on scroll position
+      const currentAngleY = angleY + scrollPct * Math.PI * 0.5;
+      const currentAngleX = 0.32 - scrollPct * 0.15; // tilt down slightly as we scroll
+      const currentD = 550 - scrollPct * 120; // dolly zoom close-up
+
+      const cosY = Math.cos(currentAngleY);
+      const sinY = Math.sin(currentAngleY);
+      const cosX = Math.cos(currentAngleX);
+      const sinX = Math.sin(currentAngleX);
 
       // Draw background grid
       ctx.strokeStyle = 'rgba(36, 59, 106, 0.12)';
       ctx.lineWidth = 0.5;
       for (const gl of gridLines) {
-        const p1 = project({ x: gl.x1, y: gl.y, z: gl.z1 }, cosY, sinY, cosX, sinX);
-        const p2 = project({ x: gl.x2, y: gl.y, z: gl.z2 }, cosY, sinY, cosX, sinX);
+        const p1 = project({ x: gl.x1, y: gl.y, z: gl.z1 }, cosY, sinY, cosX, sinX, currentD);
+        const p2 = project({ x: gl.x2, y: gl.y, z: gl.z2 }, cosY, sinY, cosX, sinX, currentD);
         if (p1.visible && p2.visible) {
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
@@ -187,7 +200,7 @@ export const ThreeDBackground: React.FC = () => {
       }
 
       // Project all stadium points
-      const projected = points.map(pt => project(pt, cosY, sinY, cosX, sinX));
+      const projected = points.map(pt => project(pt, cosY, sinY, cosX, sinX, currentD));
 
       // Draw stadium wireframe lines with gold gradient
       ctx.lineWidth = 0.8;
@@ -239,7 +252,7 @@ export const ThreeDBackground: React.FC = () => {
         if (particle.x > 500) particle.x = -500;
         if (particle.x < -500) particle.x = 500;
 
-        const proj = project(particle, cosY, sinY, cosX, sinX);
+        const proj = project(particle, cosY, sinY, cosX, sinX, currentD);
         if (proj.visible) {
           const size = particle.size * proj.scale;
           const alpha = particle.brightness * proj.scale;
@@ -265,6 +278,7 @@ export const ThreeDBackground: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
