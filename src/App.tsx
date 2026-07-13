@@ -6,14 +6,14 @@ import { FanView } from './views/FanView';
 import { VolunteerView } from './views/VolunteerView';
 import { OrganizerConsole } from './views/OrganizerConsole';
 import { DemoPanel } from './views/DemoPanel';
-import { Compass, HelpCircle, User, Users, ShieldAlert, Sliders, Menu, X, Sparkles } from 'lucide-react';
+import { Compass, User, Users, ShieldAlert, Sliders, X, Sparkles } from 'lucide-react';
 
 const App: React.FC = () => {
   const { 
     persona, setPersona, 
     venueState, setVenueState,
     accessibilitySettings,
-    isDemoMode, setDemoMode
+    setDemoMode
   } = useStore();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);

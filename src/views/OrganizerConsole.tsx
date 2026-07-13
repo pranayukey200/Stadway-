@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../utils/firebase';
 import { collection, onSnapshot, query, limit } from 'firebase/firestore';
-import { useStore, DecisionResult, VolunteerTask } from '../context/useStore';
-import { BarChart3, Users, Leaf, ShieldAlert, Cpu, Heart, Check, RefreshCw, MessageSquare } from 'lucide-react';
+import { useStore, type DecisionResult } from '../context/useStore';
+import { BarChart3, Users, Leaf, ShieldAlert, Cpu, RefreshCw } from 'lucide-react';
 
 export const OrganizerConsole: React.FC = () => {
   const { venueState } = useStore();
   const [decisions, setDecisions] = useState<DecisionResult[]>([]);
-  const [tasks, setTasks] = useState<VolunteerTask[]>([]);
   const [stats, setStats] = useState({
     totalDecisions: 1840, // Mock baseline
     totalCo2Kg: 2420.5,
@@ -38,16 +37,13 @@ export const OrganizerConsole: React.FC = () => {
   // Listen to tasks for stats
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'volunteerTasks'), (snapshot) => {
-      const list: VolunteerTask[] = [];
       let pendingCount = 0;
       snapshot.forEach(doc => {
         const data = doc.data();
-        list.push({ id: doc.id, ...data } as VolunteerTask);
         if (data.status === 'pending' || data.status === 'accepted') {
           pendingCount++;
         }
       });
-      setTasks(list);
       setStats(prev => ({
         ...prev,
         activeTasksCount: pendingCount

@@ -1,6 +1,7 @@
+declare const process: any;
 import OpenAI from 'openai';
-import { runCrowdAgent, GateState } from './agents/crowd';
-import { runTransitAgent, TransitLineState } from './agents/transit';
+import { runCrowdAgent, type GateState } from './agents/crowd';
+import { runTransitAgent, type TransitLineState } from './agents/transit';
 import { runAccessibilityAgent } from './agents/accessibility';
 import { runSustainabilityAgent } from './agents/sustainability';
 import { runLanguageAgent } from './agents/language';
@@ -81,7 +82,7 @@ export async function runOrchestration(input: OrchestratorInput): Promise<Orches
   );
 
   // 2. Prepare the Agent Reasoning Trail
-  const agentTrail = [
+  const agentTrail: Array<{ agent: string; input: any; reasoning: string; output: any }> = [
     {
       agent: 'Crowd Agent',
       input: { gates: venueState.gates },
@@ -124,7 +125,6 @@ export async function runOrchestration(input: OrchestratorInput): Promise<Orches
   });
 
   const groqKey = process.env.GROQ_API_KEY;
-  const isMock = !groqKey || groqKey === 'mock-key' || !groqKey.startsWith('gsk_');
   
   // If no Groq API Key, fallback to high-quality local generation
   if (!groqKey || groqKey.trim() === '' || groqKey.includes('PLACEHOLDER')) {

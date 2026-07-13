@@ -35,8 +35,6 @@ export function runWayfindingAgent(
   if (gateState && (gateState.occupancyPct >= 80 || gateState.status === 'congested')) {
     // Reroute to a neighboring gate with lower occupancy
     const gateOrder = ['Gate_A', 'Gate_B', 'Gate_C', 'Gate_D'];
-    const prefIndex = gateOrder.indexOf(preferredGate);
-    
     // Find gate with lowest occupancy
     let minOcc = 999;
     let bestAltGate = preferredGate;

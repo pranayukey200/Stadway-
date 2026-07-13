@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapPin, Navigation, Info, Eye, Shield } from 'lucide-react';
+import { Navigation, Shield } from 'lucide-react';
 
 interface StadiumMapProps {
   gateEntry?: string;

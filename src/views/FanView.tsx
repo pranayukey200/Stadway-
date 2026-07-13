@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useStore, FanProfile, DecisionResult } from '../context/useStore';
+import React, { useState } from 'react';
+import { useStore, type FanProfile, type DecisionResult } from '../context/useStore';
 import { StadiumMap } from '../components/StadiumMap';
 import { db, functions } from '../utils/firebase';
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { runOrchestration } from '../../functions/src/orchestrator'; // Import local fallback
 import { 
-  Send, Accessibility, Leaf, MessageSquare, Compass, HelpCircle, 
-  MapPin, Clock, Cloud, Settings, Heart, AlertCircle, RefreshCw, Languages 
+  Send, Accessibility, Leaf, MapPin, Clock, Cloud, Settings, AlertCircle, RefreshCw, Languages 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -15,11 +14,11 @@ export const FanView: React.FC = () => {
   const { 
     fanProfile, setFanProfile, 
     venueState, 
-    chatHistory, addChatMessage, updateChatMessage, isChatLoading, 
+    chatHistory, addChatMessage, updateChatMessage, 
     accessibilitySettings, setAccessibilitySettings,
     activeRecommendation, setActiveRecommendation,
     co2SavedKg, addCo2Savings, sustainabilityPoints,
-    activeNavigationTarget, setActiveNavigationTarget
+    setActiveNavigationTarget
   } = useStore();
 
   // Onboarding Form State
@@ -32,7 +31,6 @@ export const FanView: React.FC = () => {
   // Chat Query state
   const [query, setQuery] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [expandedTrail, setExpandedTrail] = useState(false);
 

@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 
 describe('StadWay Accessibility & Semantic HTML Audits', () => {
   it('should verify components use semantic HTML5 elements', () => {

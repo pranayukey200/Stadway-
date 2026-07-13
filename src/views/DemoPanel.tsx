@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../utils/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { useStore, VenueState } from '../context/useStore';
+import { doc, setDoc } from 'firebase/firestore';
+import { useStore, type VenueState } from '../context/useStore';
 import { Sliders, Check, RefreshCw, AlertTriangle, CloudSun, MapPin, Bus } from 'lucide-react';
 
 export const DemoPanel: React.FC = () => {

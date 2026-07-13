@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../utils/firebase';
-import { collection, onSnapshot, query, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { useStore, VolunteerTask } from '../context/useStore';
-import { AlertCircle, CheckCircle, ShieldAlert, Sparkles, User, RefreshCw, Languages, Navigation } from 'lucide-react';
+import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import { type VolunteerTask } from '../context/useStore';
+import { CheckCircle, ShieldAlert, User, RefreshCw, Languages, Navigation } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface Volunteer {
