@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // venueState rules: Anyone can read/write (simulator writes, fans read)
+    match /venueState/{stadiumId} {
+      allow read, write: if true;
+    }
+    // decisions rules: Anyone can read/write
+    match /decisions/{decisionId} {
+      allow read, write: if true;
+    }
+    // volunteerTasks rules: Anyone can read/write
+    match /volunteerTasks/{taskId} {
+      allow read, write: if true;
+    }
+    // volunteers rules: Anyone can read/write
+    match /volunteers/{volunteerId} {
+      allow read, write: if true;
+    }
+    // fanProfiles rules: Anyone can read/write
+    match /fanProfiles/{fanId} {
+      allow read, write: if true;
+    }
+  }
+}
