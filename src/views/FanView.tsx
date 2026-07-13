@@ -7,7 +7,7 @@ import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { runOrchestration } from '../../functions/src/orchestrator'; // Import local fallback
 import { 
-  Send, Accessibility, Leaf, MapPin, Clock, Cloud, Settings, AlertCircle, RefreshCw, Languages 
+  Send, Accessibility, Leaf, MapPin, Clock, Cloud, Settings, AlertCircle, RefreshCw, Languages, Sparkles 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -46,18 +46,19 @@ export const FanView: React.FC = () => {
 
   const handleOnboardingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !seat) {
-      setErrorMsg('Please enter your name and seat number.');
-      return;
-    }
+    
+    // Seed default guest details if empty to prevent submit blocks
+    const finalName = name.trim() || 'Guest Fan';
+    const finalSeat = seat && seat !== 'Select seat on right...' ? seat : 'Row A, Seat 1';
+    const finalZone = ticketZone || 'Zone_A';
 
     const profile: FanProfile = {
       id: 'fan_' + Math.random().toString(36).substring(5),
-      name,
+      name: finalName,
       language,
       accessibilityNeeds: needs,
-      ticketZone,
-      seat
+      ticketZone: finalZone,
+      seat: finalSeat
     };
 
     try {
@@ -402,7 +403,7 @@ export const FanView: React.FC = () => {
           {/* Chat Header */}
           <div className="px-4 py-3 border-b border-navy-700/60 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 bg-accent-cyan rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-accent-cyan rounded-full animate-pulse"></div>
               <span className="text-sm font-semibold text-white font-display">StadWay AI Agent Companion</span>
             </div>
             <div className="flex items-center gap-3">
@@ -413,6 +414,17 @@ export const FanView: React.FC = () => {
                 <Settings size={16} />
               </button>
             </div>
+          </div>
+
+          {/* Gen AI Active Status Banner */}
+          <div className="bg-navy-950 px-4 py-2 border-b border-navy-800 flex flex-wrap items-center justify-between text-[11px] gap-2">
+            <div className="flex items-center gap-1.5 text-gray-400">
+              <Sparkles className="text-accent-light stroke-[2.5]" size={12} />
+              <span>Model: <strong className="text-white font-mono">llama-3.3-70b-versatile (Groq)</strong></span>
+            </div>
+            <span className="text-[9px] text-accent-light bg-navy-850 px-2 py-0.5 border border-navy-700/60 uppercase font-bold tracking-wider">
+              6 Specialized Agents Connected
+            </span>
           </div>
 
           {/* Settings Sub-Panel */}

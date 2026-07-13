@@ -6,7 +6,8 @@ import { FanView } from './views/FanView';
 import { VolunteerView } from './views/VolunteerView';
 import { OrganizerConsole } from './views/OrganizerConsole';
 import { DemoPanel } from './views/DemoPanel';
-import { Compass, User, Users, ShieldAlert, Sliders, X, Sparkles } from 'lucide-react';
+import { ThreeDBackground } from './components/ThreeDBackground';
+import { User, Users, ShieldAlert, Sliders, X, Sparkles } from 'lucide-react';
 
 const App: React.FC = () => {
   const { 
@@ -82,8 +83,9 @@ const App: React.FC = () => {
         accessibilitySettings.textScale === 'xl' ? 'text-scale-xl' : ''
       }`}
     >
-      {/* 3D Parallax Stadium Blueprint Background */}
+      {/* 3D Parallax Stadium Blueprint Background & Live 3D Wireframe Canvas */}
       <div className="hud-bg-container"></div>
+      <ThreeDBackground />
       {/* Offline Alert Banner */}
       {!isOnline && (
         <div className="bg-gradient-to-r from-gray-900 to-navy-900 text-cyan-400 text-xs font-semibold text-center py-2.5 px-4 flex items-center justify-center gap-2 border-b border-cyan-500/25 shadow-md z-50">
@@ -102,13 +104,19 @@ const App: React.FC = () => {
 
       {/* Main Navigation Header */}
       <header className="bg-navy-900/80 backdrop-blur-md border-b border-navy-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between shadow-lg">
-        <div className="flex items-center gap-2.5">
-          <div className="bg-gradient-to-tr from-accent-purple to-accent-pink p-2 rounded-xl shadow-md shadow-purple-500/20">
-            <Compass className="text-white animate-spin-slow" size={20} />
+        <div className="flex items-center gap-3">
+          <div className="border border-navy-700 bg-navy-950 p-2 text-accent-light flex items-center justify-center">
+            <svg className="w-5 h-5 text-accent-light animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <ellipse cx="12" cy="12" rx="10" ry="5" />
+              <ellipse cx="12" cy="12" rx="6" ry="3" />
+              <line x1="12" y1="2" x2="12" y2="22" strokeDasharray="1.5 1.5" />
+              <line x1="2" y1="12" x2="22" y2="12" strokeDasharray="1.5 1.5" />
+              <polygon points="12,8 14,12 12,16 10,12" fill="currentColor" fillOpacity="0.4" />
+            </svg>
           </div>
           <div className="text-left">
-            <h1 className="text-lg font-display font-bold text-white leading-none tracking-wide m-0">StadWay</h1>
-            <span className="text-[10px] text-accent-light font-semibold uppercase tracking-wider">World Cup Companion</span>
+            <h1 className="text-lg font-display font-bold text-white leading-none tracking-wider m-0">STADWAY</h1>
+            <span className="text-[9px] text-gray-400 font-semibold uppercase tracking-widest">AI Stadium Operations</span>
           </div>
         </div>
 
