@@ -77,7 +77,7 @@ interface ChatMessage {
 
 interface StadWayStore {
   // App state
-  persona: 'fan' | 'volunteer' | 'organizer';
+  persona: 'landing' | 'fan' | 'volunteer' | 'organizer';
   isDemoMode: boolean;
   fanProfile: FanProfile | null;
   venueState: VenueState | null;
@@ -95,7 +95,7 @@ interface StadWayStore {
   activeNavigationTarget: string | null;
 
   // Actions
-  setPersona: (persona: 'fan' | 'volunteer' | 'organizer') => void;
+  setPersona: (persona: 'landing' | 'fan' | 'volunteer' | 'organizer') => void;
   setDemoMode: (isDemoMode: boolean) => void;
   setFanProfile: (profile: FanProfile | null) => void;
   setVenueState: (state: VenueState | null) => void;
@@ -110,7 +110,7 @@ interface StadWayStore {
 }
 
 export const useStore = create<StadWayStore>((set) => ({
-  persona: 'fan',
+  persona: 'landing',
   isDemoMode: false,
   fanProfile: null,
   venueState: null,

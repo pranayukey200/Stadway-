@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useStore } from './context/useStore';
 import { db } from './utils/firebase';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { LandingPage } from './views/LandingPage';
 import { FanView } from './views/FanView';
 import { VolunteerView } from './views/VolunteerView';
 import { OrganizerConsole } from './views/OrganizerConsole';
@@ -120,6 +121,16 @@ const App: React.FC = () => {
         {/* Persona Controller Toggles */}
         <nav className="flex bg-stadium-950/80 p-1 gap-0.5 text-xs border border-stadium-750/40">
           <button
+            onClick={() => setPersona('landing')}
+            className={`px-4 py-2 font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              persona === 'landing'
+                ? 'bg-gradient-to-r from-gold-500 to-gold-400 text-stadium-950'
+                : 'text-silver-400 hover:text-gold-300 hover:bg-stadium-850/50'
+            }`}
+          >
+            <Trophy size={13} /> Overview
+          </button>
+          <button
             onClick={() => setPersona('fan')}
             className={`px-4 py-2 font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
               persona === 'fan'
@@ -167,6 +178,7 @@ const App: React.FC = () => {
       <div className="flex-1 flex overflow-hidden">
         {/* Main Dashboard Workspace */}
         <main className="flex-1 overflow-y-auto px-6 py-6 text-center">
+          {persona === 'landing' && <LandingPage />}
           {persona === 'fan' && <FanView />}
           {persona === 'volunteer' && <VolunteerView />}
           {persona === 'organizer' && <OrganizerConsole />}
