@@ -77,7 +77,7 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className={`min-h-screen bg-transparent text-silver-100 flex flex-col font-sans transition-all duration-300 relative ${
+      className={`min-h-screen bg-transparent text-[#0B1120] flex flex-col font-sans transition-all duration-300 relative ${
         accessibilitySettings.highContrast ? 'high-contrast' : ''
       } ${
         accessibilitySettings.textScale === 'lg' ? 'text-scale-lg' : 
@@ -85,12 +85,11 @@ const App: React.FC = () => {
       }`}
     >
       {/* 3D Stadium Background Canvas */}
-      <div className="hud-bg-container"></div>
       <ThreeDBackground />
 
       {/* Offline Alert Banner */}
       {!isOnline && (
-        <div className="bg-stadium-900 text-gold-400 text-xs font-semibold text-center py-2.5 px-4 flex items-center justify-center gap-2 border-b border-gold-500/15 z-50">
+        <div className="bg-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 border-b-4 border-[#0B1120] z-50">
           <ShieldAlert size={14} className="animate-pulse" />
           <span>Offline Mode Active. Displaying cached maps and last synced wayfinding route instructions.</span>
         </div>
@@ -98,64 +97,63 @@ const App: React.FC = () => {
 
       {/* Top Banner Alert for Global Broadcast Announcement */}
       {venueState?.overrideAnnouncement && (
-        <div className="bg-gradient-to-r from-status-danger to-status-warning text-white text-xs font-bold text-center py-2 px-4 flex items-center justify-center gap-2 animate-pulse shadow-md z-50">
+        <div className="bg-gradient-to-r from-[#E5399A] to-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 animate-pulse border-b-4 border-[#0B1120] shadow-md z-50">
           <ShieldAlert size={14} />
           <span>OFFICIAL ANNOUNCEMENT: {venueState.overrideAnnouncement}</span>
         </div>
       )}
 
       {/* Main Navigation Header */}
-      <header className="bg-stadium-900/90 backdrop-blur-xl border-b border-stadium-750/50 sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
+      <header className="bg-[#FAF7F0]/90 backdrop-blur-md border-b-4 border-[#16A34A] sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* Logo Mark */}
-          <div className="relative w-10 h-10 flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-gold-500 to-gold-400 opacity-10 rounded-lg"></div>
-            <Trophy className="w-5 h-5 text-gold-400" />
+          <div className="relative w-10 h-10 flex items-center justify-center border-2 border-[#0B1120] rounded-xl bg-[#FAF7F0] shadow-[2px_2px_0px_0px_rgba(11,17,32,1)]">
+            <Trophy className="w-5 h-5 text-[#D4A017]" />
           </div>
           <div className="text-left">
-            <h1 className="text-lg font-display font-bold text-gold-400 leading-none tracking-widest m-0">STADWAY</h1>
-            <span className="text-[9px] text-silver-400 font-medium uppercase tracking-[0.2em]">FIFA 2026 • AI Operations</span>
+            <h1 className="text-xl font-display font-black text-[#0B1120] leading-none tracking-tight m-0">STADIA.AI</h1>
+            <span className="text-[9px] text-[#0B1120]/60 font-black uppercase tracking-wider">Live GenAI Operations — World Cup 2026</span>
           </div>
         </div>
 
         {/* Persona Controller Toggles */}
-        <nav className="flex bg-stadium-950/80 p-1 gap-0.5 text-xs border border-stadium-750/40">
+        <nav className="flex bg-[#EAF3EC] p-1 gap-1 border-4 border-[#0E7C3A] rounded-full text-xs">
           <button
             onClick={() => setPersona('landing')}
-            className={`px-4 py-2 font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'landing'
-                ? 'bg-gradient-to-r from-gold-500 to-gold-400 text-stadium-950'
-                : 'text-silver-400 hover:text-gold-300 hover:bg-stadium-850/50'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
+                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
             }`}
           >
             <Trophy size={13} /> Overview
           </button>
           <button
             onClick={() => setPersona('fan')}
-            className={`px-4 py-2 font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'fan'
-                ? 'bg-gradient-to-r from-gold-500 to-gold-400 text-stadium-950'
-                : 'text-silver-400 hover:text-gold-300 hover:bg-stadium-850/50'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
+                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
             }`}
           >
             <User size={13} /> Fan Hub
           </button>
           <button
             onClick={() => setPersona('volunteer')}
-            className={`px-4 py-2 font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'volunteer'
-                ? 'bg-gradient-to-r from-gold-500 to-gold-400 text-stadium-950'
-                : 'text-silver-400 hover:text-gold-300 hover:bg-stadium-850/50'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
+                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
             }`}
           >
             <Users size={13} /> Volunteer
           </button>
           <button
             onClick={() => setPersona('organizer')}
-            className={`px-4 py-2 font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'organizer'
-                ? 'bg-gradient-to-r from-gold-500 to-gold-400 text-stadium-950'
-                : 'text-silver-400 hover:text-gold-300 hover:bg-stadium-850/50'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
+                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
             }`}
           >
             <Sliders size={13} /> Operations
@@ -166,9 +164,9 @@ const App: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="flex items-center gap-1.5 py-2 px-3.5 bg-stadium-850/60 hover:bg-stadium-800 border border-stadium-700/40 text-xs font-semibold text-gold-300 hover:text-gold-400 transition cursor-pointer"
+            className="flex items-center gap-1.5 py-2.5 px-4 bg-[#FAF7F0] border-4 border-[#0B1120] text-xs font-black text-[#0B1120] hover:translate-y-[-1px] shadow-[3px_3px_0px_0px_rgba(11,17,32,1)] hover:shadow-[5px_5px_0px_0px_rgba(11,17,32,1)] transition cursor-pointer rounded-full uppercase tracking-wider"
           >
-            <Sparkles size={13} className="text-pitch-400" />
+            <Sparkles size={13} className="text-[#16A34A]" />
             Simulator
           </button>
         </div>
@@ -186,12 +184,12 @@ const App: React.FC = () => {
 
         {/* Slide-out Sidebar Panel for Venue State Simulator */}
         {sidebarOpen && (
-          <aside className="w-80 md:w-96 border-l border-stadium-750/40 bg-stadium-900/95 backdrop-blur-md overflow-y-auto z-30 transition-transform duration-300 right-0 top-0">
-            <div className="sticky top-0 bg-stadium-900 py-4 px-6 border-b border-stadium-750/40 flex justify-between items-center z-10">
-              <span className="text-xs uppercase font-bold text-silver-400 tracking-wider">Sensor Simulator</span>
+          <aside className="w-80 md:w-96 border-l-4 border-[#0E7C3A] bg-[#FAF7F0]/95 backdrop-blur-md overflow-y-auto z-30 transition-transform duration-300 right-0 top-0">
+            <div className="sticky top-0 bg-[#FAF7F0] py-4 px-6 border-b-4 border-[#0E7C3A] flex justify-between items-center z-10">
+              <span className="text-xs uppercase font-black text-[#0B1120] tracking-wider">Sensor Simulator</span>
               <button 
                 onClick={() => setSidebarOpen(false)}
-                className="text-silver-400 hover:text-gold-400 transition"
+                className="text-[#0B1120] hover:text-[#16A34A] transition"
               >
                 <X size={16} />
               </button>
@@ -204,15 +202,15 @@ const App: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-stadium-800/60 py-3 px-6 text-center bg-stadium-950/90 text-[10px] text-silver-500 flex justify-between items-center">
-        <span>© 2026 FIFA World Cup™ Smart Operations — Powered by StadWay AI</span>
+      <footer className="border-t-4 border-[#0E7C3A] py-4 px-6 text-center bg-[#FAF7F0]/90 text-xs font-bold text-[#0B1120]/60 flex justify-between items-center">
+        <span>© 2026 Global Football Tournament Operations — Powered by STADIA.AI</span>
         <span className="flex items-center gap-2">
           <span className="status-dot live"></span>
           <span>Live</span>
           <span>•</span>
           <span>v1.0</span>
           <span>•</span>
-          <span className="text-pitch-400">Privacy-First: No Facial Recognition</span>
+          <span className="text-[#16A34A]">Privacy-First: No Facial Recognition</span>
         </span>
       </footer>
     </div>

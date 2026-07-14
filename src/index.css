@@ -1,51 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap');
 
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-display: 'Unbounded', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-scoreboard: 'Bebas Neue', sans-serif;
 
-  /* FIFA 2026 Deep Stadium Night Palette */
-  --color-stadium-950: #060b18;
-  --color-stadium-900: #0c1426;
-  --color-stadium-850: #111d35;
-  --color-stadium-800: #162544;
-  --color-stadium-750: #1c2f55;
-  --color-stadium-700: #243b6a;
-  --color-stadium-600: #2e4f8c;
+  /* Light Maximalist Base Colors */
+  --color-bg-base: #FAF7F0;
+  --color-fg-base: #0B1120;
+  --color-muted-base: #EAF3EC;
+  --color-border-base: #0E7C3A;
 
-  /* FIFA Gold - primary accent */
-  --color-gold-500: #c8a84e;
-  --color-gold-400: #dbbe5a;
-  --color-gold-300: #e8d280;
-  --color-gold-200: #f0e0a8;
+  /* 5 Accents */
+  --color-accent-green: #16A34A;
+  --color-accent-gold: #D4A017;
+  --color-accent-blue: #0EA5E9;
+  --color-accent-orange: #FB6B1E;
+  --color-accent-pink: #E5399A;
 
-  /* Pitch Green */
-  --color-pitch-600: #1a7a3d;
-  --color-pitch-500: #22a352;
-  --color-pitch-400: #34d06a;
-  --color-pitch-300: #6ee89b;
-
-  /* Clean White / Silver */
-  --color-silver-100: #f0f2f5;
-  --color-silver-200: #d8dce5;
-  --color-silver-300: #b0b8c8;
-  --color-silver-400: #8892a8;
-  --color-silver-500: #636e85;
-
-  /* Status colors */
-  --color-status-danger: #e04848;
-  --color-status-warning: #e0a030;
-  --color-status-success: #22a352;
-  --color-status-info: #3a8fd4;
+  /* Status Colors */
+  --color-status-danger: #E5399A;
+  --color-status-warning: #FB6B1E;
+  --color-status-success: #16A34A;
+  --color-status-info: #0EA5E9;
 }
 
 /* Custom Base Styles */
 html {
   font-family: var(--font-sans);
-  background-color: var(--color-stadium-950);
-  color: var(--color-silver-100);
+  background-color: var(--color-bg-base);
+  color: var(--color-fg-base);
   scroll-behavior: smooth;
 }
 
@@ -57,13 +43,13 @@ body {
 
 /* Accessibility custom helpers */
 .high-contrast {
-  --color-stadium-950: #000000;
-  --color-stadium-900: #0a0a14;
-  --color-stadium-800: #181828;
-  --color-gold-500: #ffcc00;
-  --color-gold-400: #ffe066;
-  --color-pitch-500: #00ff66;
-  color: #ffffff !important;
+  --color-bg-base: #FFFFFF;
+  --color-fg-base: #000000;
+  --color-accent-green: #008000;
+  --color-accent-gold: #8B8000;
+  --color-accent-blue: #00008B;
+  --color-accent-orange: #FF4500;
+  --color-accent-pink: #C71585;
 }
 
 .text-scale-lg {
@@ -73,39 +59,38 @@ body {
   font-size: 1.3rem;
 }
 
-/* Glassmorphism utility - deep blue tinted */
+/* Glassmorphism utility - Light mode with Maximalist thick border and hard shadow */
 .glass-panel {
-  background: rgba(12, 20, 38, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(200, 168, 78, 0.08);
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
+  background: rgba(250, 247, 240, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 4px solid var(--color-border-base);
+  box-shadow: 8px 8px 0px 0px var(--color-fg-base);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-panel-hover:hover {
-  border-color: rgba(200, 168, 78, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(200, 168, 78, 0.08);
-  transform: translateY(-1px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate(-3px, -3px);
+  box-shadow: 12px 12px 0px 0px var(--color-fg-base);
 }
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-stadium-950);
+  background: var(--color-bg-base);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-stadium-700);
-  border-radius: 3px;
+  background: var(--color-border-base);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gold-500);
+  background: var(--color-accent-gold);
 }
 
 /* Subtle float animation for cards */
@@ -114,7 +99,7 @@ body {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
   }
 }
 
@@ -124,7 +109,7 @@ body {
 
 /* Fade in animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -132,98 +117,58 @@ body {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
-/* Subtle shimmer for loading states */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.shimmer {
-  background: linear-gradient(90deg, transparent 25%, rgba(200, 168, 78, 0.06) 50%, transparent 75%);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Professional button base */
+/* Hard button styling */
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-gold-500), var(--color-gold-400));
-  color: var(--color-stadium-950);
-  font-weight: 600;
-  border: none;
+  background: var(--color-accent-green);
+  color: #FFFFFF;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: 4px solid var(--color-fg-base);
+  box-shadow: 4px 4px 0px 0px var(--color-fg-base);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-300));
-  box-shadow: 0 4px 16px rgba(200, 168, 78, 0.25);
-  transform: translateY(-1px);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px var(--color-fg-base);
+  background: var(--color-accent-green);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: var(--color-gold-400);
-  border: 1px solid rgba(200, 168, 78, 0.3);
-  font-weight: 600;
+  background: var(--color-bg-base);
+  color: var(--color-fg-base);
+  border: 4px solid var(--color-fg-base);
+  box-shadow: 4px 4px 0px 0px var(--color-fg-base);
+  font-weight: 800;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn-secondary:hover {
-  background: rgba(200, 168, 78, 0.08);
-  border-color: rgba(200, 168, 78, 0.5);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px var(--color-fg-base);
+  background: var(--color-muted-base);
 }
 
-/* Stadium field background overlay */
-.hud-bg-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(ellipse at 50% 30%, rgba(22, 37, 68, 0.6) 0%, rgba(6, 11, 24, 0.98) 70%);
-  z-index: -10;
-  pointer-events: none;
-}
-
-/* Sharp professional corners */
+/* Roundings */
 button, select, input, textarea, .glass-panel {
-  border-radius: 6px !important;
-}
-
-/* Clean shadow overrides */
-.shadow-2xl, .shadow-xl, .shadow-lg, .shadow-md, .shadow {
-  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.5) !important;
-}
-
-/* Gold accent underline for headers */
-.gold-underline {
-  position: relative;
-  display: inline-block;
-}
-
-.gold-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 40px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--color-gold-500), transparent);
+  border-radius: 16px !important;
 }
 
 /* Status indicator dots */
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   display: inline-block;
 }
 
 .status-dot.live {
-  background: var(--color-pitch-400);
-  box-shadow: 0 0 8px var(--color-pitch-400);
-  animation: pulse 2s infinite;
+  background: var(--color-accent-green);
+  box-shadow: 0 0 10px var(--color-accent-green);
+  animation: pulse 2.5s infinite;
 }
 
 @keyframes pulse {
@@ -233,6 +178,41 @@ button, select, input, textarea, .glass-panel {
 
 /* Select dropdown styling */
 select option {
-  background: var(--color-stadium-900);
-  color: var(--color-silver-100);
+  background: var(--color-bg-base);
+  color: var(--color-fg-base);
 }
+
+/* Gradient text utility */
+.gradient-text-pitch {
+  background: linear-gradient(to right, var(--color-accent-green), var(--color-accent-gold), var(--color-accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+/* Prefers Reduced Motion — disable all continuous animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-fade-in,
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .animate-ping {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .glass-panel,
+  .glass-panel-hover:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+

@@ -12,11 +12,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons.svg'],
       manifest: {
-        name: 'StadWay Stadium Companion',
-        short_name: 'StadWay',
-        description: 'Smart Stadium & Tournament Operations Companion for World Cup 2026',
-        theme_color: '#05070a',
-        background_color: '#05070a',
+        name: 'STADIA.AI — Smart Stadium Operations',
+        short_name: 'STADIA.AI',
+        description: 'GenAI-powered smart stadium operations platform for crowd management, wayfinding, accessibility, and sustainability at global football tournaments.',
+        theme_color: '#FAF7F0',
+        background_color: '#FAF7F0',
         display: 'standalone',
         icons: [
           {

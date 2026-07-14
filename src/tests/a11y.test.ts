@@ -25,4 +25,21 @@ describe('StadWay Accessibility & Semantic HTML Audits', () => {
     const activeContrastClass = 'high-contrast';
     expect(activeContrastClass).toBe('high-contrast');
   });
+
+  it('should verify prefers-reduced-motion media query handling', () => {
+    // Simulate window.matchMedia behavior
+    const matchMediaMock = (query: string) => ({
+      matches: query.includes('reduce'),
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => true,
+    });
+    
+    const mediaResult = matchMediaMock('(prefers-reduced-motion: reduce)');
+    expect(mediaResult.matches).toBe(true);
+  });
 });

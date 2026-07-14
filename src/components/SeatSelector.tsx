@@ -22,12 +22,15 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
     }
   }, [selectedZone]);
 
-  
   const parseCurrentSeat = () => {
     if (!selectedSeat) return { row: '', number: 0 };
-    const match = selectedSeat.match(/Row\s([A-E]),\sSeat\s(\d+)/i);
+    const match = selectedSeat.match(/Row\s([A-E]),\sSeat\s(\\d+)/i);
     if (match) {
       return { row: match[1], number: parseInt(match[2]) };
+    }
+    const fallbackMatch = selectedSeat.match(/Row\s([A-E]),\sSeat\s(\d+)/i);
+    if (fallbackMatch) {
+      return { row: fallbackMatch[1], number: parseInt(fallbackMatch[2]) };
     }
     return { row: '', number: 0 };
   };
@@ -52,21 +55,21 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
   };
 
   return (
-    <div className="glass-panel p-5 border border-gold-500/10 text-left space-y-5 shadow-2xl relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-pitch-400/5 rounded-full blur-2xl"></div>
+    <div className="glass-panel p-5 border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120] text-left space-y-5 relative overflow-hidden font-sans">
+      <div className="absolute top-0 right-0 w-24 h-24 bg-[#16A34A]/5 rounded-full blur-2xl"></div>
       
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Shield className="text-gold-400" size={20} />
-          <h3 className="font-display font-semibold text-white text-base">Select Stadium Seat</h3>
+          <Shield className="text-[#D4A017]" size={20} />
+          <h3 className="font-display font-black text-[#0B1120] uppercase text-base">Select Stadium Seat</h3>
         </div>
-        <span className="text-[10px] bg-stadium-900 text-gold-300 px-2.5 py-1 border border-gold-500/20 font-bold">
+        <span className="text-[10px] bg-[#EAF3EC] text-[#0B1120] px-2.5 py-1 border-2 border-[#0B1120] font-black uppercase rounded-full">
           Interactive Seating Map
         </span>
       </div>
 
       {/* Zone Switcher Tabs */}
-      <div className="grid grid-cols-4 gap-1.5 p-1 bg-stadium-950/65 border border-stadium-750/40 text-xs text-center font-semibold">
+      <div className="grid grid-cols-4 gap-1.5 p-1 bg-[#EAF3EC] border-4 border-[#0B1120] text-xs text-center font-black rounded-xl overflow-hidden">
         {['Zone_A', 'Zone_B', 'Zone_C', 'Zone_D'].map((zoneId) => {
           const isActive = activeZone === zoneId;
           const label = zoneId.replace('Zone_', 'Section ');
@@ -75,10 +78,10 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
               key={zoneId}
               type="button"
               onClick={() => setActiveZone(zoneId)}
-              className={`py-2 transition-all cursor-pointer ${
+              className={`py-2 transition-all cursor-pointer rounded-lg uppercase tracking-wider ${
                 isActive
-                  ? 'bg-gradient-to-r from-gold-500 to-gold-400 text-stadium-950 font-bold'
-                  : 'text-silver-400 hover:text-gold-300'
+                  ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_#0B1120] border-2 border-[#0B1120]'
+                  : 'text-[#0B1120]/75 hover:text-[#16A34A]'
               }`}
             >
               {label}
@@ -89,8 +92,8 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
 
       {/* Curved Pitch Indicator */}
       <div className="relative pt-6 pb-2 text-center">
-        <div className="w-11/12 h-6 border-t-2 border-dashed border-pitch-500/40 mx-auto rounded-[50%] flex items-center justify-center">
-          <span className="text-[9px] uppercase tracking-widest text-pitch-400 font-bold bg-stadium-950 px-4 py-0.5 border border-pitch-500/20">
+        <div className="w-11/12 h-6 border-t-2 border-dashed border-[#16A34A]/50 mx-auto rounded-[50%] flex items-center justify-center">
+          <span className="text-[9px] uppercase tracking-widest text-[#16A34A] font-black bg-[#FAF7F0] px-4 py-0.5 border-2 border-[#0B1120] rounded-full">
             ⚽ PITCH / FIELD DIRECTION ⚽
           </span>
         </div>
@@ -103,7 +106,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
             const isAccessibleRow = row === 'E';
             return (
               <div key={row} className="flex gap-1.5 items-center">
-                <span className="w-4 text-xs font-mono font-bold text-silver-500 text-center mr-1">
+                <span className="w-4 text-xs font-mono font-bold text-[#0B1120]/60 text-center mr-1">
                   {row}
                 </span>
 
@@ -119,16 +122,16 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
                         type="button"
                         disabled={isSold}
                         onClick={() => handleSeatClick(row, num)}
-                        className={`w-6 h-6 flex items-center justify-center transition-all cursor-pointer text-[9px] font-mono font-bold ${
+                        className={`w-6 h-6 flex items-center justify-center transition-all cursor-pointer text-[9px] font-mono font-bold rounded-md ${
                           isSold
-                            ? 'bg-stadium-900 text-silver-500 border border-stadium-800 opacity-40 cursor-not-allowed'
+                            ? 'bg-[#EAF3EC] text-[#0B1120]/30 border-2 border-[#0B1120]/20 opacity-45 cursor-not-allowed'
                             : isSelected
-                            ? 'bg-pitch-500 text-white border border-pitch-400 shadow-[0_0_12px_rgba(34,163,82,0.5)] scale-115'
+                            ? 'bg-[#16A34A] text-white border-2 border-[#0B1120] shadow-[2px_2px_0px_0px_#0B1120] scale-110'
                             : isAccessibleSeat
                             ? isWheelchairUser
-                              ? 'bg-stadium-850 text-status-info border border-status-info animate-pulse hover:bg-stadium-800'
-                              : 'bg-stadium-800 text-status-info border border-status-info/50 hover:bg-stadium-850'
-                            : 'bg-stadium-800 text-silver-400 border border-stadium-700/30 hover:border-gold-500/40 hover:bg-stadium-750'
+                              ? 'bg-[#0EA5E9] text-white border-2 border-[#0B1120] shadow-[2px_2px_0px_0px_#0B1120] animate-pulse'
+                              : 'bg-white text-[#0EA5E9] border-2 border-[#0EA5E9]'
+                            : 'bg-white text-[#0B1120] border-2 border-[#0B1120] hover:border-[#16A34A] hover:bg-[#EAF3EC]'
                         }`}
                         title={`${activeZone.replace('_', ' ')} Row ${row} Seat ${num} ${
                           isSold ? '(Sold)' : isAccessibleSeat ? '(Accessible Wheelchair Spot)' : '(Available)'
@@ -148,7 +151,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
                   );
                 })}
 
-                <span className="w-4 text-xs font-mono font-bold text-silver-500 text-center ml-1">
+                <span className="w-4 text-xs font-mono font-bold text-[#0B1120]/60 text-center ml-1">
                   {row}
                 </span>
               </div>
@@ -158,22 +161,22 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
       </div>
 
       {/* Legend & Summary */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-stadium-800/80 text-xs">
-        <div className="flex flex-wrap gap-4 text-silver-400">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t-2 border-[#0B1120] text-xs">
+        <div className="flex flex-wrap gap-4 text-[#0B1120]/75 font-semibold">
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-stadium-800 border border-stadium-700/30"></div>
+            <div className="w-3.5 h-3.5 bg-white border-2 border-[#0B1120] rounded-sm"></div>
             <span>Available</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-pitch-500 border border-pitch-400 shadow-[0_0_8px_rgba(34,163,82,0.3)]"></div>
+            <div className="w-3.5 h-3.5 bg-[#16A34A] border-2 border-[#0B1120] shadow-[1px_1px_0px_0px_#0B1120] rounded-sm"></div>
             <span>Selected</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-stadium-900 border border-stadium-800 opacity-40"></div>
+            <div className="w-3.5 h-3.5 bg-[#EAF3EC] border-2 border-[#0B1120]/25 opacity-45 rounded-sm"></div>
             <span>Sold</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-stadium-800 border border-status-info/50 flex items-center justify-center text-status-info">
+            <div className="w-3.5 h-3.5 bg-white border-2 border-[#0EA5E9] flex items-center justify-center text-[#0EA5E9] rounded-sm">
               <Accessibility size={9} />
             </div>
             <span>Wheelchair Area</span>
@@ -181,8 +184,8 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
         </div>
 
         {selectedSeat && selectedZone === activeZone && (
-          <div className="bg-pitch-500/10 border border-pitch-500/25 px-3 py-1.5 text-pitch-400 font-semibold text-center flex items-center gap-1.5 shadow-sm">
-            <div className="w-1.5 h-1.5 bg-pitch-400 rounded-full animate-ping"></div>
+          <div className="bg-[#EAF3EC] border-4 border-[#0B1120] px-3 py-1.5 text-[#16A34A] font-black text-center flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#0B1120] rounded-full uppercase text-[10px]">
+            <div className="w-1.5 h-1.5 bg-[#16A34A] rounded-full animate-ping"></div>
             Selected: {activeZone.replace('Zone_', 'Sec ')}, {selectedSeat}
           </div>
         )}

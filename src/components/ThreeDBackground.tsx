@@ -165,28 +165,32 @@ export const ThreeDBackground: React.FC = () => {
     };
 
     const render = () => {
-      // Gradient background
+      // Gradient background - Warm stadium-floodlight white (#FAF7F0)
       const grad = ctx.createRadialGradient(width / 2, height * 0.35, 0, width / 2, height * 0.35, Math.max(width, height) * 0.7);
-      grad.addColorStop(0, '#0e1a33');
-      grad.addColorStop(0.5, '#091222');
-      grad.addColorStop(1, '#060b18');
+      grad.addColorStop(0, '#FFFDF9');
+      grad.addColorStop(0.5, '#FAF7F0');
+      grad.addColorStop(1, '#EFECE5');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
 
-      angleY += 0.0008;
+      const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReducedMotion) {
+        angleY += 0.0008;
+      }
 
       // Interpolate camera angle and dolly distance based on scroll position
-      const currentAngleY = angleY + scrollPct * Math.PI * 0.5;
-      const currentAngleX = 0.32 - scrollPct * 0.15; // tilt down slightly as we scroll
-      const currentD = 550 - scrollPct * 120; // dolly zoom close-up
+      const currentAngleY = prefersReducedMotion ? Math.PI * 0.25 : (angleY + scrollPct * Math.PI * 0.5);
+      const currentAngleX = prefersReducedMotion ? 0.25 : (0.32 - scrollPct * 0.15); // tilt down slightly as we scroll
+      const currentD = prefersReducedMotion ? 500 : (550 - scrollPct * 120); // dolly zoom close-up
 
       const cosY = Math.cos(currentAngleY);
       const sinY = Math.sin(currentAngleY);
       const cosX = Math.cos(currentAngleX);
       const sinX = Math.sin(currentAngleX);
 
-      // Draw background grid
-      ctx.strokeStyle = 'rgba(36, 59, 106, 0.12)';
+      // Draw background grid - Pitch green/border base tinted
+      ctx.strokeStyle = 'rgba(14, 124, 58, 0.08)';
       ctx.lineWidth = 0.5;
       for (const gl of gridLines) {
         const p1 = project({ x: gl.x1, y: gl.y, z: gl.z1 }, cosY, sinY, cosX, sinX, currentD);
@@ -202,7 +206,7 @@ export const ThreeDBackground: React.FC = () => {
       // Project all stadium points
       const projected = points.map(pt => project(pt, cosY, sinY, cosX, sinX, currentD));
 
-      // Draw stadium wireframe lines with gold gradient
+      // Draw stadium wireframe lines with gold/rotating accents
       ctx.lineWidth = 0.8;
       for (let i = 0; i < lines.length; i++) {
         const [pA, pB] = lines[i];
@@ -210,16 +214,25 @@ export const ThreeDBackground: React.FC = () => {
         const projB = projected[pB];
 
         if (projA.visible && projB.visible) {
-          // Pitch lines are green, stadium lines are gold
+          // Pitch lines are green, stadium lines rotate through accents
           const isPitch = pA >= pitchOffset;
           const alpha = isPitch ? 0.5 : 0.25 + projA.scale * 0.15;
           
           if (isPitch) {
-            ctx.strokeStyle = `rgba(34, 163, 82, ${alpha})`;
-            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = `rgba(22, 163, 74, ${alpha * 1.5})`;
+            ctx.lineWidth = 1.5;
           } else {
-            ctx.strokeStyle = `rgba(200, 168, 78, ${alpha})`;
-            ctx.lineWidth = 0.7;
+            // Rotate colors based on scrollPct: Green, Gold, Blue, Orange, Pink
+            const colorIndex = Math.floor(scrollPct * 5) % 5;
+            const colors = [
+              `rgba(22, 163, 74, ${alpha * 1.2})`,
+              `rgba(212, 160, 23, ${alpha * 1.2})`,
+              `rgba(14, 165, 233, ${alpha * 1.2})`,
+              `rgba(251, 107, 30, ${alpha * 1.2})`,
+              `rgba(229, 57, 154, ${alpha * 1.2})`
+            ];
+            ctx.strokeStyle = colors[colorIndex] || colors[0];
+            ctx.lineWidth = 0.8;
           }
           
           ctx.beginPath();
@@ -235,7 +248,15 @@ export const ThreeDBackground: React.FC = () => {
         if (proj.visible) {
           const isPitch = i >= pitchOffset;
           const alpha = isPitch ? 0.6 : 0.3;
-          ctx.fillStyle = isPitch ? `rgba(34, 163, 82, ${alpha})` : `rgba(200, 168, 78, ${alpha})`;
+          const colorIndex = Math.floor(scrollPct * 5) % 5;
+          const colors = [
+            `rgba(22, 163, 74, ${alpha})`,
+            `rgba(212, 160, 23, ${alpha})`,
+            `rgba(14, 165, 233, ${alpha})`,
+            `rgba(251, 107, 30, ${alpha})`,
+            `rgba(229, 57, 154, ${alpha})`
+          ];
+          ctx.fillStyle = isPitch ? `rgba(22, 163, 74, ${alpha * 1.2})` : (colors[colorIndex] || colors[0]);
           ctx.beginPath();
           ctx.arc(proj.x, proj.y, isPitch ? 1.5 : 1.2, 0, Math.PI * 2);
           ctx.fill();
@@ -244,29 +265,32 @@ export const ThreeDBackground: React.FC = () => {
 
       // Draw and update floating particles
       for (const particle of particles) {
-        particle.y += particle.speedY;
-        particle.x += particle.speedX;
+        if (!prefersReducedMotion) {
+          particle.y += particle.speedY;
+          particle.x += particle.speedX;
 
-        if (particle.y > 250) particle.y = -250;
-        if (particle.y < -250) particle.y = 250;
-        if (particle.x > 500) particle.x = -500;
-        if (particle.x < -500) particle.x = 500;
+          if (particle.y > 250) particle.y = -250;
+          if (particle.y < -250) particle.y = 250;
+          if (particle.x > 500) particle.x = -500;
+          if (particle.x < -500) particle.x = 500;
+        }
 
         const proj = project(particle, cosY, sinY, cosX, sinX, currentD);
         if (proj.visible) {
           const size = particle.size * proj.scale;
           const alpha = particle.brightness * proj.scale;
-          ctx.fillStyle = `rgba(219, 190, 90, ${alpha})`;
+          // Use sunset orange and sky blue particles
+          ctx.fillStyle = particle.x > 0 ? `rgba(251, 107, 30, ${alpha * 1.2})` : `rgba(14, 165, 233, ${alpha * 1.2})`;
           ctx.beginPath();
           ctx.arc(proj.x, proj.y, size, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
-      // Subtle vignette overlay
+      // Subtle vignette overlay - light shadow
       const vignette = ctx.createRadialGradient(width / 2, height / 2, height * 0.3, width / 2, height / 2, Math.max(width, height) * 0.7);
-      vignette.addColorStop(0, 'rgba(6, 11, 24, 0)');
-      vignette.addColorStop(1, 'rgba(6, 11, 24, 0.5)');
+      vignette.addColorStop(0, 'rgba(250, 247, 240, 0)');
+      vignette.addColorStop(1, 'rgba(239, 236, 229, 0.4)');
       ctx.fillStyle = vignette;
       ctx.fillRect(0, 0, width, height);
 
