@@ -21,6 +21,55 @@ const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isOnline, setIsOnline] = useState(typeof window !== 'undefined' ? window.navigator.onLine : true);
 
+  const handleMainScroll = (e: React.UIEvent<HTMLElement>) => {
+    const target = e.currentTarget;
+    const scrollHeight = target.scrollHeight - target.clientHeight;
+    if (scrollHeight <= 0) return;
+    const pct = target.scrollTop / scrollHeight;
+
+    // Define colors to interpolate based on scroll depth:
+    // 0.00 (Hero) -> #FAF7F0 (warm white)
+    // 0.15 (Wayfinding) -> #F0F9FF (sky blue)
+    // 0.35 (Crowd & Safety) -> #F0FDF4 (pitch green)
+    // 0.55 (Accessibility) -> #FDF2F8 (magenta pink)
+    // 0.70 (Transit/Sustainability) -> #FFF7ED (sunset orange)
+    // 0.85 (Operations) -> #FEFCE8 (gold yellow)
+    // 1.00 (Closing CTA) -> #FFF5F5 (crimson red)
+    const steps = [
+      { pct: 0.0, color: [250, 247, 240] },
+      { pct: 0.15, color: [240, 249, 255] },
+      { pct: 0.35, color: [240, 253, 244] },
+      { pct: 0.55, color: [253, 242, 248] },
+      { pct: 0.70, color: [255, 247, 237] },
+      { pct: 0.85, color: [254, 252, 232] },
+      { pct: 1.0, color: [255, 245, 245] }
+    ];
+
+    let start = steps[0];
+    let end = steps[steps.length - 1];
+    for (let i = 0; i < steps.length - 1; i++) {
+      if (pct >= steps[i].pct && pct <= steps[i + 1].pct) {
+        start = steps[i];
+        end = steps[i + 1];
+        break;
+      }
+    }
+
+    const range = end.pct - start.pct;
+    const factor = range > 0 ? (pct - start.pct) / range : 0;
+    const r = Math.round(start.color[0] + (end.color[0] - start.color[0]) * factor);
+    const g = Math.round(start.color[1] + (end.color[1] - start.color[1]) * factor);
+    const b = Math.round(start.color[2] + (end.color[2] - start.color[2]) * factor);
+
+    const rgbColor = `rgb(${r}, ${g}, ${b})`;
+    document.documentElement.style.setProperty('--color-bg-base', rgbColor);
+  };
+
+  useEffect(() => {
+    // Reset background base color when switching personas
+    document.documentElement.style.setProperty('--color-bg-base', '#FAF7F0');
+  }, [persona]);
+
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -175,7 +224,11 @@ const App: React.FC = () => {
       {/* Main Container Layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* Main Dashboard Workspace */}
-        <main className="flex-1 overflow-y-auto px-6 py-6 text-center">
+        <main 
+          id="main-content"
+          onScroll={persona === 'landing' ? handleMainScroll : undefined}
+          className="flex-1 overflow-y-auto px-6 py-6 text-center"
+        >
           {persona === 'landing' && <LandingPage />}
           {persona === 'fan' && <FanView />}
           {persona === 'volunteer' && <VolunteerView />}

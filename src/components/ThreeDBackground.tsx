@@ -142,13 +142,16 @@ export const ThreeDBackground: React.FC = () => {
     let angleY = 0;
     let scrollPct = 0;
 
-    const handleScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight > 0) {
-        scrollPct = window.scrollY / docHeight;
+    const handleScroll = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'MAIN' || target.id === 'main-content')) {
+        const scrollHeight = target.scrollHeight - target.clientHeight;
+        if (scrollHeight > 0) {
+          scrollPct = target.scrollTop / scrollHeight;
+        }
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
 
     const project = (pt: Point3D, cosY: number, sinY: number, cosX: number, sinX: number, currentD: number) => {
       const x1 = pt.x * cosY - pt.z * sinY;
@@ -302,7 +305,7 @@ export const ThreeDBackground: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll, { capture: true } as any);
     };
   }, []);
 

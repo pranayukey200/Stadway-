@@ -269,6 +269,25 @@ export const LandingPage: React.FC = () => {
                 <span className="text-[8px] bg-[#FB6B1E] text-white px-1.5 py-0.5 rounded-full font-bold uppercase">Moderate</span>
               </div>
             </div>
+
+            {/* Holographic Stadium Heatmap Visual Overlay */}
+            <div className="mt-4 border-4 border-[#0B1120] rounded-2xl overflow-hidden relative h-40 bg-[#0B1120] shadow-[4px_4px_0px_0px_#0B1120] select-none">
+              <img 
+                src="/assets/stadium_heatmap.png" 
+                alt="" 
+                draggable="false"
+                className="w-full h-full object-cover opacity-80"
+                style={{
+                  maskImage: 'linear-gradient(to right, black 60%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to right, black 60%, transparent 100%)'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-transparent z-10" />
+              <div className="absolute bottom-3 left-4 z-20 text-left">
+                <span className="text-[8px] bg-[#16A34A] text-white px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Live Spatial Heatmap</span>
+                <h4 className="text-xs font-bold text-white uppercase mt-1 tracking-wider">Gate B Compression Alert (82% Egress Surge)</h4>
+              </div>
+            </div>
           </div>
 
           <div className="lg:col-span-5 space-y-6 order-1 lg:order-2">
@@ -487,7 +506,18 @@ export const LandingPage: React.FC = () => {
         />
 
         <div className="relative z-10 space-y-6">
-          <Trophy size={48} className="mx-auto text-[#D4A017] animate-float" />
+          {/* Premium 3D Trophy Asset */}
+          <div className="relative w-20 h-20 mx-auto select-none pointer-events-none mb-2" aria-hidden="true">
+            <img 
+              src="/assets/gold_trophy.png" 
+              alt="" 
+              draggable="false"
+              className="w-full h-full object-contain animate-float"
+              style={{
+                filter: 'drop-shadow(0px 8px 16px rgba(212, 160, 23, 0.45))'
+              }}
+            />
+          </div>
           
           <div className="space-y-4">
             <h2 
