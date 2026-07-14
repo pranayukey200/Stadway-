@@ -73,6 +73,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
         {['Zone_A', 'Zone_B', 'Zone_C', 'Zone_D'].map((zoneId) => {
           const isActive = activeZone === zoneId;
           const label = zoneId.replace('Zone_', 'Section ');
+          const labelShort = zoneId.replace('Zone_', 'Sec ');
           return (
             <button
               key={zoneId}
@@ -84,7 +85,8 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
                   : 'text-white/70 hover:text-[#16A34A]'
               }`}
             >
-              {label}
+              <span className="hidden sm:inline">{label}</span>
+              <span className="inline sm:hidden text-[10px]">{labelShort}</span>
             </button>
           );
         })}

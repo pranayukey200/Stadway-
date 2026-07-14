@@ -573,15 +573,15 @@ export const FanView: React.FC = () => {
         
         {/* Sensor Stats Cards */}
         {venueState && (
-          <div className="glass-panel p-4 rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[4px_4px_0px_0px_#0B1120] space-y-3">
-            <h3 className="text-xs font-black uppercase text-[#0B1120]/70 tracking-wider">Venue Live Sensors</h3>
+          <div className="glass-panel p-4 rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[4px_4px_0px_0px_#0B1120] space-y-3 text-white">
+            <h3 className="text-xs font-black uppercase text-white/70 tracking-wider">Venue Live Sensors</h3>
             
             <div className="space-y-2">
               {/* Gates */}
-              <div className="bg-white border-4 border-[#0B1120] p-2.5 rounded-xl flex items-center justify-between text-xs shadow-[2px_2px_0px_0px_#0B1120]">
+              <div className="bg-[#0B1120] border-4 border-white p-2.5 rounded-xl flex items-center justify-between text-xs shadow-[2px_2px_0px_0px_#0B1120] text-white">
                 <div className="flex items-center gap-2">
                   <MapPin size={14} className="text-[#D4A017]" />
-                  <span className="text-[#0B1120] font-bold">Preferred Gate B Flow:</span>
+                  <span className="text-white font-bold">Preferred Gate B Flow:</span>
                 </div>
                 <span className={`font-mono font-black ${
                   venueState.gates.Gate_B.status === 'congested' ? 'text-[#E5399A]' : 'text-[#16A34A]'
@@ -591,10 +591,10 @@ export const FanView: React.FC = () => {
               </div>
 
               {/* Transit */}
-              <div className="bg-white border-4 border-[#0B1120] p-2.5 rounded-xl flex items-center justify-between text-xs shadow-[2px_2px_0px_0px_#0B1120]">
+              <div className="bg-[#0B1120] border-4 border-white p-2.5 rounded-xl flex items-center justify-between text-xs shadow-[2px_2px_0px_0px_#0B1120] text-white">
                 <div className="flex items-center gap-2">
                   <Clock size={14} className="text-[#16A34A]" />
-                  <span className="text-[#0B1120] font-bold">Metro Red Line:</span>
+                  <span className="text-white font-bold">Metro Red Line:</span>
                 </div>
                 <span className={`font-mono font-black ${
                   venueState.transit.Metro_Red_Line.delayMins > 10 ? 'text-[#FB6B1E]' : 'text-[#16A34A]'
@@ -604,12 +604,12 @@ export const FanView: React.FC = () => {
               </div>
 
               {/* Weather */}
-              <div className="bg-white border-4 border-[#0B1120] p-2.5 rounded-xl flex items-center justify-between text-xs shadow-[2px_2px_0px_0px_#0B1120]">
+              <div className="bg-[#0B1120] border-4 border-white p-2.5 rounded-xl flex items-center justify-between text-xs shadow-[2px_2px_0px_0px_#0B1120] text-white">
                 <div className="flex items-center gap-2">
                   <Cloud size={14} className="text-[#0EA5E9]" />
-                  <span className="text-[#0B1120] font-bold">Atmosphere Sensor:</span>
+                  <span className="text-white font-bold">Atmosphere Sensor:</span>
                 </div>
-                <span className="font-black text-[#0B1120]">
+                <span className="font-black text-white">
                   {venueState.weather.condition.toUpperCase()}, {venueState.weather.tempC}°C
                 </span>
               </div>
