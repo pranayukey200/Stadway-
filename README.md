@@ -23,11 +23,52 @@ The biggest differentiator in StandWay is the **Visible Multi-Agent Reasoning Tr
 5. **Sustainability Agent**: Tracks carbon savings compared to taxi baselines.
 6. **Language Agent**: Formulates localized copy for multilingual attendees.
 
-All agents are coordinated by the **Orchestrator Agent**, which runs securely on the backend server-side to guarantee client safety, API key security, and response stability.
+---
+
+## 2. Multi-Agent Pipeline & Collaboration Flow
+
+The Orchestrator Agent acts as a central coordinator, executing individual sub-agent logic in a structured pipeline before consolidating the reasoning trail:
+
+```mermaid
+graph TD
+    A[Fan Query + Ticket + Live Sensors] --> B[Orchestrator Agent]
+    B --> C[Wayfinding Agent]
+    C --> D[Crowd Agent]
+    D --> E[Accessibility Agent]
+    E --> F[Transit Agent]
+    F --> G[Sustainability Agent]
+    G --> H[Language Agent]
+    H --> I[Orchestrator Final Synthesis]
+    I --> J[JSON Decision Object & Reasoning Trail]
+    J --> K[Firestore Audit Logs]
+    J --> L[Fan Dashboard / Organizer Console]
+    style B fill:#121E36,stroke:#16A34A,stroke-width:2px;
+    style I fill:#121E36,stroke:#D4A017,stroke-width:2px;
+```
 
 ---
 
-## 2. Technical Architecture & Data Model
+## 3. Evaluation Focus Areas & Compliance Matrix
+
+This matrix maps StandWay's core implementations directly to the hackathon evaluation parameters:
+
+| Evaluation Area | Focus Parameter | Implementation / File Path |
+| :--- | :--- | :--- |
+| **Code Quality** | Centralized Design Tokens | [src/design/tokens.ts](src/design/tokens.ts) |
+| **Code Quality** | Separation of Concerns | [src/components/ThreeDBackground.tsx](src/components/ThreeDBackground.tsx) |
+| **Security** | API Key Client Gating | [functions/src/orchestrator.ts](functions/src/orchestrator.ts) |
+| **Security** | Insecure Storage Warning UI | [src/views/FanView.tsx](src/views/FanView.tsx) (Settings Panel) |
+| **Efficiency** | Presentational Lazy Loading | [src/App.tsx](src/App.tsx) (Suspense Wrapper) |
+| **Efficiency** | Optimal Bundle Chunking | [vite.config.ts](vite.config.ts) (Split Chunk Setup) |
+| **Testing** | 16/16 Pure Agent Unit Tests | [src/tests/agents.test.ts](src/tests/agents.test.ts) |
+| **Testing** | Motion Reduction JSDOM Tests | [src/tests/motion.test.tsx](src/tests/motion.test.tsx) |
+| **Accessibility** | `prefers-reduced-motion` JS | [src/components/ThreeDBackground.tsx](src/components/ThreeDBackground.tsx) (Angle freeze) |
+| **Accessibility** | High Contrast & Scaling | [src/index.css](src/index.css) (`.high-contrast` and `.text-scale` styles) |
+| **Alignment** | Complete Operations Console | [src/views/OrganizerConsole.tsx](src/views/OrganizerConsole.tsx) (Decision Feed) |
+
+---
+
+## 4. Technical Architecture & Data Model
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -65,7 +106,7 @@ All agents are coordinated by the **Orchestrator Agent**, which runs securely on
 
 ---
 
-## 3. Privacy-by-Design & Security Differentiator 🔒
+## 5. Privacy-by-Design & Security Differentiator 🔒
 
 In compliance with modern stadium security ethics and fan civil liberties:
 * **No Facial Recognition / Biometrics**: StandWay intentionally avoids movement tracking or camera identification of individual fans.
@@ -74,7 +115,7 @@ In compliance with modern stadium security ethics and fan civil liberties:
 
 ---
 
-## 4. Security & Proxy Architecture (Groq API Key Protection) 🛡️
+## 6. Security & Proxy Architecture (Groq API Key Protection) 🛡️
 
 To prevent token theft and protect API keys from exposure via XSS or browser memory inspections, StandWay implements a strict **Security Proxy** model:
 * **Zero Client-Side Token Leakage**: In production, browser requests never connect directly to the Groq API, and the client browser cannot inject or read API keys from local storage.
@@ -83,7 +124,7 @@ To prevent token theft and protect API keys from exposure via XSS or browser mem
 
 ---
 
-## 5. Bundle Efficiency & Code Splitting ⚡
+## 7. Bundle Efficiency & Code Splitting ⚡
 
 StandWay is optimized for fast mobile page load speeds and low bandwidth footprints under busy stadium networks:
 * **Compact Footprint**: The minified production build sizes are ~1.00 MB JS and ~48 kB CSS.
@@ -95,7 +136,7 @@ StandWay is optimized for fast mobile page load speeds and low bandwidth footpri
 
 ---
 
-## 6. How the End-to-End System Works
+## 8. How the End-to-End System Works
 
 1. **Sensor Simulator (Presenter Tools)**: Presenters append `?demo=true` to the URL or click **Sensor Simulator** to open the side panel. 
 2. **Preset Scenarios**:
@@ -106,7 +147,7 @@ StandWay is optimized for fast mobile page load speeds and low bandwidth footpri
 
 ---
 
-## 7. Local Setup & Demo Guide
+## 9. Local Setup & Demo Guide
 
 ### Prerequisites
 * Node.js v20+ / NPM
@@ -144,7 +185,7 @@ StandWay is optimized for fast mobile page load speeds and low bandwidth footpri
 
 ---
 
-## 8. Automated Test Suite 🧪
+## 10. Automated Test Suite 🧪
 
 We maintain robust unit, accessibility, and visual motion-reduction tests. Run the full test suite via:
 ```bash
@@ -162,7 +203,7 @@ npm run test
 
 ---
 
-## 9. Assumptions & Implementation Notes
+## 11. Assumptions & Implementation Notes
 
 * **Maps Integration**: We implemented a high-performance, responsive SVG interactive stadium HUD instead of a paid Google Maps script. This ensures the application works immediately out-of-the-box for judges without requiring credit card configurations.
 * **API Key Fallback**: If `GROQ_API_KEY` is not configured or fails, the Orchestrator automatically falls back to a high-fidelity local sensor processing module. This guarantees a stable, fully-responsive dashboard presentation during the live evaluation.
