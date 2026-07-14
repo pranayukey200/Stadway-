@@ -53,15 +53,15 @@ export const OrganizerConsole: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto my-6 space-y-6 text-left font-sans">
+    <div className="max-w-6xl mx-auto my-6 space-y-6 text-left font-sans text-white">
       
       {/* HEADER SECTION */}
       <div className="flex justify-between items-center px-1">
         <div className="flex items-center gap-2">
           <Cpu className="text-[#D4A017]" size={24} />
-          <h2 className="text-xl font-display font-black text-[#0B1120] uppercase tracking-tight">STADIA.AI Operations Command</h2>
+          <h2 className="text-xl font-display font-black text-white uppercase tracking-tight">STADIA.AI Operations Command</h2>
         </div>
-        <span className="text-xs bg-[#EAF3EC] text-[#0B1120] border-4 border-[#0E7C3A] px-4 py-1.5 rounded-full font-black uppercase">
+        <span className="text-xs bg-[#121E36] text-white border-4 border-[#0E7C3A] px-4 py-1.5 rounded-full font-black uppercase">
           Aggregate Console Mode (No PII / Privacy-Preserved)
         </span>
       </div>
@@ -69,36 +69,36 @@ export const OrganizerConsole: React.FC = () => {
       {/* KPI METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         {/* Total Assisted */}
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-white flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-[#121E36] flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
           <div className="space-y-1">
-            <span className="text-[10px] text-[#0B1120]/70 font-black uppercase tracking-wider">Decisions Orchestrated</span>
-            <span className="block font-scoreboard text-4xl text-[#0B1120] leading-none">{stats.totalDecisions}</span>
+            <span className="text-[10px] text-white/70 font-black uppercase tracking-wider">Decisions Orchestrated</span>
+            <span className="block font-scoreboard text-4xl text-white leading-none">{stats.totalDecisions}</span>
           </div>
           <Users className="text-[#D4A017]" size={28} />
         </div>
 
         {/* CO2 Saved */}
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-white flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-[#121E36] flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
           <div className="space-y-1">
-            <span className="text-[10px] text-[#0B1120]/70 font-black uppercase tracking-wider">Total CO₂ Saved</span>
+            <span className="text-[10px] text-white/70 font-black uppercase tracking-wider">Total CO₂ Saved</span>
             <span className="block font-scoreboard text-4xl text-[#16A34A] leading-none">{stats.totalCo2Kg.toFixed(1)} kg</span>
           </div>
           <Leaf className="text-[#16A34A]" size={28} />
         </div>
 
         {/* Active Dispatches */}
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-white flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-[#121E36] flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
           <div className="space-y-1">
-            <span className="text-[10px] text-[#0B1120]/70 font-black uppercase tracking-wider">Active Dispatches</span>
+            <span className="text-[10px] text-white/70 font-black uppercase tracking-wider">Active Dispatches</span>
             <span className="block font-scoreboard text-4xl text-[#E5399A] leading-none">{stats.activeTasksCount}</span>
           </div>
           <ShieldAlert className="text-[#E5399A]" size={28} />
         </div>
 
         {/* System Confidence */}
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-white flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0B1120] bg-[#121E36] flex items-center justify-between shadow-[4px_4px_0px_0px_#0B1120]">
           <div className="space-y-1">
-            <span className="text-[10px] text-[#0B1120]/70 font-black uppercase tracking-wider">Mean Confidence</span>
+            <span className="text-[10px] text-white/70 font-black uppercase tracking-wider">Mean Confidence</span>
             <span className="block font-scoreboard text-4xl text-[#0EA5E9] leading-none">94.8%</span>
           </div>
           <BarChart3 className="text-[#0EA5E9]" size={28} />
@@ -109,17 +109,17 @@ export const OrganizerConsole: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* GATE DENSITY MONITOR */}
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] lg:col-span-1 space-y-4 bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120]">
-          <h3 className="text-sm font-display font-black text-[#0B1120] uppercase leading-none">Aggregate Gate Inflow Sensors</h3>
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] lg:col-span-1 space-y-4 bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120]">
+          <h3 className="text-sm font-display font-black text-white uppercase leading-none">Aggregate Gate Inflow Sensors</h3>
           
           {venueState ? (
             <div className="space-y-4 pt-1">
               {Object.entries(venueState.gates).map(([gateId, gate]) => {
                 const isCongested = gate.status === 'congested';
                 return (
-                  <div key={gateId} className="bg-white border-4 border-[#0B1120] p-3 rounded-2xl space-y-2 shadow-[2px_2px_0px_0px_#0B1120]">
+                  <div key={gateId} className="bg-[#0B1120] border-4 border-[#0B1120] p-3 rounded-2xl space-y-2 shadow-[2px_2px_0px_0px_#0B1120]">
                     <div className="flex justify-between text-xs font-black uppercase tracking-wider">
-                      <span className="text-[#0B1120]">{gateId.replace('_', ' ')}</span>
+                      <span className="text-white">{gateId.replace('_', ' ')}</span>
                       <span className={`font-mono ${
                         isCongested ? 'text-[#E5399A]' : gate.status === 'moderate' ? 'text-[#FB6B1E]' : 'text-[#16A34A]'
                       }`}>
@@ -127,7 +127,7 @@ export const OrganizerConsole: React.FC = () => {
                       </span>
                     </div>
                     {/* Progress Bar */}
-                    <div className="w-full bg-[#EAF3EC] rounded-full h-2.5 overflow-hidden border-2 border-[#0B1120]">
+                    <div className="w-full bg-[#121E36] rounded-full h-2.5 overflow-hidden border-2 border-[#0B1120]">
                       <div 
                         className={`h-full rounded-full transition-all duration-500 ${
                           isCongested ? 'bg-[#E5399A]' : gate.status === 'moderate' ? 'bg-[#FB6B1E]' : 'bg-[#16A34A]'
@@ -135,7 +135,7 @@ export const OrganizerConsole: React.FC = () => {
                         style={{ width: `${gate.occupancyPct}%` }}
                       ></div>
                     </div>
-                    <div className="flex justify-between text-[10px] text-[#0B1120]/60 font-mono font-bold">
+                    <div className="flex justify-between text-[10px] text-white/60 font-mono font-bold">
                       <span>Queue: {gate.queueLength} people</span>
                       <span className="uppercase">{gate.status} flow</span>
                     </div>
@@ -144,7 +144,7 @@ export const OrganizerConsole: React.FC = () => {
               })}
             </div>
           ) : (
-            <div className="flex items-center justify-center p-8 text-[#0B1120]/60 text-xs gap-2">
+            <div className="flex items-center justify-center p-8 text-white/60 text-xs gap-2">
               <RefreshCw className="animate-spin" size={14} />
               <span>Awaiting sensor data...</span>
             </div>
@@ -152,22 +152,22 @@ export const OrganizerConsole: React.FC = () => {
         </div>
 
         {/* DECISION AUDIT FEED */}
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] lg:col-span-2 space-y-4 flex flex-col max-h-[500px] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120]">
-          <h3 className="text-sm font-display font-black text-[#0B1120] uppercase leading-none">StadWay Decision Audit Feed</h3>
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] lg:col-span-2 space-y-4 flex flex-col max-h-[500px] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120]">
+          <h3 className="text-sm font-display font-black text-white uppercase leading-none">StadWay Decision Audit Feed</h3>
           
           <div className="flex-1 overflow-y-auto space-y-4 pr-1">
             {decisions.length === 0 ? (
-              <div className="flex flex-col items-center justify-center p-12 text-[#0B1120]/60 text-center space-y-2">
-                <Cpu className="text-[#0B1120]/40" size={36} />
+              <div className="flex flex-col items-center justify-center p-12 text-white/60 text-center space-y-2">
+                <Cpu className="text-white/40" size={36} />
                 <p className="text-xs font-bold uppercase">No audited decisions in log yet.</p>
               </div>
             ) : (
               decisions.map(dec => (
-                <div key={dec.id} className="bg-white border-4 border-[#0B1120] p-4 rounded-2xl space-y-3 hover:border-[#16A34A] transition shadow-[3px_3px_0px_0px_#0B1120]">
+                <div key={dec.id} className="bg-[#0B1120] border-4 border-[#0B1120] p-4 rounded-2xl space-y-3 hover:border-[#16A34A] transition shadow-[3px_3px_0px_0px_#0B1120]">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-mono text-[10px] text-[#0B1120]/50 font-bold">ID: {dec.id}</span>
+                    <span className="font-mono text-[10px] text-white/50 font-bold">ID: {dec.id}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] bg-[#EAF3EC] text-[#0B1120] px-2.5 py-0.5 rounded-full border-2 border-[#0B1120] font-black uppercase">
+                      <span className="text-[10px] bg-[#121E36] text-white px-2.5 py-0.5 rounded-full border-2 border-[#0B1120] font-black uppercase">
                         {dec.agentTrail.length} Cooperating Agents
                       </span>
                       <span className="text-[10px] font-mono text-[#16A34A] font-black">
@@ -176,7 +176,7 @@ export const OrganizerConsole: React.FC = () => {
                     </div>
                   </div>
 
-                  <p className="text-xs text-[#0B1120] bg-[#FAF7F0] p-2.5 rounded-xl border-2 border-[#0B1120] font-bold">
+                  <p className="text-xs text-white bg-[#121E36] p-2.5 rounded-xl border-2 border-[#0B1120] font-bold">
                     {dec.finalRecommendation}
                   </p>
 
@@ -185,7 +185,7 @@ export const OrganizerConsole: React.FC = () => {
                     {dec.agentTrail.map((trail, tIdx) => (
                       <div 
                         key={tIdx} 
-                        className="text-[9px] bg-[#EAF3EC] border-2 border-[#0B1120] text-[#0B1120]/80 px-2.5 py-1 rounded-lg font-bold"
+                        className="text-[9px] bg-[#121E36] border-2 border-[#0B1120] text-white/80 px-2.5 py-1 rounded-lg font-bold"
                         title={trail.reasoning}
                       >
                         <span className="font-black text-[#16A34A]">{trail.agent}:</span> {trail.reasoning.substring(0, 45)}...
@@ -197,9 +197,7 @@ export const OrganizerConsole: React.FC = () => {
             )}
           </div>
         </div>
-
       </div>
-
     </div>
   );
 };

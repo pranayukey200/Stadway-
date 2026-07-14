@@ -126,7 +126,7 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className={`min-h-screen text-[#0B1120] flex flex-col font-sans transition-all duration-300 relative ${
+      className={`min-h-screen text-white flex flex-col font-sans transition-all duration-300 relative ${
         accessibilitySettings.highContrast ? 'high-contrast' : ''
       } ${
         accessibilitySettings.textScale === 'lg' ? 'text-scale-lg' : 
@@ -134,11 +134,10 @@ const App: React.FC = () => {
       }`}
       style={{
         backgroundColor: 'var(--color-bg-base)',
-        backgroundImage: `linear-gradient(to bottom, rgba(7, 13, 30, 0.55) 0%, rgba(7, 13, 30, 0.9) 100%), url('/assets/worldcup_backdrop.png')`,
+        backgroundImage: `linear-gradient(to bottom, rgba(7, 13, 30, 0.25) 0%, rgba(7, 13, 30, 0.65) 100%), url('/assets/worldcup_backdrop.png')`,
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed',
-        backgroundPosition: 'center',
-        backgroundBlendMode: 'overlay'
+        backgroundPosition: 'center'
       }}
     >
       {/* 3D Stadium Background Canvas */}
@@ -146,7 +145,7 @@ const App: React.FC = () => {
 
       {/* Offline Alert Banner */}
       {!isOnline && (
-        <div className="bg-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 border-b-4 border-[#0B1120] z-50">
+        <div className="bg-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 border-b-4 border-[#070D1E] z-50">
           <ShieldAlert size={14} className="animate-pulse" />
           <span>Offline Mode Active. Displaying cached maps and last synced wayfinding route instructions.</span>
         </div>
@@ -154,33 +153,33 @@ const App: React.FC = () => {
 
       {/* Top Banner Alert for Global Broadcast Announcement */}
       {venueState?.overrideAnnouncement && (
-        <div className="bg-gradient-to-r from-[#E5399A] to-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 animate-pulse border-b-4 border-[#0B1120] shadow-md z-50">
+        <div className="bg-gradient-to-r from-[#E5399A] to-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 animate-pulse border-b-4 border-[#070D1E] shadow-md z-50">
           <ShieldAlert size={14} />
           <span>OFFICIAL ANNOUNCEMENT: {venueState.overrideAnnouncement}</span>
         </div>
       )}
 
       {/* Main Navigation Header */}
-      <header className="bg-[#FAF7F0]/90 backdrop-blur-md border-b-4 border-[#16A34A] sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
+      <header className="bg-[#070D1E]/90 backdrop-blur-md border-b-4 border-[#16A34A] sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* Logo Mark */}
-          <div className="relative w-10 h-10 flex items-center justify-center border-2 border-[#0B1120] rounded-xl bg-[#FAF7F0] shadow-[2px_2px_0px_0px_rgba(11,17,32,1)]">
+          <div className="relative w-10 h-10 flex items-center justify-center border-2 border-white rounded-xl bg-[#121E36] shadow-[2px_2px_0px_0px_#0B1120]">
             <Trophy className="w-5 h-5 text-[#D4A017]" />
           </div>
           <div className="text-left">
-            <h1 className="text-xl font-display font-black text-[#0B1120] leading-none tracking-tight m-0">STADIA.AI</h1>
-            <span className="text-[9px] text-[#0B1120]/60 font-black uppercase tracking-wider">Live GenAI Operations — World Cup 2026</span>
+            <h1 className="text-xl font-display font-black text-white leading-none tracking-tight m-0">STADIA.AI</h1>
+            <span className="text-[9px] text-white/60 font-black uppercase tracking-wider">Live GenAI Operations — World Cup 2026</span>
           </div>
         </div>
 
         {/* Persona Controller Toggles */}
-        <nav className="flex bg-[#EAF3EC] p-1 gap-1 border-4 border-[#0E7C3A] rounded-full text-xs">
+        <nav className="flex bg-[#121E36] p-1 gap-1 border-4 border-[#0E7C3A] rounded-full text-xs">
           <button
             onClick={() => setPersona('landing')}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'landing'
-                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
-                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
+                : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
             <Trophy size={13} /> Overview
@@ -189,8 +188,8 @@ const App: React.FC = () => {
             onClick={() => setPersona('fan')}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'fan'
-                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
-                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
+                : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
             <User size={13} /> Fan Hub
@@ -199,8 +198,8 @@ const App: React.FC = () => {
             onClick={() => setPersona('volunteer')}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'volunteer'
-                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
-                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
+                : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
             <Users size={13} /> Volunteer
@@ -209,8 +208,8 @@ const App: React.FC = () => {
             onClick={() => setPersona('organizer')}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
               persona === 'organizer'
-                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-[#0B1120]'
-                : 'text-[#0B1120]/70 hover:text-[#16A34A] hover:bg-[#FAF7F0]/40'
+                ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
+                : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
             <Sliders size={13} /> Operations
@@ -221,7 +220,7 @@ const App: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="flex items-center gap-1.5 py-2.5 px-4 bg-[#FAF7F0] border-4 border-[#0B1120] text-xs font-black text-[#0B1120] hover:translate-y-[-1px] shadow-[3px_3px_0px_0px_rgba(11,17,32,1)] hover:shadow-[5px_5px_0px_0px_rgba(11,17,32,1)] transition cursor-pointer rounded-full uppercase tracking-wider"
+            className="flex items-center gap-1.5 py-2.5 px-4 bg-[#121E36] border-4 border-white text-xs font-black text-white hover:translate-y-[-1px] shadow-[3px_3px_0px_0px_#0B1120] hover:shadow-[5px_5px_0px_0px_#0B1120] transition cursor-pointer rounded-full uppercase tracking-wider"
           >
             <Sparkles size={13} className="text-[#16A34A]" />
             Simulator
@@ -245,12 +244,12 @@ const App: React.FC = () => {
 
         {/* Slide-out Sidebar Panel for Venue State Simulator */}
         {sidebarOpen && (
-          <aside className="w-80 md:w-96 border-l-4 border-[#0E7C3A] bg-[#FAF7F0]/95 backdrop-blur-md overflow-y-auto z-30 transition-transform duration-300 right-0 top-0">
-            <div className="sticky top-0 bg-[#FAF7F0] py-4 px-6 border-b-4 border-[#0E7C3A] flex justify-between items-center z-10">
-              <span className="text-xs uppercase font-black text-[#0B1120] tracking-wider">Sensor Simulator</span>
+          <aside className="w-80 md:w-96 border-l-4 border-[#0E7C3A] bg-[#070D1E]/95 backdrop-blur-md overflow-y-auto z-30 transition-transform duration-300 right-0 top-0">
+            <div className="sticky top-0 bg-[#070D1E] py-4 px-6 border-b-4 border-[#0E7C3A] flex justify-between items-center z-10">
+              <span className="text-xs uppercase font-black text-white tracking-wider">Sensor Simulator</span>
               <button 
                 onClick={() => setSidebarOpen(false)}
-                className="text-[#0B1120] hover:text-[#16A34A] transition"
+                className="text-white hover:text-[#16A34A] transition"
               >
                 <X size={16} />
               </button>
@@ -263,7 +262,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className="border-t-4 border-[#0E7C3A] py-4 px-6 text-center bg-[#FAF7F0]/90 text-xs font-bold text-[#0B1120]/60 flex justify-between items-center">
+      <footer className="border-t-4 border-[#0E7C3A] py-4 px-6 text-center bg-[#070D1E]/90 text-xs font-bold text-white/60 flex justify-between items-center">
         <span>© 2026 Global Football Tournament Operations — Powered by STADIA.AI</span>
         <span className="flex items-center gap-2">
           <span className="status-dot live"></span>
