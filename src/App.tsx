@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useStore } from './context/useStore';
 import { db } from './utils/firebase';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
@@ -7,8 +7,9 @@ import { FanView } from './views/FanView';
 import { VolunteerView } from './views/VolunteerView';
 import { OrganizerConsole } from './views/OrganizerConsole';
 import { DemoPanel } from './views/DemoPanel';
-import { ThreeDBackground } from './components/ThreeDBackground';
 import { User, Users, ShieldAlert, Sliders, X, Sparkles, Trophy } from 'lucide-react';
+
+const ThreeDBackground = React.lazy(() => import('./components/ThreeDBackground').then(m => ({ default: m.ThreeDBackground })));
 
 const App: React.FC = () => {
   const { 
@@ -141,7 +142,9 @@ const App: React.FC = () => {
       }}
     >
       {/* 3D Stadium Background Canvas */}
-      <ThreeDBackground />
+      <Suspense fallback={<div className="fixed inset-0 bg-[#070D1E] -z-20"></div>}>
+        <ThreeDBackground />
+      </Suspense>
 
       {/* Offline Alert Banner */}
       {!isOnline && (

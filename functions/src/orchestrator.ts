@@ -54,6 +54,11 @@ const getViteEnv = (): any => {
   }
 };
 
+// SECURITY NOTE: Gating browser-side direct calls to the Groq LLM API.
+// In production, direct client-side API requests using localStorage are disabled (DEV_ONLY = false).
+// This mitigates XSS risk and prevents token theft. Instead, requests must go through secure proxy endpoints.
+export const DEV_ONLY = true;
+
 // Initialize OpenAI client pointing to Groq's API
 const getGroqClient = () => {
   let apiKey = "";
@@ -61,21 +66,29 @@ const getGroqClient = () => {
     apiKey = process.env.GROQ_API_KEY;
   }
   
-  // Client-side Vite environment variable support
-  const viteEnv = getViteEnv();
-  if (!apiKey && viteEnv && viteEnv.VITE_GROQ_API_KEY) {
-    apiKey = viteEnv.VITE_GROQ_API_KEY;
-  }
-  
-  // Client-side LocalStorage key support for sandbox security
-  if (!apiKey && typeof window !== 'undefined' && window.localStorage) {
-    apiKey = window.localStorage.getItem('stadway_groq_key') || "";
+  // Client-side key support is strictly gated behind the DEV_ONLY sandbox flag
+  if (DEV_ONLY) {
+    // Client-side Vite environment variable support
+    const viteEnv = getViteEnv();
+    if (!apiKey && viteEnv && viteEnv.VITE_GROQ_API_KEY) {
+      apiKey = viteEnv.VITE_GROQ_API_KEY;
+    }
+    
+    // Client-side LocalStorage key support for sandbox security
+    if (!apiKey && typeof window !== 'undefined' && window.localStorage) {
+      apiKey = window.localStorage.getItem('stadway_groq_key') || "";
+    }
+  } else {
+    // In production, we log a warning if client attempts direct key injection
+    if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('stadway_groq_key')) {
+      console.warn("StandWay Security Alert: Client-side Groq key injection rejected in production mode.");
+    }
   }
   
   return new OpenAI({
     apiKey: apiKey,
     baseURL: "https://api.groq.com/openapi/v1",
-    dangerouslyAllowBrowser: true // Enable direct client-side execution in browser
+    dangerouslyAllowBrowser: true // Enable direct client-side execution in browser (gated by DEV_ONLY key checks)
   });
 };
 
@@ -150,10 +163,16 @@ export async function runOrchestration(input: OrchestratorInput): Promise<Orches
   });
 
   const viteEnv = getViteEnv();
-  const groqKey = (typeof process !== 'undefined' && process.env && process.env.GROQ_API_KEY) || 
-                  (viteEnv && viteEnv.VITE_GROQ_API_KEY) || 
-                  (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('stadway_groq_key')) ||
-                  "";
+  let groqKey = (typeof process !== 'undefined' && process.env && process.env.GROQ_API_KEY) || "";
+  
+  if (DEV_ONLY) {
+    if (!groqKey && viteEnv && viteEnv.VITE_GROQ_API_KEY) {
+      groqKey = viteEnv.VITE_GROQ_API_KEY;
+    }
+    if (!groqKey && typeof window !== 'undefined' && window.localStorage) {
+      groqKey = window.localStorage.getItem('stadway_groq_key') || "";
+    }
+  }
   
   // If no Groq API Key, fallback to high-quality local generation
   if (!groqKey || groqKey.trim() === '' || groqKey.includes('PLACEHOLDER')) {

@@ -5,7 +5,7 @@ import { SeatSelector } from '../components/SeatSelector';
 import { db, functions } from '../utils/firebase';
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
-import { runOrchestration } from '../../functions/src/orchestrator'; // Import local fallback
+import { runOrchestration, DEV_ONLY } from '../../functions/src/orchestrator'; // Import local fallback
 import { 
   Send, Accessibility, Leaf, MapPin, Clock, Cloud, Settings, AlertCircle, RefreshCw, Languages, Sparkles 
 } from 'lucide-react';
@@ -644,8 +644,11 @@ export const FanView: React.FC = () => {
               <Sparkles className="text-[#D4A017] stroke-[2.5]" size={12} />
               <span>
                 Model: <strong className="text-white font-mono">llama-3.3-70b-versatile (Groq)</strong>
-                {!localStorage.getItem('stadway_groq_key') && (
+                {DEV_ONLY && !localStorage.getItem('stadway_groq_key') && (
                   <span className="text-[#FB6B1E] ml-2 font-black animate-pulse">(Key Required - Click Settings Gear)</span>
+                )}
+                {!DEV_ONLY && (
+                  <span className="text-[#16A34A] ml-2 font-black">(Secure Cloud Functions Active)</span>
                 )}
               </span>
             </div>
@@ -682,18 +685,36 @@ export const FanView: React.FC = () => {
                 </div>
               </div>
               <div className="border-t border-[#0B1120] pt-2.5">
-                <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Groq API Key (Stored Locally)</label>
+                <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">
+                  Groq API Key {DEV_ONLY ? "(Developer Sandbox)" : "(Disabled in Production)"}
+                </label>
                 <input
                   type="password"
-                  placeholder="Paste gsk_... key here"
-                  value={localStorage.getItem('stadway_groq_key') || ''}
+                  disabled={!DEV_ONLY}
+                  placeholder={DEV_ONLY ? "Paste gsk_... key here" : "Locked: Production mode uses server-side Cloud Function proxy"}
+                  value={DEV_ONLY ? (localStorage.getItem('stadway_groq_key') || '') : '****************'}
                   onChange={(e) => {
-                    localStorage.setItem('stadway_groq_key', e.target.value.trim());
-                    setErrorMsg(''); 
+                    if (DEV_ONLY) {
+                      localStorage.setItem('stadway_groq_key', e.target.value.trim());
+                      setErrorMsg('');
+                    }
                   }}
-                  className="w-full bg-[#121E36] border-4 border-white px-3 py-1.5 rounded-lg text-xs text-white placeholder-silver-500 font-bold focus:outline-none focus:border-[#16A34A]"
+                  className={`w-full bg-[#121E36] border-4 border-white px-3 py-1.5 rounded-lg text-xs text-white placeholder-silver-500 font-bold focus:outline-none focus:border-[#16A34A] ${
+                    !DEV_ONLY ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 />
-                <span className="block text-[9px] text-white/60 mt-1 font-semibold">Allows direct browser calls to llama-3.3-70b-versatile. Kept secure in your browser.</span>
+                {DEV_ONLY ? (
+                  <div className="flex gap-1.5 items-start mt-1.5 p-2 bg-[#FB6B1E]/10 border-2 border-[#FB6B1E]/30 rounded-lg">
+                    <AlertCircle className="text-[#FB6B1E] shrink-0" size={12} />
+                    <span className="block text-[9px] text-[#FB6B1E] font-semibold">
+                      Sandbox Notice: Browser key storage is insecure and for local debug/dev only. Keys are vulnerable to XSS.
+                    </span>
+                  </div>
+                ) : (
+                  <span className="block text-[9px] text-[#16A34A] mt-1 font-semibold">
+                    Production security active: Browser key input is disabled. API keys reside only in the Firebase secure server environment.
+                  </span>
+                )}
               </div>
             </div>
           )}
