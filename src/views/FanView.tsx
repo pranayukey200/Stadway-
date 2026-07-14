@@ -35,6 +35,139 @@ export const FanView: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [expandedTrail, setExpandedTrail] = useState(false);
 
+  // World Cup Star Comparison state
+  const [comparePlayers, setComparePlayers] = useState<string[]>([]);
+
+  const stars = [
+    { 
+      id: 'messi', 
+      name: 'Lionel Messi', 
+      number: '10', 
+      country: 'Argentina', 
+      zone: 'Section A', 
+      image: '/assets/player_blue.png', 
+      accent: '#0EA5E9',
+      bgColor: 'rgba(14, 165, 233, 0.15)',
+      stats: { Excitement: 98, Dribbles: 92, Speed: 84, Dribbling: 95, Positioning: 'Attack Center' }
+    },
+    { 
+      id: 'ronaldo', 
+      name: 'Cristiano Ronaldo', 
+      number: '7', 
+      country: 'Portugal', 
+      zone: 'Section B', 
+      image: '/assets/player_red.png', 
+      accent: '#FB6B1E',
+      bgColor: 'rgba(251, 107, 30, 0.15)',
+      stats: { Excitement: 95, Dribbles: 85, Speed: 91, Dribbling: 82, Positioning: 'Box Forward' }
+    },
+    { 
+      id: 'neymar', 
+      name: 'Neymar Jr', 
+      number: '10', 
+      country: 'Brazil', 
+      zone: 'Section D', 
+      image: '/assets/player_gold.png', 
+      accent: '#D4A017',
+      bgColor: 'rgba(212, 160, 23, 0.15)',
+      stats: { Excitement: 92, Dribbles: 96, Speed: 88, Dribbling: 98, Positioning: 'Left Flank Wing' }
+    }
+  ];
+
+  const togglePlayerSelect = (id: string) => {
+    if (comparePlayers.includes(id)) {
+      setComparePlayers(comparePlayers.filter(p => p !== id));
+    } else {
+      if (comparePlayers.length < 2) {
+        setComparePlayers([...comparePlayers, id]);
+      } else {
+        setComparePlayers([comparePlayers[1], id]);
+      }
+    }
+  };
+
+  const renderStarComparison = () => {
+    const p1 = stars.find(s => s.id === comparePlayers[0]);
+    const p2 = stars.find(s => s.id === comparePlayers[1]);
+
+    if (!p1 || !p2) {
+      return (
+        <div className="bg-[#121E36] border-4 border-[#0B1120] p-6 rounded-3xl text-center font-bold text-white/70 select-none shadow-[4px_4px_0px_0px_#0B1120] border-dashed">
+          Select 2 players above to see live tactical overlays and stats comparison.
+        </div>
+      );
+    }
+
+    return (
+      <div className="glass-panel p-6 rounded-3xl border-4 border-[#E5399A] bg-[#070D1E] shadow-[8px_8px_0px_0px_#0B1120] space-y-6">
+        <h4 className="text-sm font-display font-black text-white uppercase tracking-wider text-center border-b-4 border-[#0B1120] pb-2">
+          📊 Tactical Head-to-Head Comparison
+        </h4>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div className="space-y-4">
+            <div className="flex justify-between text-xs font-black uppercase text-white px-2">
+              <span>{p1.name}</span>
+              <span className="text-[#0EA5E9]">Metrics Comparison</span>
+              <span>{p2.name}</span>
+            </div>
+
+            {[
+              { label: 'Excitement Index (%)', key: 'Excitement' },
+              { label: 'Dribbles Success (%)', key: 'Dribbles' },
+              { label: 'Top Sprint Speed (km/h)', key: 'Speed' },
+              { label: 'Tactical Dribbling (%)', key: 'Dribbling' }
+            ].map(stat => {
+              const val1 = (p1.stats as any)[stat.key];
+              const val2 = (p2.stats as any)[stat.key];
+              return (
+                <div key={stat.key} className="space-y-1">
+                  <span className="block text-[10px] font-black uppercase text-white/60 text-center">{stat.label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 text-right font-mono font-black text-xs text-white">{val1}</span>
+                    <div className="flex-1 h-6 bg-[#121E36] border-2 border-[#0B1120] rounded-full overflow-hidden flex relative">
+                      <div className="w-1/2 flex justify-end">
+                        <div 
+                          className="h-full" 
+                          style={{ 
+                            width: `${(val1 / 100) * 100}%`,
+                            backgroundColor: p1.accent,
+                            borderRadius: '9999px 0 0 9999px'
+                          }} 
+                        />
+                      </div>
+                      <div className="w-1/2">
+                        <div 
+                          className="h-full" 
+                          style={{ 
+                            width: `${(val2 / 100) * 100}%`,
+                            backgroundColor: p2.accent,
+                            borderRadius: '0 9999px 9999px 0'
+                          }} 
+                        />
+                      </div>
+                    </div>
+                    <span className="w-8 text-left font-mono font-black text-xs text-white">{val2}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="bg-[#121E36] border-4 border-[#0B1120] p-4 rounded-2xl text-xs space-y-3 font-semibold text-left">
+            <span className="text-[9px] bg-[#16A34A] text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider">STADIA.AI Tactical Engine</span>
+            <p className="text-white leading-relaxed">
+              <strong>{p1.name} ({p1.country})</strong> is currently occupying <strong>{p1.zone}</strong> as an active playmaker. In comparison, <strong>{p2.name} ({p2.country})</strong> is operating in <strong>{p2.zone}</strong> showing a high sprint speed and direct transition into the penalty box.
+            </p>
+            <p className="text-white/80 leading-relaxed text-[11px] border-t border-[#0B1120] pt-2">
+              *Tactical Suggestion:* Live congestion metrics near {p1.zone} ({p1.name}'s area) show excitement surges (current Excitement: {p1.stats.Excitement}%). Reroute through concourse if leaving from {p2.zone} ({p2.name}'s area) due to Gate B compression.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // Initial onboarding fill for quick demo
   const fillDemoProfile = () => {
     setName('Carlos Martinez');
@@ -323,6 +456,75 @@ export const FanView: React.FC = () => {
             }}
             isWheelchairUser={needs.includes('Wheelchair / Step-Free')}
           />
+        </div>
+
+        {/* World Cup Star Tracking Dashboard (Star Companion) */}
+        <div className="lg:col-span-12 w-full space-y-6 mt-8">
+          <div className="border-4 border-[#0B1120] p-6 rounded-3xl bg-[#121E36] shadow-[8px_8px_0px_0px_#0B1120] text-center space-y-2">
+            <span className="text-[9px] bg-[#D4A017] text-[#0B1120] px-2.5 py-1 rounded-full font-black uppercase tracking-wider">
+              🏆 Live Tournament Tracking
+            </span>
+            <h3 className="text-xl sm:text-2xl font-display font-black text-white uppercase leading-none mt-2">
+              STADIA.AI Star Companion
+            </h3>
+            <p className="text-xs text-white/70 max-w-xl mx-auto font-medium">
+              Ingesting real-time tracking metrics for tournament superstars. Select two players below to view head-to-head positioning heatmaps and tactical overlays.
+            </p>
+          </div>
+
+          {/* Player Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {stars.map(player => {
+              const isSelected = comparePlayers.includes(player.id);
+              return (
+                <div 
+                  key={player.id}
+                  onClick={() => togglePlayerSelect(player.id)}
+                  className={`border-4 rounded-3xl p-5 cursor-pointer select-none transition-all flex flex-col justify-between relative overflow-hidden ${
+                    isSelected 
+                      ? 'border-[#E5399A] bg-[#121E36] shadow-[6px_6px_0px_0px_#FAF7F0] scale-[1.02]' 
+                      : 'border-[#0B1120] bg-[#121E36]/50 hover:bg-[#121E36] shadow-[4px_4px_0px_0px_#0B1120]'
+                  }`}
+                  style={{ minHeight: '260px' }}
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl opacity-20" style={{ backgroundColor: player.accent }} />
+                  
+                  <div className="flex justify-between items-start z-10">
+                    <div>
+                      <span className="text-[9px] uppercase font-black px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: player.accent }}>
+                        {player.country}
+                      </span>
+                      <h4 className="text-lg font-display font-black text-white uppercase mt-1 leading-none">{player.name}</h4>
+                    </div>
+                    <span className="font-scoreboard text-4xl text-white opacity-40 leading-none">#{player.number}</span>
+                  </div>
+
+                  <div className="h-28 my-2 relative flex items-center justify-center">
+                    <img 
+                      src={player.image} 
+                      alt="" 
+                      draggable="false"
+                      className="h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)]"
+                    />
+                  </div>
+
+                  <div className="border-t-2 border-[#0B1120] pt-2 flex justify-between items-end text-xs z-10">
+                    <div className="text-left">
+                      <span className="block text-[8px] uppercase text-white/50">Tracking Zone</span>
+                      <span className="font-bold text-white">{player.zone}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="block text-[8px] uppercase text-white/50">Excitement</span>
+                      <span className="font-bold font-mono text-white">{player.stats.Excitement}%</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Render Stats Comparison */}
+          {renderStarComparison()}
         </div>
 
       </div>
@@ -668,6 +870,76 @@ export const FanView: React.FC = () => {
         )}
 
       </div>
+
+      {/* World Cup Star Tracking Dashboard (Star Companion) */}
+      <div className="lg:col-span-3 w-full space-y-6 mt-12 border-t-4 border-dashed border-[#0B1120] pt-8">
+        <div className="border-4 border-[#0B1120] p-6 rounded-3xl bg-[#121E36] shadow-[8px_8px_0px_0px_#0B1120] text-center space-y-2">
+          <span className="text-[9px] bg-[#D4A017] text-[#0B1120] px-2.5 py-1 rounded-full font-black uppercase tracking-wider">
+            🏆 Live Tournament Tracking
+          </span>
+          <h3 className="text-xl sm:text-2xl font-display font-black text-white uppercase leading-none mt-2">
+            STADIA.AI Star Companion
+          </h3>
+          <p className="text-xs text-white/70 max-w-xl mx-auto font-medium">
+            Ingesting real-time tracking metrics for tournament superstars. Select two players below to view head-to-head positioning heatmaps and tactical overlays.
+          </p>
+        </div>
+
+        {/* Player Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {stars.map(player => {
+            const isSelected = comparePlayers.includes(player.id);
+            return (
+              <div 
+                key={player.id}
+                onClick={() => togglePlayerSelect(player.id)}
+                className={`border-4 rounded-3xl p-5 cursor-pointer select-none transition-all flex flex-col justify-between relative overflow-hidden ${
+                  isSelected 
+                    ? 'border-[#E5399A] bg-[#121E36] shadow-[6px_6px_0px_0px_#FAF7F0] scale-[1.02]' 
+                    : 'border-[#0B1120] bg-[#121E36]/50 hover:bg-[#121E36] shadow-[4px_4px_0px_0px_#0B1120]'
+                }`}
+                style={{ minHeight: '260px' }}
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl opacity-20" style={{ backgroundColor: player.accent }} />
+                
+                <div className="flex justify-between items-start z-10">
+                  <div>
+                    <span className="text-[9px] uppercase font-black px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: player.accent }}>
+                      {player.country}
+                    </span>
+                    <h4 className="text-lg font-display font-black text-white uppercase mt-1 leading-none">{player.name}</h4>
+                  </div>
+                  <span className="font-scoreboard text-4xl text-white opacity-40 leading-none">#{player.number}</span>
+                </div>
+
+                <div className="h-28 my-2 relative flex items-center justify-center">
+                  <img 
+                    src={player.image} 
+                    alt="" 
+                    draggable="false"
+                    className="h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)]"
+                  />
+                </div>
+
+                <div className="border-t-2 border-[#0B1120] pt-2 flex justify-between items-end text-xs z-10">
+                  <div className="text-left">
+                    <span className="block text-[8px] uppercase text-white/50">Tracking Zone</span>
+                    <span className="font-bold text-white">{player.zone}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="block text-[8px] uppercase text-white/50">Excitement</span>
+                    <span className="font-bold font-mono text-white">{player.stats.Excitement}%</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Render Stats Comparison */}
+        {renderStarComparison()}
+      </div>
+
     </div>
   );
 };

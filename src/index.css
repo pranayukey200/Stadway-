@@ -7,11 +7,11 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-scoreboard: 'Bebas Neue', sans-serif;
 
-  /* Light Maximalist Base Colors */
-  --color-bg-base: #FAF7F0;
-  --color-fg-base: #0B1120;
-  --color-muted-base: #EAF3EC;
-  --color-border-base: #0E7C3A;
+  /* World Cup Red & Blue Poster Base Colors */
+  --color-bg-base: #070D1E;
+  --color-fg-base: #FAF7F0;
+  --color-muted-base: #121E36;
+  --color-border-base: #E5399A;
 
   /* 5 Accents */
   --color-accent-green: #16A34A;
@@ -50,13 +50,13 @@ main {
 
 /* Accessibility custom helpers */
 .high-contrast {
-  --color-bg-base: #FFFFFF;
-  --color-fg-base: #000000;
-  --color-accent-green: #008000;
-  --color-accent-gold: #8B8000;
-  --color-accent-blue: #00008B;
-  --color-accent-orange: #FF4500;
-  --color-accent-pink: #C71585;
+  --color-bg-base: #000000;
+  --color-fg-base: #FFFFFF;
+  --color-accent-green: #00FF66;
+  --color-accent-gold: #FFCC00;
+  --color-accent-blue: #00CCFF;
+  --color-accent-orange: #FF6600;
+  --color-accent-pink: #FF007F;
 }
 
 .text-scale-lg {

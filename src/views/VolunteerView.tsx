@@ -109,50 +109,50 @@ export const VolunteerView: React.FC = () => {
   });
 
   return (
-    <div className="max-w-4xl mx-auto my-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-left font-sans">
+    <div className="max-w-4xl mx-auto my-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-left font-sans text-white">
       
       {/* VOLUNTEER IDENTITY PANEL */}
       <div className="md:col-span-1 space-y-6">
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120] text-left space-y-4">
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120] text-left space-y-4">
           <div className="flex items-center gap-2 mb-2">
             <User className="text-[#16A34A]" />
-            <h3 className="font-display font-black text-[#0B1120] uppercase text-base">Active Responder</h3>
+            <h3 className="font-display font-black text-white uppercase text-base">Active Responder</h3>
           </div>
 
           <div>
-            <label className="block text-[10px] uppercase font-black text-[#0B1120]/70 mb-1.5">Select Profile</label>
+            <label className="block text-[10px] uppercase font-black text-white/70 mb-1.5">Select Profile</label>
             <select
               value={selectedVol?.id || ''}
               onChange={(e) => {
                 const vol = volunteers.find(v => v.id === e.target.value);
                 if (vol) setSelectedVol(vol);
               }}
-              className="w-full bg-white border-4 border-[#0B1120] p-2 rounded-xl text-xs text-[#0B1120] font-bold focus:outline-none focus:border-[#16A34A]"
+              className="w-full bg-[#0B1120] border-4 border-[#E5399A] p-2 rounded-xl text-xs text-white font-bold focus:outline-none focus:border-[#16A34A]"
             >
               {volunteers.map(v => (
-                <option key={v.id} value={v.id}>{v.name}</option>
+                <option key={v.id} value={v.id} className="bg-[#0B1120] text-white">{v.name}</option>
               ))}
             </select>
           </div>
 
           {selectedVol && (
             <div className="space-y-3.5 pt-2 text-xs">
-              <div className="bg-white border-4 border-[#0B1120] p-2.5 rounded-xl shadow-[2px_2px_0px_0px_#0B1120]">
-                <span className="block text-[10px] text-[#0B1120]/70 font-black mb-1 uppercase">Languages Spoken</span>
+              <div className="bg-[#0B1120] border-4 border-[#0B1120] p-2.5 rounded-xl shadow-[2px_2px_0px_0px_#0B1120]">
+                <span className="block text-[10px] text-white/70 font-black mb-1 uppercase">Languages Spoken</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {selectedVol.languages.map(lang => (
-                    <span key={lang} className="text-[10px] bg-[#EAF3EC] text-[#16A34A] border-2 border-[#0B1120] px-2 py-0.5 rounded-lg flex items-center gap-1 font-black">
+                    <span key={lang} className="text-[10px] bg-[#121E36] text-[#16A34A] border-2 border-[#0B1120] px-2 py-0.5 rounded-lg flex items-center gap-1 font-black">
                       <Languages size={10} /> {lang}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-white border-4 border-[#0B1120] p-2.5 rounded-xl shadow-[2px_2px_0px_0px_#0B1120]">
-                <span className="block text-[10px] text-[#0B1120]/70 font-black mb-1 uppercase">Skills & Roles</span>
+              <div className="bg-[#0B1120] border-4 border-[#0B1120] p-2.5 rounded-xl shadow-[2px_2px_0px_0px_#0B1120]">
+                <span className="block text-[10px] text-white/70 font-black mb-1 uppercase">Skills & Roles</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {selectedVol.skills.map(skill => (
-                    <span key={skill} className="text-[10px] bg-[#FAF7F0] text-[#D4A017] border-2 border-[#0B1120] px-2 py-0.5 rounded-lg font-black">
+                    <span key={skill} className="text-[10px] bg-[#121E36] text-[#D4A017] border-2 border-[#0B1120] px-2 py-0.5 rounded-lg font-black">
                       {skill}
                     </span>
                   ))}
@@ -160,8 +160,8 @@ export const VolunteerView: React.FC = () => {
               </div>
 
               <div className="flex justify-between items-center text-xs px-1 pt-1.5 border-t-2 border-[#0B1120]">
-                <span className="text-[#0B1120]/70 font-black uppercase">Current Station:</span>
-                <span className="font-bold text-[#0B1120] flex items-center gap-1">
+                <span className="text-white/70 font-black uppercase">Current Station:</span>
+                <span className="font-bold text-white flex items-center gap-1">
                   <Navigation size={12} className="text-[#D4A017]" />
                   {selectedVol.currentZone.replace('_', ' ')}
                 </span>
@@ -176,19 +176,19 @@ export const VolunteerView: React.FC = () => {
         <div className="flex justify-between items-center px-1">
           <div className="flex items-center gap-2">
             <ShieldAlert className="text-[#E5399A]" size={20} />
-            <h3 className="font-display font-black text-[#0B1120] text-lg uppercase leading-none">Smart Dispatch Queue</h3>
+            <h3 className="font-display font-black text-white text-lg uppercase leading-none">Smart Dispatch Queue</h3>
           </div>
-          <span className="text-xs bg-[#EAF3EC] border-4 border-[#0E7C3A] px-3 py-1 rounded-full text-[#0B1120] font-black uppercase">
+          <span className="text-xs bg-[#121E36] border-4 border-[#0E7C3A] px-3 py-1 rounded-full text-white font-black uppercase">
             {matchedTasks.length} Live Tasks
           </span>
         </div>
 
         {matchedTasks.length === 0 ? (
-          <div className="glass-panel p-10 rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120] flex flex-col items-center justify-center text-center space-y-3">
+          <div className="glass-panel p-10 rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120] flex flex-col items-center justify-center text-center space-y-3">
             <CheckCircle className="text-[#16A34A] animate-pulse" size={32} />
             <div className="space-y-1">
-              <p className="text-sm font-display font-black text-[#0B1120] uppercase">Queue Clear</p>
-              <p className="text-xs text-[#0B1120]/60 font-semibold">No active incidents require language matches or waypoint dispatch.</p>
+              <p className="text-sm font-display font-black text-white uppercase">Queue Clear</p>
+              <p className="text-xs text-white/60 font-semibold">No active incidents require language matches or waypoint dispatch.</p>
             </div>
           </div>
         ) : (
@@ -200,32 +200,32 @@ export const VolunteerView: React.FC = () => {
                   key={task.id} 
                   className={`glass-panel p-5 rounded-3xl border-4 transition-all duration-300 ${
                     isAccepted 
-                      ? 'border-[#16A34A] bg-[#EAF3EC] shadow-[6px_6px_0px_0px_#0B1120]' 
-                      : 'border-[#0B1120] bg-white shadow-[6px_6px_0px_0px_#E5399A]'
+                      ? 'border-[#16A34A] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120]' 
+                      : 'border-[#0B1120] bg-[#121E36]/40 shadow-[6px_6px_0px_0px_#E5399A]'
                   }`}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex flex-wrap gap-2">
-                      <span className="text-[10px] uppercase font-black bg-[#EAF3EC] text-[#E5399A] border-2 border-[#0B1120] px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] uppercase font-black bg-[#0B1120] text-[#E5399A] border-2 border-[#0B1120] px-2 py-0.5 rounded-full">
                         {task.requiredSkill}
                       </span>
-                      <span className="text-[10px] uppercase font-black bg-[#EAF3EC] text-[#16A34A] border-2 border-[#0B1120] px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] uppercase font-black bg-[#0B1120] text-[#16A34A] border-2 border-[#0B1120] px-2 py-0.5 rounded-full">
                         Language: {task.requestedLanguage}
                       </span>
                     </div>
-                    <span className="text-[10px] text-[#0B1120]/60 font-mono font-bold">
+                    <span className="text-[10px] text-white/60 font-mono font-bold">
                       {new Date(task.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
 
-                  <p className="text-sm text-[#0B1120] font-bold mb-4 leading-snug">
+                  <p className="text-sm text-white font-bold mb-4 leading-snug">
                     {task.description}
                   </p>
 
                   <div className="flex items-center justify-between border-t-2 border-[#0B1120] pt-3.5">
-                    <div className="flex items-center gap-1 text-xs text-[#0B1120]/70 font-black uppercase">
+                    <div className="flex items-center gap-1 text-xs text-white/70 font-black uppercase">
                       <Navigation size={12} className="text-[#D4A017] animate-pulse" />
-                      Dispatch target: <span className="font-bold text-[#0B1120]">{task.location}</span>
+                      Dispatch target: <span className="font-bold text-white">{task.location}</span>
                     </div>
 
                     <div className="flex gap-2">

@@ -28,21 +28,21 @@ const App: React.FC = () => {
     const pct = target.scrollTop / scrollHeight;
 
     // Define colors to interpolate based on scroll depth:
-    // 0.00 (Hero) -> #FAF7F0 (warm white)
-    // 0.15 (Wayfinding) -> #F0F9FF (sky blue)
-    // 0.35 (Crowd & Safety) -> #F0FDF4 (pitch green)
-    // 0.55 (Accessibility) -> #FDF2F8 (magenta pink)
-    // 0.70 (Transit/Sustainability) -> #FFF7ED (sunset orange)
-    // 0.85 (Operations) -> #FEFCE8 (gold yellow)
-    // 1.00 (Closing CTA) -> #FFF5F5 (crimson red)
+    // 0.00 (Hero) -> #070D1E (deep midnight blue)
+    // 0.15 (Wayfinding) -> #0F172A (dark slate)
+    // 0.35 (Crowd & Safety) -> #064E3B (dark green)
+    // 0.55 (Accessibility) -> #701A75 (dark magenta)
+    // 0.70 (Transit/Sustainability) -> #7C2D12 (dark orange)
+    // 0.85 (Operations) -> #78350F (dark gold)
+    // 1.00 (Closing CTA) -> #7F1D1D (dark crimson red)
     const steps = [
-      { pct: 0.0, color: [250, 247, 240] },
-      { pct: 0.15, color: [240, 249, 255] },
-      { pct: 0.35, color: [240, 253, 244] },
-      { pct: 0.55, color: [253, 242, 248] },
-      { pct: 0.70, color: [255, 247, 237] },
-      { pct: 0.85, color: [254, 252, 232] },
-      { pct: 1.0, color: [255, 245, 245] }
+      { pct: 0.0, color: [7, 13, 30] },
+      { pct: 0.15, color: [15, 23, 42] },
+      { pct: 0.35, color: [6, 78, 59] },
+      { pct: 0.55, color: [112, 26, 117] },
+      { pct: 0.70, color: [124, 45, 18] },
+      { pct: 0.85, color: [120, 53, 15] },
+      { pct: 1.0, color: [127, 29, 29] }
     ];
 
     let start = steps[0];
@@ -67,7 +67,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     // Reset background base color when switching personas
-    document.documentElement.style.setProperty('--color-bg-base', '#FAF7F0');
+    document.documentElement.style.setProperty('--color-bg-base', '#070D1E');
   }, [persona]);
 
   useEffect(() => {
@@ -134,7 +134,7 @@ const App: React.FC = () => {
       }`}
       style={{
         backgroundColor: 'var(--color-bg-base)',
-        backgroundImage: `linear-gradient(to bottom, rgba(250, 247, 240, 0.45) 0%, rgba(250, 247, 240, 0.85) 100%), url('/assets/worldcup_backdrop.png')`,
+        backgroundImage: `linear-gradient(to bottom, rgba(7, 13, 30, 0.55) 0%, rgba(7, 13, 30, 0.9) 100%), url('/assets/worldcup_backdrop.png')`,
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed',
         backgroundPosition: 'center',
