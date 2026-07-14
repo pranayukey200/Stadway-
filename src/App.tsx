@@ -126,12 +126,20 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className={`min-h-screen bg-transparent text-[#0B1120] flex flex-col font-sans transition-all duration-300 relative ${
+      className={`min-h-screen text-[#0B1120] flex flex-col font-sans transition-all duration-300 relative ${
         accessibilitySettings.highContrast ? 'high-contrast' : ''
       } ${
         accessibilitySettings.textScale === 'lg' ? 'text-scale-lg' : 
         accessibilitySettings.textScale === 'xl' ? 'text-scale-xl' : ''
       }`}
+      style={{
+        backgroundColor: 'var(--color-bg-base)',
+        backgroundImage: `linear-gradient(to bottom, rgba(250, 247, 240, 0.45) 0%, rgba(250, 247, 240, 0.85) 100%), url('/assets/worldcup_backdrop.png')`,
+        backgroundSize: 'cover',
+        backgroundAttachment: 'fixed',
+        backgroundPosition: 'center',
+        backgroundBlendMode: 'overlay'
+      }}
     >
       {/* 3D Stadium Background Canvas */}
       <ThreeDBackground />

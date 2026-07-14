@@ -168,13 +168,8 @@ export const ThreeDBackground: React.FC = () => {
     };
 
     const render = () => {
-      // Gradient background - Warm stadium-floodlight white (#FAF7F0)
-      const grad = ctx.createRadialGradient(width / 2, height * 0.35, 0, width / 2, height * 0.35, Math.max(width, height) * 0.7);
-      grad.addColorStop(0, '#FFFDF9');
-      grad.addColorStop(0.5, '#FAF7F0');
-      grad.addColorStop(1, '#EFECE5');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, width, height);
+      // Clear canvas to let the HTML World Cup themed background show through
+      ctx.clearRect(0, 0, width, height);
 
       const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

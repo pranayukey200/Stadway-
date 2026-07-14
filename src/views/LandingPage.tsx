@@ -223,13 +223,21 @@ export const LandingPage: React.FC = () => {
           <div className="lg:col-span-7 bg-[#EAF3EC] border-4 border-[#0B1120] p-6 rounded-3xl shadow-[6px_6px_0px_0px_#0B1120] relative">
             <h3 className="text-xs font-black uppercase tracking-wider text-[#0B1120]/60 mb-4">Interactive HUD Waypoint</h3>
             <div className="h-48 border-4 border-dashed border-[#0E7C3A] bg-[#FAF7F0] rounded-2xl flex flex-col justify-center items-center p-4 text-center relative overflow-hidden">
-              <div className="absolute top-2 left-2 flex gap-1.5">
+              {/* Soccer Players Watermark Illustration */}
+              <img 
+                src="/assets/players_action.png" 
+                alt="" 
+                draggable="false"
+                className="absolute right-[-20px] bottom-[-20px] w-40 h-40 object-contain opacity-15 pointer-events-none select-none z-0" 
+                aria-hidden="true"
+              />
+              <div className="absolute top-2 left-2 flex gap-1.5 z-10">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#E5399A]"></span>
                 <span className="w-2.5 h-2.5 rounded-full bg-[#FB6B1E]"></span>
               </div>
-              <Navigation size={32} className="text-[#0EA5E9] animate-bounce mb-2" />
-              <p className="text-xs font-black uppercase text-[#0B1120]">Route: Section B → Concourse North → Gate A</p>
-              <p className="text-[10px] font-bold text-[#16A34A] mt-1 uppercase">Recommended path is 100% congestion-free</p>
+              <Navigation size={32} className="text-[#0EA5E9] animate-bounce mb-2 relative z-10" />
+              <p className="text-xs font-black uppercase text-[#0B1120] relative z-10">Route: Section B → Concourse North → Gate A</p>
+              <p className="text-[10px] font-bold text-[#16A34A] mt-1 uppercase relative z-10">Recommended path is 100% congestion-free</p>
             </div>
           </div>
         </div>
