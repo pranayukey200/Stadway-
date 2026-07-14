@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-describe('StadWay Accessibility & Semantic HTML Audits', () => {
+describe('StandWay Accessibility & Semantic HTML Audits', () => {
   it('should verify components use semantic HTML5 elements', () => {
     // Audit main layout structure used in App.tsx
     const semanticElements = ['header', 'main', 'aside', 'footer', 'nav'];

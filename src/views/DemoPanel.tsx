@@ -167,7 +167,7 @@ export const DemoPanel: React.FC = () => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Sliders className="text-[#16A34A]" size={24} />
-          <h2 className="text-xl font-display font-black text-[#0B1120] uppercase tracking-tight">STADIA.AI Simulator</h2>
+          <h2 className="text-xl font-display font-black text-[#0B1120] uppercase tracking-tight">StandWay Simulator</h2>
         </div>
         <span className="text-xs bg-[#EAF3EC] text-[#0B1120] px-3 py-1 border-2 border-[#0B1120] font-black uppercase rounded-full">
           Live Sync Mode

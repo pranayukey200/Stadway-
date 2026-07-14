@@ -71,6 +71,28 @@ export const FanView: React.FC = () => {
       accent: '#D4A017',
       bgColor: 'rgba(212, 160, 23, 0.15)',
       stats: { Excitement: 92, Dribbles: 96, Speed: 88, Dribbling: 98, Positioning: 'Left Flank Wing' }
+    },
+    { 
+      id: 'mbappe', 
+      name: 'Kylian Mbappé', 
+      number: '10', 
+      country: 'France', 
+      zone: 'Section C', 
+      image: '/assets/player_blue.png', 
+      accent: '#0055A5',
+      bgColor: 'rgba(0, 85, 165, 0.15)',
+      stats: { Excitement: 96, Dribbles: 89, Speed: 97, Dribbling: 91, Positioning: 'Left Forward Wing' }
+    },
+    { 
+      id: 'haaland', 
+      name: 'Erling Haaland', 
+      number: '9', 
+      country: 'Norway', 
+      zone: 'Section A', 
+      image: '/assets/player_gold.png', 
+      accent: '#BA0C2F',
+      bgColor: 'rgba(186, 12, 47, 0.15)',
+      stats: { Excitement: 94, Dribbles: 81, Speed: 93, Dribbling: 84, Positioning: 'Target Striker' }
     }
   ];
 
@@ -155,7 +177,7 @@ export const FanView: React.FC = () => {
           </div>
 
           <div className="bg-[#121E36] border-4 border-[#0B1120] p-4 rounded-2xl text-xs space-y-3 font-semibold text-left">
-            <span className="text-[9px] bg-[#16A34A] text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider">STADIA.AI Tactical Engine</span>
+            <span className="text-[9px] bg-[#16A34A] text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider">StandWay Tactical Engine</span>
             <p className="text-white leading-relaxed">
               <strong>{p1.name} ({p1.country})</strong> is currently occupying <strong>{p1.zone}</strong> as an active playmaker. In comparison, <strong>{p2.name} ({p2.country})</strong> is operating in <strong>{p2.zone}</strong> showing a high sprint speed and direct transition into the penalty box.
             </p>
@@ -206,7 +228,7 @@ export const FanView: React.FC = () => {
     // Trigger automatic welcome question
     addChatMessage({
       sender: 'assistant',
-      text: `Welcome to the stadium, ${profile.name}! I am StadWay, your AI assistant. How can I help you navigate today?`
+      text: `Welcome to the stadium, ${profile.name}! I am StandWay, your AI assistant. How can I help you navigate today?`
     });
   };
 
@@ -324,13 +346,13 @@ export const FanView: React.FC = () => {
       <div className="max-w-6xl mx-auto my-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start animate-fade-in text-left">
         
         {/* Onboarding Form Column (5 cols) */}
-        <div className="lg:col-span-5 p-6 glass-panel rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120] relative overflow-hidden animate-float">
+        <div className="lg:col-span-5 p-6 glass-panel rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120] relative overflow-hidden animate-float text-white">
           <div className="absolute top-0 right-0 w-24 h-24 bg-[#D4A017]/10 rounded-full blur-2xl"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#16A34A]/10 rounded-full blur-2xl"></div>
           
           <div className="text-center mb-6">
-            <h2 className="text-xl font-display font-black tracking-tight text-[#0B1120] uppercase">Initialize Companion</h2>
-            <p className="text-xs text-[#0B1120]/70 mt-1">Set up your profile to activate the STADIA.AI agents.</p>
+            <h2 className="text-xl font-display font-black tracking-tight text-white uppercase">Initialize Companion</h2>
+            <p className="text-xs text-white/70 mt-1">Set up your profile to activate the StandWay agents.</p>
           </div>
 
           {errorMsg && (
@@ -341,58 +363,58 @@ export const FanView: React.FC = () => {
 
           <form onSubmit={handleOnboardingSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-black text-[#0B1120] uppercase tracking-wider mb-1.5">Fan Name</label>
+              <label className="block text-xs font-black text-white/80 uppercase tracking-wider mb-1.5">Fan Name</label>
               <input
                 type="text"
                 placeholder="e.g. Carlos Martinez"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-white border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-[#0B1120] font-bold placeholder-silver-500 focus:outline-none focus:border-[#16A34A]"
+                className="w-full bg-[#0B1120] border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-white font-bold placeholder-silver-500 focus:outline-none focus:border-[#16A34A]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-black text-[#0B1120] uppercase tracking-wider mb-1.5">Ticket Zone</label>
+                <label className="block text-xs font-black text-white/80 uppercase tracking-wider mb-1.5">Ticket Zone</label>
                 <input
                   type="text"
                   readOnly
                   disabled
                   value={ticketZone.replace('Zone_', 'Section ')}
-                  className="w-full bg-[#EAF3EC] border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-[#0B1120]/70 cursor-not-allowed font-bold"
+                  className="w-full bg-[#0B1120] border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-white/75 cursor-not-allowed font-bold"
                 />
               </div>
               <div>
-                <label className="block text-xs font-black text-[#0B1120] uppercase tracking-wider mb-1.5">Selected Seat</label>
+                <label className="block text-xs font-black text-white/80 uppercase tracking-wider mb-1.5">Selected Seat</label>
                 <input
                   type="text"
                   readOnly
                   disabled
                   placeholder="Select seat on right..."
                   value={seat}
-                  className="w-full bg-[#EAF3EC] border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-[#0B1120]/70 cursor-not-allowed placeholder-silver-500 font-bold"
+                  className="w-full bg-[#0B1120] border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-white/75 cursor-not-allowed placeholder-silver-500 font-bold"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-[#0B1120] uppercase tracking-wider mb-1.5">Language</label>
+              <label className="block text-xs font-black text-white/80 uppercase tracking-wider mb-1.5">Language</label>
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="w-full bg-white border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-[#0B1120] font-bold focus:outline-none focus:border-[#16A34A]"
+                className="w-full bg-[#0B1120] border-4 border-[#0B1120] p-2.5 rounded-xl text-sm text-white font-bold focus:outline-none focus:border-[#16A34A]"
               >
-                <option value="English">English</option>
-                <option value="Spanish">Spanish (Español)</option>
-                <option value="French">French (Français)</option>
-                <option value="Hindi">Hindi (हिन्दी)</option>
-                <option value="Marathi">Marathi (मराठी)</option>
+                <option value="English" className="bg-[#0B1120] text-white">English</option>
+                <option value="Spanish" className="bg-[#0B1120] text-white">Spanish (Español)</option>
+                <option value="French" className="bg-[#0B1120] text-white">French (Français)</option>
+                <option value="Hindi" className="bg-[#0B1120] text-white">Hindi (हिन्दी)</option>
+                <option value="Marathi" className="bg-[#0B1120] text-white">Marathi (मराठी)</option>
               </select>
             </div>
 
             {/* Accessibility Requirements */}
             <div>
-              <label className="block text-xs font-black text-[#0B1120] uppercase tracking-wider mb-1.5 flex items-center gap-1">
+              <label className="block text-xs font-black text-white/80 uppercase tracking-wider mb-1.5 flex items-center gap-1">
                 <Accessibility size={14} className="text-[#E5399A]" />
                 Accessibility Accommodations
               </label>
@@ -409,10 +431,10 @@ export const FanView: React.FC = () => {
                       key={item.id}
                       type="button"
                       onClick={() => toggleNeed(item.label)}
-                      className={`py-2 px-3 rounded-xl border-4 text-xs font-black text-center transition-all ${
+                      className={`py-2 px-3 rounded-xl border-4 text-xs font-black text-center transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-[#0B1120] bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_#0B1120]'
-                          : 'border-[#0B1120] bg-white text-[#0B1120]/80 hover:bg-[#EAF3EC]'
+                          ? 'border-white bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_#0B1120]'
+                          : 'border-[#0B1120] bg-[#0B1120] text-white/80 hover:bg-[#121E36]'
                       }`}
                     >
                       {item.label}
@@ -426,13 +448,13 @@ export const FanView: React.FC = () => {
               <button
                 type="button"
                 onClick={fillDemoProfile}
-                className="w-1/3 py-3 border-4 border-[#0B1120] bg-[#FAF7F0] hover:bg-[#EAF3EC] text-[#0B1120] rounded-xl text-xs font-black transition-all cursor-pointer text-center font-display uppercase tracking-wider shadow-[3px_3px_0px_0px_#0B1120]"
+                className="w-1/3 py-3 border-4 border-white bg-[#121E36] hover:bg-[#121E36]/80 text-white rounded-xl text-xs font-black transition-all cursor-pointer text-center font-display uppercase tracking-wider shadow-[3px_3px_0px_0px_#0B1120]"
               >
                 Fill Demo
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-[#16A34A] text-white border-4 border-[#0B1120] rounded-xl text-sm font-black transition-all shadow-[3px_3px_0px_0px_#0B1120] hover:translate-y-[-1px] cursor-pointer font-display uppercase tracking-wider"
+                className="flex-1 py-3 bg-[#16A34A] text-white border-4 border-white rounded-xl text-sm font-black transition-all shadow-[3px_3px_0px_0px_#0B1120] hover:translate-y-[-1px] cursor-pointer font-display uppercase tracking-wider"
               >
                 Start Companion
               </button>
@@ -465,7 +487,7 @@ export const FanView: React.FC = () => {
               🏆 Live Tournament Tracking
             </span>
             <h3 className="text-xl sm:text-2xl font-display font-black text-white uppercase leading-none mt-2">
-              STADIA.AI Star Companion
+              StandWay Star Companion
             </h3>
             <p className="text-xs text-white/70 max-w-xl mx-auto font-medium">
               Ingesting real-time tracking metrics for tournament superstars. Select two players below to view head-to-head positioning heatmaps and tactical overlays.
@@ -473,7 +495,7 @@ export const FanView: React.FC = () => {
           </div>
 
           {/* Player Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {stars.map(player => {
               const isSelected = comparePlayers.includes(player.id);
               return (
@@ -599,17 +621,17 @@ export const FanView: React.FC = () => {
       {/* CENTER COLUMN: AI Chat & Agent Reasoning Trail */}
       <div className="space-y-6 lg:col-span-2 text-left">
         {/* Chat Widget */}
-        <div className="glass-panel rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[8px_8px_0px_0px_#0EA5E9] flex flex-col h-[400px]">
+        <div className="glass-panel rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[8px_8px_0px_0px_#0EA5E9] flex flex-col h-[400px] text-white">
           {/* Chat Header */}
-          <div className="px-4 py-3 border-b-4 border-[#0E7C3A] bg-[#EAF3EC] flex items-center justify-between">
+          <div className="px-4 py-3 border-b-4 border-[#0E7C3A] bg-[#0B1120] flex items-center justify-between text-white">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 bg-[#16A34A] rounded-full animate-pulse"></div>
-              <span className="text-sm font-display font-black text-[#0B1120] uppercase">StadWay AI Agent Companion</span>
+              <span className="text-sm font-display font-black text-white uppercase">StandWay AI Agent Companion</span>
             </div>
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => setShowSettings(!showSettings)}
-                className="text-[#0B1120] hover:text-[#16A34A] transition"
+                className="text-white hover:text-[#16A34A] transition cursor-pointer"
               >
                 <Settings size={16} />
               </button>
@@ -617,31 +639,31 @@ export const FanView: React.FC = () => {
           </div>
 
           {/* Gen AI Active Status Banner */}
-          <div className="bg-[#FAF7F0] px-4 py-2 border-b-4 border-[#0B1120] flex flex-wrap items-center justify-between text-[11px] gap-2">
-            <div className="flex items-center gap-1.5 text-[#0B1120]/80 font-bold">
+          <div className="bg-[#0B1120] px-4 py-2 border-b-4 border-[#0B1120] flex flex-wrap items-center justify-between text-[11px] gap-2">
+            <div className="flex items-center gap-1.5 text-white/80 font-bold">
               <Sparkles className="text-[#D4A017] stroke-[2.5]" size={12} />
               <span>
-                Model: <strong className="text-[#0B1120] font-mono">llama-3.3-70b-versatile (Groq)</strong>
+                Model: <strong className="text-white font-mono">llama-3.3-70b-versatile (Groq)</strong>
                 {!localStorage.getItem('stadway_groq_key') && (
                   <span className="text-[#FB6B1E] ml-2 font-black animate-pulse">(Key Required - Click Settings Gear)</span>
                 )}
               </span>
             </div>
-            <span className="text-[9px] text-[#0B1120] bg-[#EAF3EC] px-2.5 py-0.5 border-2 border-[#0B1120] uppercase font-black tracking-wider rounded-full">
+            <span className="text-[9px] text-white bg-[#121E36] px-2.5 py-0.5 border-2 border-white uppercase font-black tracking-wider rounded-full">
               6 Specialized Agents Connected
             </span>
           </div>
 
           {/* Settings Sub-Panel */}
           {showSettings && (
-            <div className="bg-[#FAF7F0] border-b-4 border-[#0B1120] p-4 space-y-3 text-left">
+            <div className="bg-[#0B1120] border-b-4 border-[#0B1120] p-4 space-y-3 text-left">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Contrast Mode</label>
                   <button
                     onClick={() => setAccessibilitySettings({ highContrast: !accessibilitySettings.highContrast })}
-                    className={`w-full py-1.5 px-3 rounded-lg border-4 text-xs font-black ${
-                      accessibilitySettings.highContrast ? 'border-[#0B1120] bg-[#EAF3EC] text-[#0E7C3A]' : 'border-[#0B1120] text-[#0B1120]'
+                    className={`w-full py-1.5 px-3 rounded-lg border-4 text-xs font-black cursor-pointer ${
+                      accessibilitySettings.highContrast ? 'border-white bg-[#16A34A] text-white' : 'border-white bg-[#121E36] text-white'
                     }`}
                   >
                     High Contrast
@@ -651,8 +673,8 @@ export const FanView: React.FC = () => {
                   <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">Response Detail</label>
                   <button
                     onClick={() => setAccessibilitySettings({ simplifiedLanguage: !accessibilitySettings.simplifiedLanguage })}
-                    className={`w-full py-1.5 px-3 rounded-lg border-4 text-xs font-black ${
-                      accessibilitySettings.simplifiedLanguage ? 'border-[#0B1120] bg-[#EAF3EC] text-[#0E7C3A]' : 'border-[#0B1120] text-[#0B1120]'
+                    className={`w-full py-1.5 px-3 rounded-lg border-4 text-xs font-black cursor-pointer ${
+                      accessibilitySettings.simplifiedLanguage ? 'border-white bg-[#16A34A] text-white' : 'border-white bg-[#121E36] text-white'
                     }`}
                   >
                     Simplified Mode
@@ -669,15 +691,15 @@ export const FanView: React.FC = () => {
                     localStorage.setItem('stadway_groq_key', e.target.value.trim());
                     setErrorMsg(''); 
                   }}
-                  className="w-full bg-white border-4 border-[#0B1120] px-3 py-1.5 rounded-lg text-xs text-[#0B1120] placeholder-silver-500 font-bold focus:outline-none focus:border-[#16A34A]"
+                  className="w-full bg-[#121E36] border-4 border-white px-3 py-1.5 rounded-lg text-xs text-white placeholder-silver-500 font-bold focus:outline-none focus:border-[#16A34A]"
                 />
-                <span className="block text-[9px] text-[#0B1120]/60 mt-1 font-semibold">Allows direct browser calls to llama-3.3-70b-versatile. Kept secure in your browser.</span>
+                <span className="block text-[9px] text-white/60 mt-1 font-semibold">Allows direct browser calls to llama-3.3-70b-versatile. Kept secure in your browser.</span>
               </div>
             </div>
           )}
 
           {/* Messages list */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#FFFDF9]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#070D1E]">
             {chatHistory.map((msg) => (
               <div
                 key={msg.id}
@@ -689,13 +711,13 @@ export const FanView: React.FC = () => {
                   className={`px-4 py-2.5 rounded-2xl text-sm text-left border-4 border-[#0B1120] shadow-[3px_3px_0px_0px_#0B1120] ${
                     msg.sender === 'user'
                       ? 'bg-[#0EA5E9] text-white rounded-br-none'
-                      : 'bg-white text-[#0B1120] rounded-bl-none'
+                      : 'bg-[#121E36] text-white rounded-bl-none'
                   }`}
                 >
                   {msg.thinking ? (
                     <div className="flex items-center gap-2">
                       <RefreshCw className="animate-spin text-[#16A34A]" size={14} />
-                      <span className="text-xs text-[#0B1120]/60 italic font-bold">Orchestrating agents...</span>
+                      <span className="text-xs text-white/60 italic font-bold">Orchestrating agents...</span>
                     </div>
                   ) : (
                     msg.text
@@ -719,22 +741,22 @@ export const FanView: React.FC = () => {
           </div>
 
           {/* Quick Actions Footer */}
-          <div className="px-3 py-2.5 border-t-4 border-[#0B1120] flex gap-2 overflow-x-auto whitespace-nowrap bg-[#EAF3EC]">
+          <div className="px-3 py-2.5 border-t-4 border-[#0B1120] flex gap-2 overflow-x-auto whitespace-nowrap bg-[#0B1120]">
             <button
               onClick={() => submitQuery('How do I navigate to my seat?')}
-              className="px-3 py-1.5 rounded-lg border-4 border-[#0B1120] bg-white text-[11px] font-black text-[#0B1120] hover:bg-[#FAF7F0] shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
+              className="px-3 py-1.5 rounded-lg border-4 border-white bg-[#121E36] text-[11px] font-black text-white hover:bg-[#121E36]/80 shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
             >
               🗺️ Find Seat Route
             </button>
             <button
               onClick={() => submitQuery('Where is the nearest accessible restroom?')}
-              className="px-3 py-1.5 rounded-lg border-4 border-[#0B1120] bg-white text-[11px] font-black text-[#0B1120] hover:bg-[#FAF7F0] shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
+              className="px-3 py-1.5 rounded-lg border-4 border-white bg-[#121E36] text-[11px] font-black text-white hover:bg-[#121E36]/80 shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
             >
               ♿ Accessible Toilets
             </button>
             <button
               onClick={() => submitQuery('When should I leave to catch transit?')}
-              className="px-3 py-1.5 rounded-lg border-4 border-[#0B1120] bg-white text-[11px] font-black text-[#0B1120] hover:bg-[#FAF7F0] shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
+              className="px-3 py-1.5 rounded-lg border-4 border-white bg-[#121E36] text-[11px] font-black text-white hover:bg-[#121E36]/80 shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
             >
               🚆 Exit Transit
             </button>
@@ -765,25 +787,25 @@ export const FanView: React.FC = () => {
                   console.error(err);
                 }
               }}
-              className="px-3 py-1.5 rounded-lg border-4 border-[#0B1120] bg-[#E5399A] text-[11px] font-black text-white hover:bg-[#E5399A]/95 shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
+              className="px-3 py-1.5 rounded-lg border-4 border-white bg-[#E5399A] text-[11px] font-black text-white hover:bg-[#E5399A]/95 shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
             >
               🚨 Request Volunteer
             </button>
           </div>
 
           {/* Form Input */}
-          <div className="p-3 border-t-4 border-[#0B1120] bg-white flex gap-2">
+          <div className="p-3 border-t-4 border-[#0B1120] bg-[#121E36] flex gap-2">
             <input
               type="text"
-              placeholder="Ask StadWay (e.g. exit route, carbon footprint, toilets)..."
+              placeholder="Ask StandWay (e.g. exit route, carbon footprint, toilets)..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && submitQuery()}
-              className="flex-1 bg-[#FAF7F0] border-4 border-[#0B1120] px-3 py-2.5 rounded-xl text-sm text-[#0B1120] font-bold placeholder-silver-500 focus:outline-none focus:border-[#16A34A]"
+              className="flex-1 bg-[#0B1120] border-4 border-white px-3 py-2.5 rounded-xl text-sm text-white font-bold placeholder-silver-500 focus:outline-none focus:border-[#16A34A]"
             />
             <button
               onClick={() => submitQuery()}
-              className="p-2.5 bg-[#16A34A] text-white border-4 border-[#0B1120] shadow-[2px_2px_0px_0px_#0B1120] rounded-xl hover:translate-y-[-1px] transition cursor-pointer flex items-center justify-center"
+              className="p-2.5 bg-[#16A34A] text-white border-4 border-white shadow-[2px_2px_0px_0px_#0B1120] rounded-xl hover:translate-y-[-1px] transition cursor-pointer flex items-center justify-center"
             >
               <Send size={16} />
             </button>
@@ -791,13 +813,13 @@ export const FanView: React.FC = () => {
         </div>
 
         {/* Sustainability Widget */}
-        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120] flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120] flex flex-col md:flex-row md:items-center justify-between gap-6 text-white">
           <div className="space-y-1.5 text-left">
             <div className="flex items-center gap-1.5">
               <Leaf className="text-[#16A34A] animate-bounce" size={20} />
-              <h3 className="font-display font-black text-[#0B1120] uppercase text-base">Carbon Saver Hub</h3>
+              <h3 className="font-display font-black text-white uppercase text-base">Carbon Saver Hub</h3>
             </div>
-            <p className="text-xs text-[#0B1120]/70 font-semibold">Record your sustainable transport choices to earn points!</p>
+            <p className="text-xs text-white/70 font-semibold">Record your sustainable transport choices to earn points!</p>
             <div className="flex gap-4 pt-2">
               <div className="flex flex-col">
                 <span className="text-[10px] uppercase font-bold text-silver-500">CO₂ Saved</span>
@@ -813,13 +835,13 @@ export const FanView: React.FC = () => {
           <div className="flex flex-wrap gap-2 md:justify-end">
             <button
               onClick={() => recordTransitMode('Metro Rail', 2.6)}
-              className="px-3.5 py-2.5 bg-white border-4 border-[#0B1120] rounded-xl text-xs font-black text-[#0B1120] hover:bg-[#EAF3EC] shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
+              className="px-3.5 py-2.5 bg-[#0B1120] border-4 border-white rounded-xl text-xs font-black text-white hover:bg-[#121E36] shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
             >
               🚇 I Rode Metro (+2.6kg)
             </button>
             <button
               onClick={() => recordTransitMode('Shuttle Bus', 2.2)}
-              className="px-3.5 py-2.5 bg-white border-4 border-[#0B1120] rounded-xl text-xs font-black text-[#0B1120] hover:bg-[#EAF3EC] shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
+              className="px-3.5 py-2.5 bg-[#0B1120] border-4 border-white rounded-xl text-xs font-black text-white hover:bg-[#121E36] shadow-[2px_2px_0px_0px_#0B1120] transition cursor-pointer"
             >
               静态 🚌 I Rode Shuttle (+2.2kg)
             </button>
@@ -828,31 +850,31 @@ export const FanView: React.FC = () => {
 
         {/* EXPANDABLE REASONING TRAIL CARD */}
         {expandedTrail && activeRecommendation && (
-          <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[8px_8px_0px_0px_#D4A017] text-left space-y-4 animate-float">
+          <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[8px_8px_0px_0px_#D4A017] text-left space-y-4 animate-float text-white">
             <div className="flex justify-between items-center">
-              <h3 className="font-display font-black text-[#0B1120] uppercase text-base">Agent Reasoning Trail HUD</h3>
+              <h3 className="font-display font-black text-white uppercase text-base">Agent Reasoning Trail HUD</h3>
               <button 
                 onClick={() => setExpandedTrail(false)}
-                className="text-xs font-black uppercase text-[#E5399A] hover:underline"
+                className="text-xs font-black uppercase text-[#E5399A] hover:underline cursor-pointer"
               >
                 Close Inspect
               </button>
             </div>
             
-            <div className="relative pl-6 border-l-4 border-[#0B1120] space-y-5">
+            <div className="relative pl-6 border-l-4 border-white space-y-5">
               {activeRecommendation.agentTrail.map((trail, index) => (
                 <div key={index} className="relative group">
                   {/* Timeline dot */}
-                  <div className="absolute -left-[32px] top-1.5 w-3.5 h-3.5 rounded-full border-4 border-[#0B1120] bg-white group-hover:scale-125 transition-all"></div>
+                  <div className="absolute -left-[32px] top-1.5 w-3.5 h-3.5 rounded-full border-4 border-white bg-[#0B1120] group-hover:scale-125 transition-all"></div>
                   
-                  <div className="bg-white border-4 border-[#0B1120] p-3.5 rounded-xl space-y-1.5 shadow-[4px_4px_0px_0px_#0B1120]">
-                    <span className="text-[10px] bg-[#FAF7F0] text-[#0B1120] font-black uppercase px-2 py-0.5 rounded-full border-2 border-[#0B1120]">
+                  <div className="bg-[#0B1120] border-4 border-white p-3.5 rounded-xl space-y-1.5 shadow-[4px_4px_0px_0px_#0B1120] text-white">
+                    <span className="text-[10px] bg-[#121E36] text-white font-black uppercase px-2 py-0.5 rounded-full border-2 border-white">
                       {trail.agent}
                     </span>
-                    <p className="text-xs text-[#0B1120]/95 leading-relaxed font-semibold mt-1">
+                    <p className="text-xs text-white/90 leading-relaxed font-semibold mt-1">
                       {trail.reasoning}
                     </p>
-                    <div className="grid grid-cols-2 gap-4 text-[9px] font-mono text-[#0B1120]/60 border-t-2 border-[#0B1120] pt-1.5">
+                    <div className="grid grid-cols-2 gap-4 text-[9px] font-mono text-white/60 border-t-2 border-white/20 pt-1.5">
                       <div>
                         <span className="block font-black uppercase">Inputs Ingested</span>
                         <pre className="mt-1 overflow-x-auto whitespace-pre-wrap">{JSON.stringify(trail.input, null, 1)}</pre>
@@ -878,7 +900,7 @@ export const FanView: React.FC = () => {
             🏆 Live Tournament Tracking
           </span>
           <h3 className="text-xl sm:text-2xl font-display font-black text-white uppercase leading-none mt-2">
-            STADIA.AI Star Companion
+            StandWay Star Companion
           </h3>
           <p className="text-xs text-white/70 max-w-xl mx-auto font-medium">
             Ingesting real-time tracking metrics for tournament superstars. Select two players below to view head-to-head positioning heatmaps and tactical overlays.
@@ -886,7 +908,7 @@ export const FanView: React.FC = () => {
         </div>
 
         {/* Player Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {stars.map(player => {
             const isSelected = comparePlayers.includes(player.id);
             return (

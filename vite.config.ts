@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons.svg'],
       manifest: {
-        name: 'STADIA.AI — Smart Stadium Operations',
-        short_name: 'STADIA.AI',
+        name: 'StandWay — Smart Stadium Operations',
+        short_name: 'StandWay',
         description: 'GenAI-powered smart stadium operations platform for crowd management, wayfinding, accessibility, and sustainability at global football tournaments.',
         theme_color: '#FAF7F0',
         background_color: '#FAF7F0',

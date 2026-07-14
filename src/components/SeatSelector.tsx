@@ -55,21 +55,21 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
   };
 
   return (
-    <div className="glass-panel p-5 border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120] text-left space-y-5 relative overflow-hidden font-sans">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-[#16A34A]/5 rounded-full blur-2xl"></div>
+    <div className="glass-panel p-5 border-4 border-[#0E7C3A] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120] text-left space-y-5 relative overflow-hidden font-sans text-white">
+      <div className="absolute top-0 right-0 w-24 h-24 bg-[#16A34A]/10 rounded-full blur-2xl"></div>
       
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Shield className="text-[#D4A017]" size={20} />
-          <h3 className="font-display font-black text-[#0B1120] uppercase text-base">Select Stadium Seat</h3>
+          <h3 className="font-display font-black text-white uppercase text-base">Select Stadium Seat</h3>
         </div>
-        <span className="text-[10px] bg-[#EAF3EC] text-[#0B1120] px-2.5 py-1 border-2 border-[#0B1120] font-black uppercase rounded-full">
+        <span className="text-[10px] bg-[#0B1120] text-white px-2.5 py-1 border-2 border-white font-black uppercase rounded-full">
           Interactive Seating Map
         </span>
       </div>
 
       {/* Zone Switcher Tabs */}
-      <div className="grid grid-cols-4 gap-1.5 p-1 bg-[#EAF3EC] border-4 border-[#0B1120] text-xs text-center font-black rounded-xl overflow-hidden">
+      <div className="grid grid-cols-4 gap-1.5 p-1 bg-[#0B1120] border-4 border-[#0B1120] text-xs text-center font-black rounded-xl overflow-hidden">
         {['Zone_A', 'Zone_B', 'Zone_C', 'Zone_D'].map((zoneId) => {
           const isActive = activeZone === zoneId;
           const label = zoneId.replace('Zone_', 'Section ');
@@ -80,8 +80,8 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
               onClick={() => setActiveZone(zoneId)}
               className={`py-2 transition-all cursor-pointer rounded-lg uppercase tracking-wider ${
                 isActive
-                  ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_#0B1120] border-2 border-[#0B1120]'
-                  : 'text-[#0B1120]/75 hover:text-[#16A34A]'
+                  ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_#0B1120] border-2 border-white'
+                  : 'text-white/70 hover:text-[#16A34A]'
               }`}
             >
               {label}
@@ -93,7 +93,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
       {/* Curved Pitch Indicator */}
       <div className="relative pt-6 pb-2 text-center">
         <div className="w-11/12 h-6 border-t-2 border-dashed border-[#16A34A]/50 mx-auto rounded-[50%] flex items-center justify-center">
-          <span className="text-[9px] uppercase tracking-widest text-[#16A34A] font-black bg-[#FAF7F0] px-4 py-0.5 border-2 border-[#0B1120] rounded-full">
+          <span className="text-[9px] uppercase tracking-widest text-[#16A34A] font-black bg-[#121E36] px-4 py-0.5 border-2 border-[#0B1120] rounded-full">
             ⚽ PITCH / FIELD DIRECTION ⚽
           </span>
         </div>
@@ -106,7 +106,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
             const isAccessibleRow = row === 'E';
             return (
               <div key={row} className="flex gap-1.5 items-center">
-                <span className="w-4 text-xs font-mono font-bold text-[#0B1120]/60 text-center mr-1">
+                <span className="w-4 text-xs font-mono font-bold text-white/60 text-center mr-1">
                   {row}
                 </span>
 
@@ -124,14 +124,14 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
                         onClick={() => handleSeatClick(row, num)}
                         className={`w-6 h-6 flex items-center justify-center transition-all cursor-pointer text-[9px] font-mono font-bold rounded-md ${
                           isSold
-                            ? 'bg-[#EAF3EC] text-[#0B1120]/30 border-2 border-[#0B1120]/20 opacity-45 cursor-not-allowed'
+                            ? 'bg-[#0B1120] text-white/20 border-2 border-[#0B1120]/40 opacity-30 cursor-not-allowed'
                             : isSelected
-                            ? 'bg-[#16A34A] text-white border-2 border-[#0B1120] shadow-[2px_2px_0px_0px_#0B1120] scale-110'
+                            ? 'bg-[#16A34A] text-white border-2 border-white shadow-[2px_2px_0px_0px_#0B1120] scale-110'
                             : isAccessibleSeat
                             ? isWheelchairUser
-                              ? 'bg-[#0EA5E9] text-white border-2 border-[#0B1120] shadow-[2px_2px_0px_0px_#0B1120] animate-pulse'
-                              : 'bg-white text-[#0EA5E9] border-2 border-[#0EA5E9]'
-                            : 'bg-white text-[#0B1120] border-2 border-[#0B1120] hover:border-[#16A34A] hover:bg-[#EAF3EC]'
+                              ? 'bg-[#0EA5E9] text-white border-2 border-white shadow-[2px_2px_0px_0px_#0B1120] animate-pulse'
+                              : 'bg-[#121E36] text-[#0EA5E9] border-2 border-[#0EA5E9]'
+                            : 'bg-[#0B1120] text-white border-2 border-[#0B1120] hover:border-[#16A34A] hover:bg-[#121E36]'
                         }`}
                         title={`${activeZone.replace('_', ' ')} Row ${row} Seat ${num} ${
                           isSold ? '(Sold)' : isAccessibleSeat ? '(Accessible Wheelchair Spot)' : '(Available)'
@@ -151,7 +151,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
                   );
                 })}
 
-                <span className="w-4 text-xs font-mono font-bold text-[#0B1120]/60 text-center ml-1">
+                <span className="w-4 text-xs font-mono font-bold text-white/60 text-center ml-1">
                   {row}
                 </span>
               </div>
@@ -162,21 +162,21 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
 
       {/* Legend & Summary */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t-2 border-[#0B1120] text-xs">
-        <div className="flex flex-wrap gap-4 text-[#0B1120]/75 font-semibold">
+        <div className="flex flex-wrap gap-4 text-white/75 font-semibold">
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-white border-2 border-[#0B1120] rounded-sm"></div>
+            <div className="w-3.5 h-3.5 bg-[#0B1120] border-2 border-white rounded-sm"></div>
             <span>Available</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-[#16A34A] border-2 border-[#0B1120] shadow-[1px_1px_0px_0px_#0B1120] rounded-sm"></div>
+            <div className="w-3.5 h-3.5 bg-[#16A34A] border-2 border-white shadow-[1px_1px_0px_0px_#0B1120] rounded-sm"></div>
             <span>Selected</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-[#EAF3EC] border-2 border-[#0B1120]/25 opacity-45 rounded-sm"></div>
+            <div className="w-3.5 h-3.5 bg-[#0B1120] border-2 border-[#0B1120]/45 opacity-30 rounded-sm"></div>
             <span>Sold</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 bg-white border-2 border-[#0EA5E9] flex items-center justify-center text-[#0EA5E9] rounded-sm">
+            <div className="w-3.5 h-3.5 bg-[#121E36] border-2 border-[#0EA5E9] flex items-center justify-center text-[#0EA5E9] rounded-sm">
               <Accessibility size={9} />
             </div>
             <span>Wheelchair Area</span>
@@ -184,7 +184,7 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
         </div>
 
         {selectedSeat && selectedZone === activeZone && (
-          <div className="bg-[#EAF3EC] border-4 border-[#0B1120] px-3 py-1.5 text-[#16A34A] font-black text-center flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#0B1120] rounded-full uppercase text-[10px]">
+          <div className="bg-[#0B1120] border-4 border-[#0E7C3A] px-3 py-1.5 text-[#16A34A] font-black text-center flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#0B1120] rounded-full uppercase text-[10px]">
             <div className="w-1.5 h-1.5 bg-[#16A34A] rounded-full animate-ping"></div>
             Selected: {activeZone.replace('Zone_', 'Sec ')}, {selectedSeat}
           </div>

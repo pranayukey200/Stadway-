@@ -22,11 +22,40 @@ export const VolunteerView: React.FC = () => {
 
   // Load volunteers
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'volunteers'), (snapshot) => {
+    const unsubscribe = onSnapshot(collection(db, 'volunteers'), async (snapshot) => {
       const list: Volunteer[] = [];
       snapshot.forEach(doc => {
         list.push({ id: doc.id, ...doc.data() } as Volunteer);
       });
+      
+      if (list.length === 0) {
+        console.log('No volunteers found in Firestore. Initializing default responders...');
+        const defaultVolunteers = [
+          { id: 'vol_juan', name: 'Juan Perez', languages: ['Spanish', 'English'], skills: ['First Aid', 'Wayfinding'], currentZone: 'Gate_B', available: true },
+          { id: 'vol_priya', name: 'Priya Patel', languages: ['Hindi', 'English', 'Marathi'], skills: ['Translations', 'Accessibility Support'], currentZone: 'Gate_C', available: true },
+          { id: 'vol_jean', name: 'Jean Dupont', languages: ['French', 'English'], skills: ['Wayfinding'], currentZone: 'Gate_A', available: true },
+          { id: 'vol_sarah', name: 'Sarah Connor', languages: ['English', 'German'], skills: ['Crowd Safety', 'First Aid'], currentZone: 'Gate_D', available: true },
+          { id: 'vol_carlos', name: 'Carlos Santana', languages: ['Spanish', 'Portuguese'], skills: ['Translations', 'Wayfinding'], currentZone: 'Gate_B', available: true },
+          { id: 'vol_yuki', name: 'Yuki Tanaka', languages: ['Japanese', 'English'], skills: ['Accessibility Support', 'Translations'], currentZone: 'Gate_C', available: true }
+        ];
+        
+        const { setDoc, doc: fsDoc } = await import('firebase/firestore');
+        for (const vol of defaultVolunteers) {
+          try {
+            await setDoc(fsDoc(db, 'volunteers', vol.id), {
+              name: vol.name,
+              languages: vol.languages,
+              skills: vol.skills,
+              currentZone: vol.currentZone,
+              available: vol.available
+            });
+            list.push(vol);
+          } catch (e) {
+            console.error('Failed to seed volunteer:', vol.name, e);
+          }
+        }
+      }
+      
       setVolunteers(list);
       if (list.length > 0 && !selectedVol) {
         setSelectedVol(list[1]); // Default to Priya Patel
@@ -52,7 +81,7 @@ export const VolunteerView: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="glass-panel p-8 rounded-3xl border-4 border-[#0E7C3A] bg-[#FAF7F0] shadow-[6px_6px_0px_0px_#0B1120] flex flex-col items-center justify-center text-[#0B1120] max-w-lg mx-auto my-8">
+      <div className="glass-panel p-8 rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120] flex flex-col items-center justify-center text-white max-w-lg mx-auto my-8">
         <RefreshCw className="animate-spin text-[#16A34A] mb-2" />
         <p className="font-bold uppercase tracking-wider text-xs">Connecting to operations center...</p>
       </div>

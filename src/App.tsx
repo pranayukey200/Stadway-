@@ -160,23 +160,23 @@ const App: React.FC = () => {
       )}
 
       {/* Main Navigation Header */}
-      <header className="bg-[#070D1E]/90 backdrop-blur-md border-b-4 border-[#16A34A] sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
+      <header className="bg-[#070D1E]/90 backdrop-blur-md border-b-4 border-[#16A34A] sticky top-0 z-40 px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center gap-4 justify-between">
         <div className="flex items-center gap-3">
           {/* Logo Mark */}
-          <div className="relative w-10 h-10 flex items-center justify-center border-2 border-white rounded-xl bg-[#121E36] shadow-[2px_2px_0px_0px_#0B1120]">
-            <Trophy className="w-5 h-5 text-[#D4A017]" />
+          <div className="relative w-10 h-10 flex items-center justify-center border-2 border-white rounded-xl bg-[#121E36] shadow-[2px_2px_0px_0px_#0B1120] overflow-hidden">
+            <img src="/assets/standway_logo.png" alt="StandWay" className="w-full h-full object-cover scale-110" />
           </div>
           <div className="text-left">
-            <h1 className="text-xl font-display font-black text-white leading-none tracking-tight m-0">STADIA.AI</h1>
+            <h1 className="text-xl font-display font-black text-white leading-none tracking-tight m-0">StandWay</h1>
             <span className="text-[9px] text-white/60 font-black uppercase tracking-wider">Live GenAI Operations — World Cup 2026</span>
           </div>
         </div>
 
         {/* Persona Controller Toggles */}
-        <nav className="flex bg-[#121E36] p-1 gap-1 border-4 border-[#0E7C3A] rounded-full text-xs">
+        <nav className="flex bg-[#121E36] p-1 gap-1 border-4 border-[#0E7C3A] rounded-full text-xs overflow-x-auto max-w-full scrollbar-none">
           <button
             onClick={() => setPersona('landing')}
-            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'landing'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
@@ -186,7 +186,7 @@ const App: React.FC = () => {
           </button>
           <button
             onClick={() => setPersona('fan')}
-            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'fan'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
@@ -196,7 +196,7 @@ const App: React.FC = () => {
           </button>
           <button
             onClick={() => setPersona('volunteer')}
-            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'volunteer'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
@@ -206,7 +206,7 @@ const App: React.FC = () => {
           </button>
           <button
             onClick={() => setPersona('organizer')}
-            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full ${
+            className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'organizer'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
@@ -263,7 +263,7 @@ const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="border-t-4 border-[#0E7C3A] py-4 px-6 text-center bg-[#070D1E]/90 text-xs font-bold text-white/60 flex justify-between items-center">
-        <span>© 2026 Global Football Tournament Operations — Powered by STADIA.AI</span>
+        <span>© 2026 Global Football Tournament Operations — Powered by StandWay</span>
         <span className="flex items-center gap-2">
           <span className="status-dot live"></span>
           <span>Live</span>

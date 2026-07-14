@@ -6,7 +6,7 @@ import { runSustainabilityAgent } from '../../functions/src/agents/sustainabilit
 import { runWayfindingAgent } from '../../functions/src/agents/wayfinding';
 import { runLanguageAgent } from '../../functions/src/agents/language';
 
-describe('StadWay Agent Logic Tests', () => {
+describe('StandWay Agent Logic Tests', () => {
   
   describe('Crowd Agent', () => {
     it('should flag congestion if occupancy >= 80%', () => {
@@ -108,14 +108,14 @@ describe('StadWay Agent Logic Tests', () => {
 
   describe('Language Agent', () => {
     it('should translate known text if language matches', () => {
-      const result = runLanguageAgent('Welcome to StadWay', 'Spanish');
-      expect(result.translatedText).toBe('Bienvenido a StadWay');
+      const result = runLanguageAgent('Welcome to StandWay', 'Spanish');
+      expect(result.translatedText).toBe('Bienvenido a StandWay');
       expect(result.isTranslated).toBe(true);
     });
 
     it('should return original text for English', () => {
-      const result = runLanguageAgent('Welcome to StadWay', 'English');
-      expect(result.translatedText).toBe('Welcome to StadWay');
+      const result = runLanguageAgent('Welcome to StandWay', 'English');
+      expect(result.translatedText).toBe('Welcome to StandWay');
       expect(result.isTranslated).toBe(false);
     });
   });

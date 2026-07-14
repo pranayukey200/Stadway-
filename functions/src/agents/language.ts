@@ -1,6 +1,6 @@
 const TRANSLATIONS: Record<string, Record<string, string>> = {
   spanish: {
-    "Welcome to StadWay": "Bienvenido a StadWay",
+    "Welcome to StandWay": "Bienvenido a StandWay",
     "Go to Gate C": "Vaya a la Puerta C",
     "Queue is long at Gate B": "La fila es larga en la Puerta B",
     "Step-free path is active": "La ruta sin escalones está activa",
@@ -9,7 +9,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     "Here's a Spanish-speaking volunteer": "Aquí hay un voluntario que habla español"
   },
   french: {
-    "Welcome to StadWay": "Bienvenue sur StadWay",
+    "Welcome to StandWay": "Bienvenue sur StandWay",
     "Go to Gate C": "Allez à la porte C",
     "Queue is long at Gate B": "La file d'attente est longue à la porte B",
     "Step-free path is active": "Le chemin sans marche est actif",
@@ -17,7 +17,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     "Skip the queue, use the accessible lift": "Évitez la file d'attente, utilisez l'ascenseur accessible"
   },
   hindi: {
-    "Welcome to StadWay": "StadWay में आपका स्वागत है",
+    "Welcome to StandWay": "StandWay में आपका स्वागत है",
     "Go to Gate C": "गेट सी पर जाएं",
     "Queue is long at Gate B": "गेट बी पर लंबी कतार है",
     "Step-free path is active": "सीढ़ी-मुक्त मार्ग सक्रिय है",
@@ -25,7 +25,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     "Skip the queue, use the accessible lift": "कतार छोड़ें, सुलभ लिफ्ट का उपयोग करें"
   },
   marathi: {
-    "Welcome to StadWay": "StadWay वर आपले स्वागत आहे",
+    "Welcome to StandWay": "StandWay वर आपले स्वागत आहे",
     "Go to Gate C": "गेट सी वर जा",
     "Queue is long at Gate B": "गेट बी वर मोठी रांग आहे",
     "Step-free path is active": "पायऱ्या नसलेला मार्ग उपलब्ध आहे",

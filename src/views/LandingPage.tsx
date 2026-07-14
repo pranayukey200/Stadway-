@@ -140,7 +140,7 @@ export const LandingPage: React.FC = () => {
                 <span className="gradient-text-pitch font-display">One Platform.</span>
               </h1>
               <p className="text-base sm:text-lg text-white/80 font-medium max-w-xl leading-snug mt-6">
-                STADIA.AI is a decentralized, privacy-first smart tournament operations suite. Fusing live edge sensors with cooperatively aligned AI agents to serve fans, volunteers, and operators simultaneously.
+                StandWay is a decentralized, privacy-first smart tournament operations suite. Fusing live edge sensors with cooperatively aligned AI agents to serve fans, volunteers, and operators simultaneously.
               </p>
             </div>
 
@@ -369,7 +369,7 @@ export const LandingPage: React.FC = () => {
             <div className="bg-[#0B1120] border-b-4 border-[#0B1120] px-4 py-3 flex justify-between items-center text-white">
               <div className="flex items-center gap-2">
                 <Globe2 className="text-[#E5399A] w-4.5 h-4.5" />
-                <span className="text-xs font-black uppercase">STADIA.AI Assistant</span>
+                <span className="text-xs font-black uppercase">StandWay Assistant</span>
               </div>
               <span className="text-[9px] bg-[#121E36] border-2 border-[#0B1120] px-2 py-0.5 rounded-full font-bold">V1.0</span>
             </div>

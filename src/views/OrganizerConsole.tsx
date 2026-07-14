@@ -59,7 +59,7 @@ export const OrganizerConsole: React.FC = () => {
       <div className="flex justify-between items-center px-1">
         <div className="flex items-center gap-2">
           <Cpu className="text-[#D4A017]" size={24} />
-          <h2 className="text-xl font-display font-black text-white uppercase tracking-tight">STADIA.AI Operations Command</h2>
+          <h2 className="text-xl font-display font-black text-white uppercase tracking-tight">StandWay Operations Command</h2>
         </div>
         <span className="text-xs bg-[#121E36] text-white border-4 border-[#0E7C3A] px-4 py-1.5 rounded-full font-black uppercase">
           Aggregate Console Mode (No PII / Privacy-Preserved)
@@ -153,7 +153,7 @@ export const OrganizerConsole: React.FC = () => {
 
         {/* DECISION AUDIT FEED */}
         <div className="glass-panel p-5 rounded-3xl border-4 border-[#0E7C3A] lg:col-span-2 space-y-4 flex flex-col max-h-[500px] bg-[#121E36] shadow-[6px_6px_0px_0px_#0B1120]">
-          <h3 className="text-sm font-display font-black text-white uppercase leading-none">StadWay Decision Audit Feed</h3>
+          <h3 className="text-sm font-display font-black text-white uppercase leading-none">StandWay Decision Audit Feed</h3>
           
           <div className="flex-1 overflow-y-auto space-y-4 pr-1">
             {decisions.length === 0 ? (
