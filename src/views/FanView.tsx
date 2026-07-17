@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { useStore, type FanProfile, type DecisionResult } from '../context/useStore';
 import { StadiumMap } from '../components/StadiumMap';
 import { SeatSelector } from '../components/SeatSelector';
-import { db, functions } from '../utils/firebase';
+import { db } from '../utils/firebase';
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
-import { runOrchestration, DEV_ONLY } from '../../functions/src/orchestrator'; // Import local fallback
+import { runStadWayOrchestration } from '../utils/stadwayOrchestration';
 import { TOKENS } from '../design/tokens';
 import { 
-  Send, Accessibility, Leaf, MapPin, Clock, Cloud, Settings, AlertCircle, RefreshCw, Languages, Sparkles 
+  Send, Accessibility, Leaf, MapPin, Clock, Cloud, Settings, AlertCircle, RefreshCw, Languages, Sparkles, ShieldAlert 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -112,16 +111,24 @@ export const FanView: React.FC = () => {
   // Use module-level constant to avoid reallocating the array on every render
   const stars = WORLD_CUP_STARS;
 
+  type ComparisonStatKey = keyof Pick<(typeof stars)[number]['stats'], 'Excitement' | 'Dribbles' | 'Speed' | 'Dribbling'>;
+  const comparisonStats: Array<{ label: string; key: ComparisonStatKey }> = [
+    { label: 'Excitement Index (%)', key: 'Excitement' },
+    { label: 'Dribbles Success (%)', key: 'Dribbles' },
+    { label: 'Top Sprint Speed (km/h)', key: 'Speed' },
+    { label: 'Tactical Dribbling (%)', key: 'Dribbling' }
+  ];
+
   const togglePlayerSelect = (id: string) => {
-    if (comparePlayers.includes(id)) {
-      setComparePlayers(comparePlayers.filter(p => p !== id));
-    } else {
-      if (comparePlayers.length < 2) {
-        setComparePlayers([...comparePlayers, id]);
-      } else {
-        setComparePlayers([comparePlayers[1], id]);
+    setComparePlayers((current) => {
+      if (current.includes(id)) {
+        return current.filter((playerId) => playerId !== id);
       }
-    }
+      if (current.length < 2) {
+        return [...current, id];
+      }
+      return [current[1], id];
+    });
   };
 
   const renderStarComparison = () => {
@@ -150,14 +157,9 @@ export const FanView: React.FC = () => {
               <span>{p2.name}</span>
             </div>
 
-            {[
-              { label: 'Excitement Index (%)', key: 'Excitement' },
-              { label: 'Dribbles Success (%)', key: 'Dribbles' },
-              { label: 'Top Sprint Speed (km/h)', key: 'Speed' },
-              { label: 'Tactical Dribbling (%)', key: 'Dribbling' }
-            ].map(stat => {
-              const val1 = (p1.stats as any)[stat.key];
-              const val2 = (p2.stats as any)[stat.key];
+            {comparisonStats.map(stat => {
+              const val1 = p1.stats[stat.key];
+              const val2 = p2.stats[stat.key];
               return (
                 <div key={stat.key} className="space-y-1">
                   <span className="block text-[10px] font-black uppercase text-white/60 text-center">{stat.label}</span>
@@ -277,48 +279,20 @@ export const FanView: React.FC = () => {
     });
 
     try {
-      let result: any;
-      const dataPayload = {
+      const result: DecisionResult = await runStadWayOrchestration({
         fanProfile,
         venueState,
         question: textQuery
-      };
-
-      try {
-        // 1. Attempt Cloud Function call
-        const askStadWayFn = httpsCallable(functions, 'askStadWay');
-        const response = await askStadWayFn(dataPayload);
-        result = response.data;
-      } catch (fnErr) {
-        console.warn('Cloud Function call failed, running local browser orchestrator fallback:', fnErr);
-        // 2. Client-side local orchestrator execution fallback
-        const localResult = await runOrchestration(dataPayload);
-        
-        // Mock add to Firestore decisions collection locally
-        const mockId = 'dec_' + Math.random().toString(36).substring(5);
-        result = {
-          id: mockId,
-          ...localResult
-        };
-
-        // Write to firestore in background
-        setDoc(doc(db, 'decisions', mockId), {
-          fanId: fanProfile.id,
-          agentTrail: localResult.agentTrail,
-          finalRecommendation: localResult.finalRecommendation,
-          confidence: localResult.confidence,
-          createdAt: new Date().toISOString()
-        }).catch(err => console.error('Failed to write mock decision:', err));
-      }
+      });
 
       // Update message with AI output
       updateChatMessage(assistantMsgId, {
         text: result.finalRecommendation,
-        decision: result as DecisionResult,
+        decision: result,
         thinking: false
       });
 
-      setActiveRecommendation(result as DecisionResult);
+      setActiveRecommendation(result);
       
       // Highlight navigation targets based on keywords
       const lowerQ = textQuery.toLowerCase();
@@ -330,13 +304,14 @@ export const FanView: React.FC = () => {
         setActiveNavigationTarget('First Aid');
       }
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
+      const message = err instanceof Error ? err.message : 'Unknown orchestrator error';
       updateChatMessage(assistantMsgId, {
         text: 'Sorry, StadWay encountered an error while consulting its agents. Please try again.',
         thinking: false
       });
-      setErrorMsg('Error running orchestrator: ' + err.message);
+      setErrorMsg('Error running orchestrator: ' + message);
     }
   };
 
@@ -570,10 +545,13 @@ export const FanView: React.FC = () => {
   }
 
   // Active wayfinding values
-  const activeRouteTrail = (activeRecommendation?.agentTrail?.find(t => t.agent === 'Wayfinding Agent')?.output as any) || {};
-  const activeRouteSteps = activeRouteTrail.recommendedRoute || [];
-  const activeRouteGate = activeRouteTrail.gateEntry || fanProfile.ticketZone.replace('Zone', 'Gate');
-  const requireStepFree = (activeRecommendation?.agentTrail?.find(t => t.agent === 'Accessibility Agent')?.output as any)?.requireStepFree || false;
+  type WayfindingTrailOutput = { recommendedRoute?: string[]; gateEntry?: string };
+  type AccessibilityTrailOutput = { requireStepFree?: boolean };
+
+  const activeRouteTrail = activeRecommendation?.agentTrail?.find((t) => t.agent === 'Wayfinding Agent')?.output as WayfindingTrailOutput | undefined;
+  const activeRouteSteps = activeRouteTrail?.recommendedRoute || [];
+  const activeRouteGate = activeRouteTrail?.gateEntry || fanProfile.ticketZone.replace('Zone', 'Gate');
+  const requireStepFree = (activeRecommendation?.agentTrail?.find((t) => t.agent === 'Accessibility Agent')?.output as AccessibilityTrailOutput | undefined)?.requireStepFree || false;
 
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto my-4 ${accessibilitySettings.highContrast ? 'high-contrast' : ''}`}>
@@ -660,12 +638,7 @@ export const FanView: React.FC = () => {
               <Sparkles className="text-[#D4A017] stroke-[2.5]" size={12} />
               <span>
                 Model: <strong className="text-white font-mono">llama-3.3-70b-versatile (Groq)</strong>
-                {DEV_ONLY && !localStorage.getItem('stadway_groq_key') && (
-                  <span className="text-[#FB6B1E] ml-2 font-black animate-pulse">(Key Required - Click Settings Gear)</span>
-                )}
-                {!DEV_ONLY && (
-                  <span className="text-[#16A34A] ml-2 font-black">(Secure Cloud Functions Active)</span>
-                )}
+                <span className="text-[#16A34A] ml-2 font-black">(Secure Cloud Function Proxy Active)</span>
               </span>
             </div>
             <span className="text-[9px] text-white bg-[#121E36] px-2.5 py-0.5 border-2 border-white uppercase font-black tracking-wider rounded-full">
@@ -701,36 +674,12 @@ export const FanView: React.FC = () => {
                 </div>
               </div>
               <div className="border-t border-[#0B1120] pt-2.5">
-                <label className="block text-[10px] uppercase font-bold text-silver-500 mb-1">
-                  Groq API Key {DEV_ONLY ? "(Developer Sandbox)" : "(Disabled in Production)"}
-                </label>
-                <input
-                  type="password"
-                  disabled={!DEV_ONLY}
-                  placeholder={DEV_ONLY ? "Paste gsk_... key here" : "Locked: Production mode uses server-side Cloud Function proxy"}
-                  value={DEV_ONLY ? (localStorage.getItem('stadway_groq_key') || '') : '****************'}
-                  onChange={(e) => {
-                    if (DEV_ONLY) {
-                      localStorage.setItem('stadway_groq_key', e.target.value.trim());
-                      setErrorMsg('');
-                    }
-                  }}
-                  className={`w-full bg-[#121E36] border-4 border-white px-3 py-1.5 rounded-lg text-xs text-white placeholder-silver-500 font-bold focus:outline-none focus:border-[#16A34A] ${
-                    !DEV_ONLY ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                />
-                {DEV_ONLY ? (
-                  <div className="flex gap-1.5 items-start mt-1.5 p-2 bg-[#FB6B1E]/10 border-2 border-[#FB6B1E]/30 rounded-lg">
-                    <AlertCircle className="text-[#FB6B1E] shrink-0" size={12} />
-                    <span className="block text-[9px] text-[#FB6B1E] font-semibold">
-                      Sandbox Notice: Browser key storage is insecure and for local debug/dev only. Keys are vulnerable to XSS.
-                    </span>
-                  </div>
-                ) : (
-                  <span className="block text-[9px] text-[#16A34A] mt-1 font-semibold">
-                    Production security active: Browser key input is disabled. API keys reside only in the Firebase secure server environment.
+                <div className="flex gap-1.5 items-start p-2 bg-[#16A34A]/10 border-2 border-[#16A34A]/30 rounded-lg">
+                  <ShieldAlert className="text-[#16A34A] shrink-0" size={12} />
+                  <span className="block text-[9px] text-white font-semibold">
+                    Secure mode: the browser no longer stores or reads a Groq key. Requests go through the Firebase Cloud Function proxy, with a local offline fallback when the function is unavailable.
                   </span>
-                )}
+                </div>
               </div>
             </div>
           )}

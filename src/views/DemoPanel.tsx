@@ -123,7 +123,7 @@ export const DemoPanel: React.FC = () => {
     setLocalState({ ...localState, transit });
   };
 
-  const handleWeatherChange = (field: 'condition' | 'tempC', value: any) => {
+  const handleWeatherChange = (field: 'condition' | 'tempC', value: string | number) => {
     if (!localState) return;
     setLocalState({
       ...localState,

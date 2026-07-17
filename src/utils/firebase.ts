@@ -5,8 +5,8 @@
  * - Firebase API keys for Web clients are NOT secret credentials; they are safe to embed
  *   in client-side code. Access control is enforced exclusively via Firebase Security Rules
  *   (defined in firestore.rules) and Firebase Authentication.
- * - Sensitive server keys (e.g., GROQ_API_KEY) are NEVER stored in this file or in
- *   client-accessible localStorage in production. See orchestrator.ts DEV_ONLY flag.
+ * - Sensitive server keys (e.g., GROQ_API_KEY) stay in Firebase Functions / server runtime
+ *   and are never exposed to the browser.
  * - All Firestore reads/writes go through validated Security Rules to prevent unauthorized access.
  */
 

@@ -69,6 +69,8 @@ export const LandingPage: React.FC = () => {
           <img 
             src="/assets/image-d.jpg" 
             alt="" 
+            loading="eager"
+            decoding="async"
             draggable="false"
             className="absolute inset-0 w-full h-full object-cover object-top lg:object-center select-none"
             style={{
@@ -92,6 +94,7 @@ export const LandingPage: React.FC = () => {
             muted 
             loop 
             playsInline 
+            preload="auto"
             className="w-full h-full object-cover scale-105 filter saturate-75 brightness-110 opacity-30 relative"
             style={{ zIndex: 2 }}
           >
@@ -110,6 +113,8 @@ export const LandingPage: React.FC = () => {
           <img 
             src="/assets/image-a.jpg" 
             alt="" 
+            loading="lazy"
+            decoding="async"
             draggable="false"
             className="w-full h-full object-cover"
             style={{
@@ -222,6 +227,8 @@ export const LandingPage: React.FC = () => {
               <img 
                 src="/assets/players_action.png" 
                 alt="" 
+                loading="lazy"
+                decoding="async"
                 draggable="false"
                 className="absolute right-[-20px] bottom-[-20px] w-40 h-40 object-contain opacity-15 pointer-events-none select-none z-0" 
                 aria-hidden="true"
@@ -278,6 +285,8 @@ export const LandingPage: React.FC = () => {
               <img 
                 src="/assets/stadium_heatmap.png" 
                 alt="" 
+                loading="lazy"
+                decoding="async"
                 draggable="false"
                 className="w-full h-full object-cover opacity-80"
                 style={{
@@ -514,6 +523,8 @@ export const LandingPage: React.FC = () => {
             <img 
               src="/assets/gold_trophy.png" 
               alt="" 
+              loading="lazy"
+              decoding="async"
               draggable="false"
               className="w-full h-full object-contain animate-float"
               style={{

@@ -1,4 +1,7 @@
-declare const process: any;
+declare const process: {
+  env?: Record<string, string | undefined>;
+};
+
 import OpenAI from 'openai';
 import { runCrowdAgent, type GateState } from './agents/crowd';
 import { runTransitAgent, type TransitLineState } from './agents/transit';
@@ -47,60 +50,21 @@ export interface OrchestratorOutput {
   }>;
 }
 
-const getViteEnv = (): Record<string, string> | null => {
-  try {
-    const fn = new Function('return import.meta.env');
-    return fn() as Record<string, string>;
-  } catch {
-    return null;
-  }
-};
-
-// SECURITY NOTE: Gating browser-side direct calls to the Groq LLM API.
-// In production, direct client-side API requests using localStorage are disabled (DEV_ONLY = false).
-// This mitigates XSS risk and prevents token theft. Instead, requests must go through secure proxy endpoints.
-export const DEV_ONLY = true;
-
 // Initialize OpenAI client pointing to Groq's API
-const getGroqClient = () => {
-  let apiKey = "";
-  if (typeof process !== 'undefined' && process.env && process.env.GROQ_API_KEY) {
-    apiKey = process.env.GROQ_API_KEY;
-  }
-  
-  // Client-side key support is strictly gated behind the DEV_ONLY sandbox flag
-  if (DEV_ONLY) {
-    // Client-side Vite environment variable support
-    const viteEnv = getViteEnv();
-    if (!apiKey && viteEnv && viteEnv.VITE_GROQ_API_KEY) {
-      apiKey = viteEnv.VITE_GROQ_API_KEY;
-    }
-    
-    // Client-side LocalStorage key support for sandbox security
-    if (!apiKey && typeof window !== 'undefined' && window.localStorage) {
-      apiKey = window.localStorage.getItem('stadway_groq_key') || "";
-    }
-  } else {
-    // In production, we log a warning if client attempts direct key injection
-    if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('stadway_groq_key')) {
-      console.warn("StandWay Security Alert: Client-side Groq key injection rejected in production mode.");
-    }
-  }
-  
+const getGroqClient = (apiKey: string) => {
   return new OpenAI({
     apiKey: apiKey,
     baseURL: "https://api.groq.com/openapi/v1",
-    dangerouslyAllowBrowser: true // Enable direct client-side execution in browser (gated by DEV_ONLY key checks)
+    dangerouslyAllowBrowser: false
   });
 };
 
 export async function runOrchestration(input: OrchestratorInput): Promise<OrchestratorOutput> {
   const { fanProfile, venueState } = input;
 
-  // Input validation and sanitization for security
-  // Prevents prompt injection by stripping control characters and truncating to safe length
+  // Input validation and sanitization for security.
+  // Prevents prompt injection by stripping control characters and truncating to safe length.
   const sanitizeText = (text: string, maxLength = 500): string => {
-    // Avoid control characters dynamically to prevent linter warnings
     /* eslint-disable-next-line no-control-regex */
     const controlRegex = new RegExp('[\\x00-\\x1F\\x7F]', 'g');
     return text.replace(controlRegex, '').slice(0, maxLength).trim();
@@ -149,7 +113,7 @@ export async function runOrchestration(input: OrchestratorInput): Promise<Orches
   );
 
   // 2. Prepare the Agent Reasoning Trail
-  const agentTrail: Array<{ agent: string; input: any; reasoning: string; output: any }> = [
+  const agentTrail: OrchestratorOutput['agentTrail'] = [
     {
       agent: 'Crowd Agent',
       input: { gates: venueState.gates },
@@ -191,17 +155,7 @@ export async function runOrchestration(input: OrchestratorInput): Promise<Orches
     output: { language: languageResult.language, isTranslated: languageResult.isTranslated }
   });
 
-  const viteEnv = getViteEnv();
-  let groqKey = (typeof process !== 'undefined' && process.env && process.env.GROQ_API_KEY) || "";
-  
-  if (DEV_ONLY) {
-    if (!groqKey && viteEnv && viteEnv.VITE_GROQ_API_KEY) {
-      groqKey = viteEnv.VITE_GROQ_API_KEY;
-    }
-    if (!groqKey && typeof window !== 'undefined' && window.localStorage) {
-      groqKey = window.localStorage.getItem('stadway_groq_key') || "";
-    }
-  }
+  const groqKey = (typeof process !== 'undefined' && process.env && process.env.GROQ_API_KEY) ? String(process.env.GROQ_API_KEY) : '';
   
   // If no Groq API Key, fallback to high-quality local generation
   if (!groqKey || groqKey.trim() === '' || groqKey.includes('PLACEHOLDER')) {
@@ -250,7 +204,7 @@ export async function runOrchestration(input: OrchestratorInput): Promise<Orches
   // 3. Make real Groq API call
   try {
     console.log('Orchestrator: Sending request to Groq API using llama-3.3-70b-versatile...');
-    const client = getGroqClient();
+    const client = getGroqClient(groqKey);
     
     const systemPrompt = `You are the StadWay Orchestrator Agent, the main coordinator for a smart stadium helper at the FIFA World Cup 2026.
 Your job is to read:

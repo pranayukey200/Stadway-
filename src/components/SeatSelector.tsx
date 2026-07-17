@@ -24,13 +24,9 @@ export const SeatSelector: React.FC<SeatSelectorProps> = ({
 
   const parseCurrentSeat = () => {
     if (!selectedSeat) return { row: '', number: 0 };
-    const match = selectedSeat.match(/Row\s([A-E]),\sSeat\s(\\d+)/i);
+    const match = selectedSeat.match(/Row\s([A-E]),\sSeat\s(\d+)/i);
     if (match) {
       return { row: match[1], number: parseInt(match[2]) };
-    }
-    const fallbackMatch = selectedSeat.match(/Row\s([A-E]),\sSeat\s(\d+)/i);
-    if (fallbackMatch) {
-      return { row: fallbackMatch[1], number: parseInt(fallbackMatch[2]) };
     }
     return { row: '', number: 0 };
   };

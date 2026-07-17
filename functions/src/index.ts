@@ -32,8 +32,8 @@ export const askStadWay = onCall({
       id: docRef.id,
       ...decisionDoc
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('askStadWay execution error:', err);
-    throw new HttpsError('internal', err.message || 'Orchestration failed');
+    throw new HttpsError('internal', err instanceof Error ? err.message : 'Orchestration failed');
   }
 });

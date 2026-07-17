@@ -44,8 +44,19 @@ body {
   transition: background-color 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+:where(button, input, select, textarea, a, [role='button']):focus-visible {
+  outline: 3px solid var(--color-accent-gold);
+  outline-offset: 3px;
+}
+
 main {
   transition: background-color 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+main > section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+  scroll-margin-top: 96px;
 }
 
 /* Accessibility custom helpers */

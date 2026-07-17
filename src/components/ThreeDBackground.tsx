@@ -152,7 +152,8 @@ export const ThreeDBackground: React.FC = () => {
         }
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    const scrollOptions: AddEventListenerOptions = { passive: true, capture: true };
+    window.addEventListener('scroll', handleScroll, scrollOptions);
 
     const project = (pt: Point3D, cosY: number, sinY: number, cosX: number, sinX: number, currentD: number) => {
       const x1 = pt.x * cosY - pt.z * sinY;
@@ -306,7 +307,7 @@ export const ThreeDBackground: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll, { capture: true } as any);
+      window.removeEventListener('scroll', handleScroll, scrollOptions);
     };
   }, []);
 

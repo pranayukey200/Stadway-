@@ -1,15 +1,31 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useStore } from './context/useStore';
+import type { VenueState } from './context/useStore';
 import { db } from './utils/firebase';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
-import { LandingPage } from './views/LandingPage';
-import { FanView } from './views/FanView';
-import { VolunteerView } from './views/VolunteerView';
-import { OrganizerConsole } from './views/OrganizerConsole';
-import { DemoPanel } from './views/DemoPanel';
 import { User, Users, ShieldAlert, Sliders, X, Sparkles, Trophy } from 'lucide-react';
 
 const ThreeDBackground = React.lazy(() => import('./components/ThreeDBackground').then(m => ({ default: m.ThreeDBackground })));
+const LandingPage = React.lazy(() => import('./views/LandingPage').then(m => ({ default: m.LandingPage })));
+const FanView = React.lazy(() => import('./views/FanView').then(m => ({ default: m.FanView })));
+const VolunteerView = React.lazy(() => import('./views/VolunteerView').then(m => ({ default: m.VolunteerView })));
+const OrganizerConsole = React.lazy(() => import('./views/OrganizerConsole').then(m => ({ default: m.OrganizerConsole })));
+const DemoPanel = React.lazy(() => import('./views/DemoPanel').then(m => ({ default: m.DemoPanel })));
+
+const PersonaFallback: React.FC<{ label: string }> = ({ label }) => (
+  <div className="min-h-[360px] flex items-center justify-center rounded-3xl border-4 border-[#0E7C3A] bg-[#121E36]/80 shadow-[6px_6px_0px_0px_#0B1120] text-white">
+    <div className="flex items-center gap-3 px-6 py-4">
+      <div className="w-3 h-3 rounded-full bg-[#16A34A] animate-pulse" />
+      <span className="text-xs font-black uppercase tracking-widest">Loading {label}...</span>
+    </div>
+  </div>
+);
+
+const SidebarFallback: React.FC = () => (
+  <div className="min-h-[320px] flex items-center justify-center rounded-none border-l-4 border-[#0E7C3A] bg-[#070D1E]/95 text-white">
+    <span className="text-xs font-black uppercase tracking-widest">Loading simulator...</span>
+  </div>
+);
 
 const App: React.FC = () => {
   const { 
@@ -87,11 +103,11 @@ const App: React.FC = () => {
     const docRef = doc(db, 'venueState', 'stadway_stadium');
     const unsubscribe = onSnapshot(docRef, async (snapshot) => {
       if (snapshot.exists()) {
-        setVenueState(snapshot.data() as any);
+        setVenueState(snapshot.data() as VenueState);
       } else {
         // Self-healing initialization if document does not exist
         console.log('No venueState found in Firestore. Initializing default state...');
-        const defaultState = {
+        const defaultState: VenueState = {
           gates: {
             Gate_A: { occupancyPct: 25, queueLength: 8, status: 'smooth' },
             Gate_B: { occupancyPct: 82, queueLength: 95, status: 'congested' },
@@ -108,7 +124,7 @@ const App: React.FC = () => {
         };
         try {
           await setDoc(docRef, defaultState);
-          setVenueState(defaultState as any);
+          setVenueState(defaultState);
         } catch (err) {
           console.error('Error writing initial venueState:', err);
         }
@@ -256,10 +272,12 @@ const App: React.FC = () => {
           onScroll={persona === 'landing' ? handleMainScroll : undefined}
           className="flex-1 overflow-y-auto px-6 py-6 text-center"
         >
-          {persona === 'landing' && <LandingPage />}
-          {persona === 'fan' && <FanView />}
-          {persona === 'volunteer' && <VolunteerView />}
-          {persona === 'organizer' && <OrganizerConsole />}
+          <Suspense fallback={<PersonaFallback label={persona} />}>
+            {persona === 'landing' && <LandingPage />}
+            {persona === 'fan' && <FanView />}
+            {persona === 'volunteer' && <VolunteerView />}
+            {persona === 'organizer' && <OrganizerConsole />}
+          </Suspense>
         </main>
 
         {/* Slide-out Sidebar Panel for Venue State Simulator */}
@@ -278,7 +296,9 @@ const App: React.FC = () => {
               </button>
             </div>
             <div className="p-4">
-              <DemoPanel />
+              <Suspense fallback={<SidebarFallback />}>
+                <DemoPanel />
+              </Suspense>
             </div>
           </aside>
         )}
