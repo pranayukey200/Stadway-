@@ -12,8 +12,8 @@ export const DemoPanel: React.FC = () => {
 
   // Sync from store when venueState changes (initial load)
   useEffect(() => {
-    if (venueState && !localState) {
-      setLocalState(JSON.parse(JSON.stringify(venueState)));
+    if (venueState) {
+      setLocalState(prev => prev || JSON.parse(JSON.stringify(venueState)));
     }
   }, [venueState]);
 

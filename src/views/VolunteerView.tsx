@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../utils/firebase';
-import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import { collection, onSnapshot, doc, updateDoc, setDoc } from 'firebase/firestore';
 import { type VolunteerTask } from '../context/useStore';
 import { CheckCircle, ShieldAlert, User, RefreshCw, Languages, Navigation } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -38,11 +38,9 @@ export const VolunteerView: React.FC = () => {
           { id: 'vol_carlos', name: 'Carlos Santana', languages: ['Spanish', 'Portuguese'], skills: ['Translations', 'Wayfinding'], currentZone: 'Gate_B', available: true },
           { id: 'vol_yuki', name: 'Yuki Tanaka', languages: ['Japanese', 'English'], skills: ['Accessibility Support', 'Translations'], currentZone: 'Gate_C', available: true }
         ];
-        
-        const { setDoc, doc: fsDoc } = await import('firebase/firestore');
         for (const vol of defaultVolunteers) {
           try {
-            await setDoc(fsDoc(db, 'volunteers', vol.id), {
+            await setDoc(doc(db, 'volunteers', vol.id), {
               name: vol.name,
               languages: vol.languages,
               skills: vol.skills,
@@ -57,8 +55,8 @@ export const VolunteerView: React.FC = () => {
       }
       
       setVolunteers(list);
-      if (list.length > 0 && !selectedVol) {
-        setSelectedVol(list[1]); // Default to Priya Patel
+      if (list.length > 0) {
+        setSelectedVol(prev => prev || list[1]); // Default to Priya Patel
       }
       setLoading(false);
     });

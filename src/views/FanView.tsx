@@ -6,10 +6,81 @@ import { db, functions } from '../utils/firebase';
 import { collection, addDoc, doc, setDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { runOrchestration, DEV_ONLY } from '../../functions/src/orchestrator'; // Import local fallback
+import { TOKENS } from '../design/tokens';
 import { 
   Send, Accessibility, Leaf, MapPin, Clock, Cloud, Settings, AlertCircle, RefreshCw, Languages, Sparkles 
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+
+/** World Cup star player profiles – defined outside component to avoid reallocating on every render */
+const WORLD_CUP_STARS = [
+  {
+    id: 'messi',
+    name: 'Lionel Messi',
+    number: '10',
+    country: 'Argentina',
+    zone: 'Section A',
+    image: '/assets/player_blue.png',
+    accent: '#0EA5E9',
+    bgColor: 'rgba(14, 165, 233, 0.15)',
+    stats: { Excitement: 98, Dribbles: 92, Speed: 84, Dribbling: 95, Positioning: 'Attack Center' }
+  },
+  {
+    id: 'ronaldo',
+    name: 'Cristiano Ronaldo',
+    number: '7',
+    country: 'Portugal',
+    zone: 'Section B',
+    image: '/assets/player_red.png',
+    accent: TOKENS.colors.orange,
+    bgColor: 'rgba(251, 107, 30, 0.15)',
+    stats: { Excitement: 95, Dribbles: 85, Speed: 91, Dribbling: 82, Positioning: 'Box Forward' }
+  },
+  {
+    id: 'neymar',
+    name: 'Neymar Jr',
+    number: '10',
+    country: 'Brazil',
+    zone: 'Section D',
+    image: '/assets/player_gold.png',
+    accent: TOKENS.colors.gold,
+    bgColor: 'rgba(212, 160, 23, 0.15)',
+    stats: { Excitement: 92, Dribbles: 96, Speed: 88, Dribbling: 98, Positioning: 'Left Flank Wing' }
+  },
+  {
+    id: 'mbappe',
+    name: 'Kylian Mbappé',
+    number: '10',
+    country: 'France',
+    zone: 'Section C',
+    image: '/assets/player_blue.png',
+    accent: '#0055A5',
+    bgColor: 'rgba(0, 85, 165, 0.15)',
+    stats: { Excitement: 96, Dribbles: 89, Speed: 97, Dribbling: 91, Positioning: 'Left Forward Wing' }
+  },
+  {
+    id: 'haaland',
+    name: 'Erling Haaland',
+    number: '9',
+    country: 'Norway',
+    zone: 'Section A',
+    image: '/assets/player_gold.png',
+    accent: '#BA0C2F',
+    bgColor: 'rgba(186, 12, 47, 0.15)',
+    stats: { Excitement: 94, Dribbles: 81, Speed: 93, Dribbling: 84, Positioning: 'Target Striker' }
+  },
+  {
+    id: 'vinicius',
+    name: 'Vinicius Jr',
+    number: '7',
+    country: 'Brazil',
+    zone: 'Section D',
+    image: '/assets/player_gold.png',
+    accent: TOKENS.colors.pitch,
+    bgColor: 'rgba(22, 163, 74, 0.15)',
+    stats: { Excitement: 93, Dribbles: 94, Speed: 95, Dribbling: 97, Positioning: 'Left Wing Attacker' }
+  }
+] as const;
 
 export const FanView: React.FC = () => {
   const { 
@@ -38,63 +109,8 @@ export const FanView: React.FC = () => {
   // World Cup Star Comparison state
   const [comparePlayers, setComparePlayers] = useState<string[]>([]);
 
-  const stars = [
-    { 
-      id: 'messi', 
-      name: 'Lionel Messi', 
-      number: '10', 
-      country: 'Argentina', 
-      zone: 'Section A', 
-      image: '/assets/player_blue.png', 
-      accent: '#0EA5E9',
-      bgColor: 'rgba(14, 165, 233, 0.15)',
-      stats: { Excitement: 98, Dribbles: 92, Speed: 84, Dribbling: 95, Positioning: 'Attack Center' }
-    },
-    { 
-      id: 'ronaldo', 
-      name: 'Cristiano Ronaldo', 
-      number: '7', 
-      country: 'Portugal', 
-      zone: 'Section B', 
-      image: '/assets/player_red.png', 
-      accent: '#FB6B1E',
-      bgColor: 'rgba(251, 107, 30, 0.15)',
-      stats: { Excitement: 95, Dribbles: 85, Speed: 91, Dribbling: 82, Positioning: 'Box Forward' }
-    },
-    { 
-      id: 'neymar', 
-      name: 'Neymar Jr', 
-      number: '10', 
-      country: 'Brazil', 
-      zone: 'Section D', 
-      image: '/assets/player_gold.png', 
-      accent: '#D4A017',
-      bgColor: 'rgba(212, 160, 23, 0.15)',
-      stats: { Excitement: 92, Dribbles: 96, Speed: 88, Dribbling: 98, Positioning: 'Left Flank Wing' }
-    },
-    { 
-      id: 'mbappe', 
-      name: 'Kylian Mbappé', 
-      number: '10', 
-      country: 'France', 
-      zone: 'Section C', 
-      image: '/assets/player_blue.png', 
-      accent: '#0055A5',
-      bgColor: 'rgba(0, 85, 165, 0.15)',
-      stats: { Excitement: 96, Dribbles: 89, Speed: 97, Dribbling: 91, Positioning: 'Left Forward Wing' }
-    },
-    { 
-      id: 'haaland', 
-      name: 'Erling Haaland', 
-      number: '9', 
-      country: 'Norway', 
-      zone: 'Section A', 
-      image: '/assets/player_gold.png', 
-      accent: '#BA0C2F',
-      bgColor: 'rgba(186, 12, 47, 0.15)',
-      stats: { Excitement: 94, Dribbles: 81, Speed: 93, Dribbling: 84, Positioning: 'Target Striker' }
-    }
-  ];
+  // Use module-level constant to avoid reallocating the array on every render
+  const stars = WORLD_CUP_STARS;
 
   const togglePlayerSelect = (id: string) => {
     if (comparePlayers.includes(id)) {
@@ -554,10 +570,10 @@ export const FanView: React.FC = () => {
   }
 
   // Active wayfinding values
-  const activeRouteTrail = activeRecommendation?.agentTrail?.find(t => t.agent === 'Wayfinding Agent')?.output || {};
+  const activeRouteTrail = (activeRecommendation?.agentTrail?.find(t => t.agent === 'Wayfinding Agent')?.output as any) || {};
   const activeRouteSteps = activeRouteTrail.recommendedRoute || [];
   const activeRouteGate = activeRouteTrail.gateEntry || fanProfile.ticketZone.replace('Zone', 'Gate');
-  const requireStepFree = activeRecommendation?.agentTrail?.find(t => t.agent === 'Accessibility Agent')?.output?.requireStepFree || false;
+  const requireStepFree = (activeRecommendation?.agentTrail?.find(t => t.agent === 'Accessibility Agent')?.output as any)?.requireStepFree || false;
 
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto my-4 ${accessibilitySettings.highContrast ? 'high-contrast' : ''}`}>

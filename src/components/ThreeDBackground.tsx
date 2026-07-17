@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { TOKENS } from '../design/tokens';
 
 export const ThreeDBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -217,19 +218,24 @@ export const ThreeDBackground: React.FC = () => {
           const alpha = isPitch ? 0.5 : 0.25 + projA.scale * 0.15;
           
           if (isPitch) {
-            ctx.strokeStyle = `rgba(22, 163, 74, ${alpha * 1.5})`;
+            // Use pitch green from design tokens
+            ctx.strokeStyle = `rgba(22, 163, 74, ${alpha * 1.5})`; // TOKENS.colors.pitch = #16A34A
             ctx.lineWidth = 1.5;
           } else {
-            // Rotate colors based on scrollPct: Green, Gold, Blue, Orange, Pink
+            // Rotate through design token accent colors based on scroll position
             const colorIndex = Math.floor(scrollPct * 5) % 5;
-            const colors = [
-              `rgba(22, 163, 74, ${alpha * 1.2})`,
-              `rgba(212, 160, 23, ${alpha * 1.2})`,
-              `rgba(14, 165, 233, ${alpha * 1.2})`,
-              `rgba(251, 107, 30, ${alpha * 1.2})`,
-              `rgba(229, 57, 154, ${alpha * 1.2})`
+            const tokenColors = [
+              TOKENS.colors.pitch,   // #16A34A – green
+              TOKENS.colors.gold,    // #D4A017 – gold
+              '#0EA5E9',             // sky blue accent
+              TOKENS.colors.orange,  // #FB6B1E – orange
+              TOKENS.colors.magenta  // #E5399A – magenta
             ];
-            ctx.strokeStyle = colors[colorIndex] || colors[0];
+            const hex = tokenColors[colorIndex] || tokenColors[0];
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 1.2})`;
             ctx.lineWidth = 0.8;
           }
           

@@ -34,9 +34,11 @@ export interface VenueState {
 
 export interface AgentTrailItem {
   agent: string;
-  input: any;
+  /** Raw structured input passed to this agent – schema varies per agent type */
+  input: unknown;
   reasoning: string;
-  output: any;
+  /** Raw structured output from this agent – schema varies per agent type */
+  output: unknown;
 }
 
 export interface DecisionResult {

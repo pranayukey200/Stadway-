@@ -123,7 +123,7 @@ const App: React.FC = () => {
     }
 
     return () => unsubscribe();
-  }, []);
+  }, [setVenueState, setDemoMode]);
 
   return (
     <div 
@@ -148,16 +148,25 @@ const App: React.FC = () => {
 
       {/* Offline Alert Banner */}
       {!isOnline && (
-        <div className="bg-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 border-b-4 border-[#070D1E] z-50">
-          <ShieldAlert size={14} className="animate-pulse" />
+        <div 
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          className="bg-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 border-b-4 border-[#070D1E] z-50"
+        >
+          <ShieldAlert size={14} className="animate-pulse" aria-hidden="true" />
           <span>Offline Mode Active. Displaying cached maps and last synced wayfinding route instructions.</span>
         </div>
       )}
 
       {/* Top Banner Alert for Global Broadcast Announcement */}
       {venueState?.overrideAnnouncement && (
-        <div className="bg-gradient-to-r from-[#E5399A] to-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 animate-pulse border-b-4 border-[#070D1E] shadow-md z-50">
-          <ShieldAlert size={14} />
+        <div 
+          role="alert"
+          aria-live="polite"
+          className="bg-gradient-to-r from-[#E5399A] to-[#FB6B1E] text-white text-xs font-display font-bold uppercase tracking-wider text-center py-3 px-4 flex items-center justify-center gap-2 animate-pulse border-b-4 border-[#070D1E] shadow-md z-50"
+        >
+          <ShieldAlert size={14} aria-hidden="true" />
           <span>OFFICIAL ANNOUNCEMENT: {venueState.overrideAnnouncement}</span>
         </div>
       )}
@@ -176,46 +185,54 @@ const App: React.FC = () => {
         </div>
 
         {/* Persona Controller Toggles */}
-        <nav className="flex bg-[#121E36] p-1 gap-1 border-4 border-[#0E7C3A] rounded-full text-xs overflow-x-auto max-w-full scrollbar-none">
+        <nav aria-label="Main navigation" className="flex bg-[#121E36] p-1 gap-1 border-4 border-[#0E7C3A] rounded-full text-xs overflow-x-auto max-w-full scrollbar-none">
           <button
             onClick={() => setPersona('landing')}
+            aria-label="Overview — landing page"
+            aria-pressed={persona === 'landing'}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'landing'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
-            <Trophy size={13} /> Overview
+            <Trophy size={13} aria-hidden="true" /> Overview
           </button>
           <button
             onClick={() => setPersona('fan')}
+            aria-label="Fan Hub — fan companion"
+            aria-pressed={persona === 'fan'}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'fan'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
-            <User size={13} /> Fan Hub
+            <User size={13} aria-hidden="true" /> Fan Hub
           </button>
           <button
             onClick={() => setPersona('volunteer')}
+            aria-label="Volunteer portal"
+            aria-pressed={persona === 'volunteer'}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'volunteer'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
-            <Users size={13} /> Volunteer
+            <Users size={13} aria-hidden="true" /> Volunteer
           </button>
           <button
             onClick={() => setPersona('organizer')}
+            aria-label="Operations console for organizers"
+            aria-pressed={persona === 'organizer'}
             className={`px-4 py-2 font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer rounded-full whitespace-nowrap ${
               persona === 'organizer'
                 ? 'bg-[#16A34A] text-white shadow-[2px_2px_0px_0px_rgba(11,17,32,1)] border-2 border-white'
                 : 'text-white/70 hover:text-[#16A34A] hover:bg-white/10'
             }`}
           >
-            <Sliders size={13} /> Operations
+            <Sliders size={13} aria-hidden="true" /> Operations
           </button>
         </nav>
 
@@ -247,7 +264,10 @@ const App: React.FC = () => {
 
         {/* Slide-out Sidebar Panel for Venue State Simulator */}
         {sidebarOpen && (
-          <aside className="w-80 md:w-96 border-l-4 border-[#0E7C3A] bg-[#070D1E]/95 backdrop-blur-md overflow-y-auto z-30 transition-transform duration-300 right-0 top-0">
+          <aside 
+            aria-label="Venue sensor simulator panel"
+            className="w-80 md:w-96 border-l-4 border-[#0E7C3A] bg-[#070D1E]/95 backdrop-blur-md overflow-y-auto z-30 transition-transform duration-300 right-0 top-0"
+          >
             <div className="sticky top-0 bg-[#070D1E] py-4 px-6 border-b-4 border-[#0E7C3A] flex justify-between items-center z-10">
               <span className="text-xs uppercase font-black text-white tracking-wider">Sensor Simulator</span>
               <button 

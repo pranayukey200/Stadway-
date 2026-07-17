@@ -15,8 +15,8 @@ export default defineConfig({
         name: 'StandWay — Smart Stadium Operations',
         short_name: 'StandWay',
         description: 'GenAI-powered smart stadium operations platform for crowd management, wayfinding, accessibility, and sustainability at global football tournaments.',
-        theme_color: '#FAF7F0',
-        background_color: '#FAF7F0',
+        theme_color: '#060b18',
+        background_color: '#060b18',
         display: 'standalone',
         icons: [
           {
@@ -33,6 +33,26 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('firebase')) {
+              return 'vendor-firebase';
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('react') || id.includes('zustand')) {
+              return 'vendor-core';
+            }
+            return 'vendor';
+          }
+        }
+      }
+    }
+  }
 })
 
 

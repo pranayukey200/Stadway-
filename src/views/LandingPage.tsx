@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/useStore';
 import { 
-  Trophy, Navigation, Users, Globe2, Bus, Leaf, Radio, Accessibility, ScanLine, ArrowUpRight, ArrowRight, Sparkles, ShieldCheck, Cpu
+  Trophy, Navigation, Users, Globe2, Bus, Leaf, Radio, Accessibility, ScanLine, ArrowRight
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
@@ -43,7 +43,7 @@ export const LandingPage: React.FC = () => {
     setDemoChatInput('');
 
     setTimeout(() => {
-      let reply = "STADIA.AI Orchestrator: Checking live sensor grid... ";
+      let reply = "StandWay AI Orchestrator: Checking live sensor grid... ";
       const lower = userMsg.toLowerCase();
       if (lower.includes('gate') || lower.includes('exit') || lower.includes('crowd')) {
         reply += "Gate A and C are clear. Avoid Gate B which has active queue compression. Take the north concourse route.";
@@ -56,11 +56,6 @@ export const LandingPage: React.FC = () => {
       }
       setDemoChatResponses(prev => [...prev, { sender: 'ai' as const, text: reply, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
     }, 1000);
-  };
-
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -134,11 +129,11 @@ export const LandingPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Main Header lines */}
             <div className="lg:col-span-8 space-y-4">
-              <h1 className="font-display font-black text-white uppercase leading-[0.92] tracking-tight text-[clamp(2.8rem,8vw,6.5rem)]">
+              <h2 className="font-display font-black text-white uppercase leading-[0.92] tracking-tight text-[clamp(2.8rem,8vw,6.5rem)]">
                 Every Fan.<br />
                 Every Gate.<br />
                 <span className="gradient-text-pitch font-display">One Platform.</span>
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg text-white/80 font-medium max-w-xl leading-snug mt-6">
                 StandWay is a decentralized, privacy-first smart tournament operations suite. Fusing live edge sensors with cooperatively aligned AI agents to serve fans, volunteers, and operators simultaneously.
               </p>

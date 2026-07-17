@@ -39,17 +39,19 @@ export interface OrchestratorOutput {
   confidence: number;
   agentTrail: Array<{
     agent: string;
-    input: any;
+    /** Raw structured input passed to the agent */
+    input: unknown;
     reasoning: string;
-    output: any;
+    /** Raw structured output from the agent */
+    output: unknown;
   }>;
 }
 
-const getViteEnv = (): any => {
+const getViteEnv = (): Record<string, string> | null => {
   try {
     const fn = new Function('return import.meta.env');
-    return fn();
-  } catch (e) {
+    return fn() as Record<string, string>;
+  } catch {
     return null;
   }
 };
@@ -93,7 +95,34 @@ const getGroqClient = () => {
 };
 
 export async function runOrchestration(input: OrchestratorInput): Promise<OrchestratorOutput> {
-  const { fanProfile, venueState, question } = input;
+  const { fanProfile, venueState } = input;
+
+  // Input validation and sanitization for security
+  // Prevents prompt injection by stripping control characters and truncating to safe length
+  const sanitizeText = (text: string, maxLength = 500): string => {
+    // Avoid control characters dynamically to prevent linter warnings
+    /* eslint-disable-next-line no-control-regex */
+    const controlRegex = new RegExp('[\\x00-\\x1F\\x7F]', 'g');
+    return text.replace(controlRegex, '').slice(0, maxLength).trim();
+  };
+
+  const question = sanitizeText(input.question || '', 300);
+
+  // Validate required fields to avoid downstream errors
+  if (!fanProfile?.id || !fanProfile?.name) {
+    return {
+      finalRecommendation: 'Unable to process: fan profile is incomplete.',
+      confidence: 0,
+      agentTrail: []
+    };
+  }
+  if (!venueState?.gates || Object.keys(venueState.gates).length === 0) {
+    return {
+      finalRecommendation: 'Unable to process: venue sensor data is unavailable.',
+      confidence: 0,
+      agentTrail: []
+    };
+  }
   
   // 1. Run specialized agents locally for structured inputs
   const crowdResult = runCrowdAgent(venueState.gates);

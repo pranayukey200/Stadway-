@@ -129,6 +129,11 @@ export const OrganizerConsole: React.FC = () => {
                     {/* Progress Bar */}
                     <div className="w-full bg-[#121E36] rounded-full h-2.5 overflow-hidden border-2 border-[#0B1120]">
                       <div 
+                        role="progressbar"
+                        aria-valuenow={gate.occupancyPct}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-label={`${gateId.replace('_', ' ')} occupancy ${gate.occupancyPct}%`}
                         className={`h-full rounded-full transition-all duration-500 ${
                           isCongested ? 'bg-[#E5399A]' : gate.status === 'moderate' ? 'bg-[#FB6B1E]' : 'bg-[#16A34A]'
                         }`} 
